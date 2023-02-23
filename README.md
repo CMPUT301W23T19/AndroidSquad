@@ -1,2 +1,2 @@
 # AndroidSquad's QRHunter App
-Explore and hunt to scan high scoring QR codes 
+Search to find the highest scoring QR codes and compete with other players in your region or globally! 🔭🔭  
