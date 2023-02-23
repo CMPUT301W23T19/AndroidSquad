@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#150839"
+    android:backgroundTint="#150839"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/galaxy"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#0B0127"
+        android:scaleType="centerCrop"
+        android:src="@drawable/galaxy"
+        tools:layout_editor_absoluteX="-204dp" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/nav_bar"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="#150839"
+        android:backgroundTint="#150839"
+        android:layout_alignParentBottom="true"
+        app:itemIconTint="#ffff"
+        app:itemIconSize="40dp"
+        app:itemTextColor="#ffff"
+        app:menu="@menu/nav_bar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="100dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/rounded_view"
+        >
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif"
+            android:text="Most QR Codes Scanned"
+            android:textSize="18dp"
+            android:textColor="#515151"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/rank1"
+            android:layout_width="113dp"
+            android:layout_height="132dp"
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/rank1_score"
+            android:src="@drawable/player" />
+
+
+        <ImageView
+            android:id="@+id/rank2"
+            android:layout_width="105dp"
+            android:layout_height="125dp"
+            android:layout_below="@+id/rank2_score"
+            android:layout_alignLeft="@+id/rank1"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/player" />
+
+        <ImageView
+            android:id="@+id/rank3"
+            android:layout_width="105dp"
+            android:layout_height="125dp"
+            android:layout_below="@+id/rank3_score"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/player" />
+
+        <TextView
+            android:id="@+id/rank1_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:layout_centerHorizontal="true"
+            android:textColor="#00008B"
+            android:text="score" />
+
+        <TextView
+            android:id="@+id/rank2_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_below="@+id/title"
+            android:layout_alignParentLeft="true"
+            android:layout_alignLeft="@+id/rank1_score"
+            android:layout_marginLeft="45dp"
+            android:layout_marginTop="20dp"
+            android:textColor="#00008B"
+            android:text="score" />
+
+        <TextView
+            android:id="@+id/rank3_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/title"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="45dp"
+            android:textColor="#00008B"
+            android:text="score" />
+
+        <TextView
+            android:id="@+id/rank1_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/current_rank"
+            android:layout_below="@+id/rank1"
+            android:layout_centerHorizontal="true"
+            android:text="1 username"
+            android:textColor="#434242" />
+
+        <TextView
+            android:id="@+id/rank2_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rank2"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="25dp"
+            android:text="2 username"
+            android:textColor="#434242" />
+
+        <TextView
+            android:id="@+id/rank3_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rank3"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="25dp"
+            android:text="3 username"
+            android:textColor="#434242" />
+
+        <TextView
+            android:id="@+id/current_rank"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rank2_username"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:background="@drawable/rounded_view"
+            android:backgroundTint="#5E5D5D"
+            android:padding="20dp"
+            android:text="Your Current Rank: #rank"
+            android:textColor="#ffff"
+            android:textSize="20dp" />
+
+
+        <Button
+            android:id="@+id/highest_scoring"
+            android:layout_width="82dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/current_rank"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="5dp"
+            android:backgroundTint="#5E5D5D"
+            android:text="Highest Scores"
+            android:textSize="10dp" />
+
+        <Button
+            android:id="@+id/most_scanned"
+            android:layout_width="85dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/current_rank"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/highest_scoring"
+            android:backgroundTint="#5E5D5D"
+            android:text="most scanned"
+            android:textSize="10dp" />
+
+        <Button
+            android:id="@+id/greatest_sum"
+            android:layout_width="82dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/current_rank"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/most_scanned"
+            android:backgroundTint="#5E5D5D"
+            android:text="highest total"
+            android:textSize="10dp" />
+
+        <Button
+            android:id="@+id/region_scores"
+            android:layout_width="82dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/current_rank"
+            android:layout_marginLeft="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_toRightOf="@+id/greatest_sum"
+            android:backgroundTint="#5E5D5D"
+            android:text="region scores"
+            android:textSize="10dp" />
+
+        <ListView
+            android:id="@+id/player_ranks"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/highest_scoring"
+            android:visibility="visible"
+            android:layout_alignParentBottom="true" />
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
