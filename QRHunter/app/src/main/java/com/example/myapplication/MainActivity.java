@@ -17,9 +17,12 @@ public class MainActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     FirebaseFirestore db;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Testing leaderboard screen (highest scores)
         String names[] = {
                 "Harry", "Draco", "Ron", "Hermione"
         };
