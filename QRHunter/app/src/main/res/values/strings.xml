@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">QRHunter</string>
+    <string name="first_name_label">First Name </string>
+    <string name="last_name_label">Last Name </string>
+    <string name="Email_label">Email </string>
+    <string name="Username_label">Username </string>
+    <string name="Register_label">Register </string>
+    <string name="content_pic_description">profile pic </string>
+
+
+
+
+
+
 </resources>
