@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Getting rounded frame layout:
+    From: www.stackoverflow.com
+    URL: https://stackoverflow.com/q/36208320
+    Author: https://stackoverflow.com/users/4384513/masum-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+        <solid android:color="#808080"/>
+
+        <stroke android:width="2dp"
+            android:color="#999999"/>
+
+        <padding android:left="2dp"
+            android:top="2dp"
+            android:right="2dp"
+            android:bottom="2dp"/>
+
+        <corners android:radius="8dp" />
+
+</shape>
