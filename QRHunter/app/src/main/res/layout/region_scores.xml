@@ -7,8 +7,7 @@
     android:layout_height="match_parent"
     android:background="#150839"
     android:backgroundTint="#150839"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/galaxy"
