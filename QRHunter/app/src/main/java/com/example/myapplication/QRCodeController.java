@@ -8,6 +8,7 @@ package com.example.myapplication;
  * Iterating over key-val pairs in a HashMap: https://stackoverflow.com/q/585654
  * -- Author(s): https://stackoverflow.com/users/40342/joachim-sauer
  * Creating and executing a query: https://firebase.google.com/docs/firestore/query-data/queries
+ * Updating a document and using arrayUnion() to add items to an array field: https://cloud.google.com/firestore/docs/manage-data/add-data#javaandroid_12
  */
 
 import java.util.Set;
@@ -35,6 +36,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldPath;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
@@ -163,20 +165,22 @@ public class QRCodeController {
      * Checks if QR code exists in database and adds it to the firebase if it does not.
      */
     public void validateAndAdd() {
-        DocumentReference qrCodeRef = db.collection("QR Code").document(name);
-        qrCodeRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot qrCode = task.getResult();
-                    if (!qrCode.exists()) {
-                        addQRCodetoDatabase();
-                    } else {
-                        checkIfScanned();
+        db.collection("QR Code")
+                .whereEqualTo("Name", name)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (task.getResult().isEmpty()) {       // new qr code
+                                addQRCodetoDatabase();
+                            } else {
+                                checkIfScanned();
+                            }
+                            addToHistoryofQRCodes();
+                        }
                     }
-                }
-            }
-        });
+                });
 
     }
 
@@ -193,8 +197,7 @@ public class QRCodeController {
                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
                        if (task.isSuccessful()) {
                            if(task.getResult().isEmpty()) {     // user has not scanned QR code before
-//                               addQRCodetoDatabase();
-
+                               addToHistoryofUsers();
                            } else {
                                Log.d("TAG", "User has scanned it previously");
                            }
@@ -208,11 +211,42 @@ public class QRCodeController {
     /**
      * Adds current user to list of users that have scanned QR code
      */
-//    public void usersScannedCode() {
-//        db.collection("QR Code").document(name)
-//                .update("")
-//
-//    }
+    public void addToHistoryofUsers() {
+        db.collection("QR Code").document(name)
+                .update("Username", FieldValue.arrayUnion(user))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d("TAG", "Successfully added user!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("TAG", "Error adding user");
+                    }
+                });
+    }
+
+    /**
+     * Adds QR code to user's history of scanned QR codes
+     */
+    public void addToHistoryofQRCodes() {
+        db.collection("Player").document(user)
+                .update("QRCode", FieldValue.arrayUnion(sha256hex))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d("TAG", "Successfully added QR code to history!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("TAG", "Could not add QR Code");
+                    }
+                });
+    }
 
     /**
      * Adds QR code to Firestore Firebase database
@@ -250,8 +284,6 @@ public class QRCodeController {
         });
 
     }
-
-
 
 
 }
