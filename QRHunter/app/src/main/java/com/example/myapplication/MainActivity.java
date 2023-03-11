@@ -9,8 +9,11 @@ package com.example.myapplication;
  */
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.activity.result.ActivityResultLauncher;
 
+import android.content.DialogInterface;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,6 +23,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+
+import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanOptions;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarItemView;
@@ -34,10 +40,18 @@ public class MainActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     FirebaseFirestore db;
 
+    Button btn_scan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.camera);
+        btn_scan=findViewById(R.id.btn_scan);
+        btn_scan.setOnClickListener(v->
+        {
+            scanCode();
+        });
+
         setContentView(R.layout.highest_scores);
 
         BottomNavigationView bottomNavigationView  = (BottomNavigationView) findViewById(R.id.nav_bar);
@@ -51,6 +65,15 @@ public class MainActivity extends AppCompatActivity {
         adapter = new ArrayAdapter<String> (this, R.layout.userranks, R.id.username, names);
         playerRanks.setAdapter(adapter);
 
+    }
+
+    private void scanCode() {
+        ScanOptions options = new ScanOptions();
+        options.setPrompt("volume up to flash on!!");
+        options.setBeepEnabled(true);
+        options.setOrientationLocked(true);
+        options.setCaptureActivity(CaptureAct.class);
+        barLauncher.launch(options);
         // Bottom Navigation bar functionality
         bottomNavigationView.setOnItemSelectedListener(item -> {
                     if (item.getItemId() == R.id.camera) {
@@ -65,4 +88,19 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 });
     }
+
+    ActivityResultLauncher<ScanOptions> barLauncher= registerForActivityResult(new ScanContract(),result -> {
+        if(result.getContents()!=null)
+        {
+            AlertDialog.Builder builder= new AlertDialog.Builder(MainActivity.this);
+            builder.setTitle("result");
+            builder.setMessage(result.getContents());
+            builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            }).show();
+        }
+    });
 }
