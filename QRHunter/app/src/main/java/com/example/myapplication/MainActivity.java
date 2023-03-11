@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarItemView;
@@ -64,5 +65,15 @@ public class MainActivity extends AppCompatActivity {
                     }
                     return true;
                 });
+
+        // Testing the add QR code to firebase functionality
+        QRCodeController qr = new QRCodeController("BFG5DGW54", "mochi_lover");
+        String name = qr.getName();
+        TextView title = findViewById(R.id.title1);
+        title.setText(name);
+
     }
+
+
+
 }
