@@ -7,6 +7,7 @@ package com.example.myapplication;
  * -- Author(s): https://stackoverflow.com/users/20394/mike-samuel
  * Iterating over key-val pairs in a HashMap: https://stackoverflow.com/q/585654
  * -- Author(s): https://stackoverflow.com/users/40342/joachim-sauer
+ * Creating and executing a query: https://firebase.google.com/docs/firestore/query-data/queries
  */
 
 import java.util.Set;
@@ -23,15 +24,22 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -49,7 +57,7 @@ import java.util.Map;
 public class QRCodeController {
     private String name;
     private int score;
-    private String sha256hex;
+    public String sha256hex;
     FirebaseFirestore db;
 
     private String codeContents;
@@ -68,13 +76,14 @@ public class QRCodeController {
     /**
      * Constructor function for QRCodeController
      */
-    public QRCodeController( String codeContents, String username) {
-        this.codeContents = codeContents;     // testing purposes
+    public QRCodeController(String codeContents, String username) {
+        this.codeContents = codeContents;
         sha256hex = DigestUtils.sha256Hex(codeContents);
-        user = username;        // testing purposes
+        user = username;
         db = FirebaseFirestore.getInstance();
 
         setName();
+        setScore();
     }
 
     /**
@@ -102,103 +111,147 @@ public class QRCodeController {
             }
         }
     }
+
+    /**
+     * Gets name of QR code
+     * @return string representation of the name
+     */
     public String getName() {
         return name;
     }
 
-//    /**
-//     * Creates a score for the QR code based on its hash
-//     */
-//    public void setScore() {
-//        HashMap<Character, Integer> scores = new HashMap<Character, Integer>();
-//        for (int i = 0; i < (sha256hex.length()-1); i++) {
-//            char curChar = sha256hex.charAt(i);
-//            if (curChar == sha256hex.charAt(i+1)) {
-//                if (scores.containsKey(curChar) == false) {
-//                    scores.put(curChar, 2);
-//                } else {
-//                    scores.put(curChar, scores.get(curChar) + 1);
-//                }
-//            }
-//        }
-//
-//        for (Map.Entry<Character, Integer> set : scores.entrySet()) {
-//            Character key = Character.toUpperCase(set.getKey());
-//            int count = set.getValue();
-//            if (key == '0') {
-//                score += (int) Math.pow(20,(count-1));
-//            }
-//            else if (Character.isDigit(key)) {
-//                score += (int) Math.pow((int)(key-48),(count-1));
-//            }
-//            else {
-//                score += (int) Math.pow((int)(key-55),(count-1));
-//            }
-//        }
-//    }
-//
+    /**
+     * Creates a score for the QR code based on its hash
+     */
+    public void setScore() {
+        HashMap<Character, Integer> scores = new HashMap<Character, Integer>();
+        for (int i = 0; i < (sha256hex.length()-1); i++) {
+            char curChar = sha256hex.charAt(i);
+            if (curChar == sha256hex.charAt(i+1)) {
+                if (scores.containsKey(curChar) == false) {
+                    scores.put(curChar, 2);
+                } else {
+                    scores.put(curChar, scores.get(curChar) + 1);
+                }
+            }
+        }
 
-//
-//    public int getScore() {
-//        return score;
-//    }
-//
-//    public void checkIfExists() {
-//        DocumentReference qrCodeRef = db.collection("QR Code").document(name);
-//        qrCodeRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot qrCode = task.getResult();
-//                    if (!qrCode.exists()) {
-//                        addQRCode();
-//                    } else {
-//                        Log.d("TAG", "Existing data" /** document.getData */);
-//                    }
-//                }
-//            }
-//        });
-//
-//    }
-//
-//    public void checkIfScanned() {
-//        Query scanned = db.collection("Player").whereEqualTo("Username", user).whereArrayContains("QRCode", sha256hex);
-//        System.out.println(scanned.get());
-//
-//    }
-//
-//    /**
-//     * Adds QR code to Firestore Firebase database
-//     */
-//    public void addQRCode() {
-//        ArrayList<String> comments = new ArrayList<>();
-//        ArrayList<String> usernames = new ArrayList<>();
-//
-//        Map<String, Object> qrCode = new HashMap<>();
-//        qrCode.put("Comment", comments);
-//        qrCode.put("Hash", sha256hex);
-//        qrCode.put("Location", null);
-//        qrCode.put("Name", name);
-//        qrCode.put("Photo", "code.png");
-//        qrCode.put("Score", score);
-//        qrCode.put("Username", usernames);
-//
+        for (Map.Entry<Character, Integer> set : scores.entrySet()) {
+            Character key = Character.toUpperCase(set.getKey());
+            int count = set.getValue();
+            if (key == '0') {
+                score += (int) Math.pow(20,(count-1));
+            }
+            else if (Character.isDigit(key)) {
+                score += (int) Math.pow((int)(key-48),(count-1));
+            }
+            else {
+                score += (int) Math.pow((int)(key-55),(count-1));
+            }
+        }
+    }
+
+    /**
+     * Gets QR code score
+     * @return integer representation of the QR code score
+     */
+    public int getScore() {
+        return score;
+    }
+
+    /**
+     * Checks if QR code exists in database and adds it to the firebase if it does not.
+     */
+    public void validateAndAdd() {
+        DocumentReference qrCodeRef = db.collection("QR Code").document(name);
+        qrCodeRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot qrCode = task.getResult();
+                    if (!qrCode.exists()) {
+                        addQRCodetoDatabase();
+                    } else {
+                        checkIfScanned();
+                    }
+                }
+            }
+        });
+
+    }
+
+    /**
+     * Checks if user has already scanned QR code and adds username to list of users who have scanned QR code if not previously scanned by current user
+     */
+    public void checkIfScanned() {
+       db.collection("QR Code")
+               .whereEqualTo("Name", name)
+               .whereArrayContains("Username", user)
+               .get()
+               .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                   @Override
+                   public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                       if (task.isSuccessful()) {
+                           if(task.getResult().isEmpty()) {     // user has not scanned QR code before
+//                               addQRCodetoDatabase();
+
+                           } else {
+                               Log.d("TAG", "User has scanned it previously");
+                           }
+                       } else {
+                           Log.e("TAG", "Error getting data");
+                       }
+                   }
+               });
+    }
+
+    /**
+     * Adds current user to list of users that have scanned QR code
+     */
+//    public void usersScannedCode() {
 //        db.collection("QR Code").document(name)
-//            .set(qrCode)
-//            .addOnSuccessListener(new OnSuccessListener<Void>() {
-//            @Override
-//            public void onSuccess(Void avoid) {
-//                Log.d("TAG", "Added QR code successfully!");
-//            }
-//        })
-//        .addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                Log.w("TAG", "Error adding QR code");
-//            }
-//        });
+//                .update("")
 //
 //    }
+
+    /**
+     * Adds QR code to Firestore Firebase database
+     */
+    public void addQRCodetoDatabase() {
+        Map<String, String> comments = new HashMap<>();
+        ArrayList<String> usernames = new ArrayList<>();
+
+        // Testing adding a comment
+        comments.put(user, "Wow!");
+        usernames.add(user);
+
+        Map<String, Object> qrCode = new HashMap<>();
+        qrCode.put("Comment", comments);
+        qrCode.put("Hash", sha256hex);
+        qrCode.put("Location", null);
+        qrCode.put("Name", name);
+        qrCode.put("Photo", "code.png");
+        qrCode.put("Score", score);
+        qrCode.put("Username", usernames);
+
+        db.collection("QR Code").document(name)
+            .set(qrCode)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void avoid) {
+                Log.d("TAG", "Added QR code successfully!");
+            }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w("TAG", "Error adding QR code");
+            }
+        });
+
+    }
+
+
 
 
 }

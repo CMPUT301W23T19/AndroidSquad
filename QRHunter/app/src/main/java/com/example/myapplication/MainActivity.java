@@ -15,6 +15,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -67,10 +68,10 @@ public class MainActivity extends AppCompatActivity {
                 });
 
         // Testing the add QR code to firebase functionality
-        QRCodeController qr = new QRCodeController("BFG5DGW54", "mochi_lover");
-        String name = qr.getName();
-        TextView title = findViewById(R.id.title1);
-        title.setText(name);
+        QRCodeController qrController = new QRCodeController("BFG5DGW54", "emily9");
+        qrController.checkIfScanned();
+        //qrController.addQRCodetoDatabase();
+
 
     }
 
