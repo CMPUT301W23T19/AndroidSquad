@@ -141,6 +141,28 @@
             android:layout_marginRight="25dp"
             android:textColor="#434242" />
 
+        <Button
+            android:id="@+id/highest_scoring"
+            android:layout_width="82dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/player_rank"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="200dp"
+            android:backgroundTint="#5E5D5D"
+            android:text="Highest Scores"
+            android:textSize="10dp" />
+
+        <Button
+            android:id="@+id/greatest_sum"
+            android:layout_width="82dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/player_rank"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/highest_scoring"
+            android:backgroundTint="#5E5D5D"
+            android:text="highest total"
+            android:textSize="10dp" />
+
         <TextView
             android:id="@+id/player_rank"
             android:layout_width="match_parent"
