@@ -3,6 +3,7 @@ package com.example.myapplication;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +15,24 @@ public class QRCode {
     private int score;
     private String sha256hex;
     private String location;
+
+    private int headList[] = {
+            R.drawable.face1, R.drawable.face2
+    };
+    private int eyebrowList[] = {
+            R.drawable.eyebrow1, R.drawable.eyebrow2
+    };
+
+    private int eyeList[] = {
+            R.drawable.eye1, R.drawable.eye2
+    };
+
+    private int noseList[] = {
+            R.drawable.nose1, R.drawable.nose2
+    };
+    private int mouthList[] = {
+            R.drawable.mouth1, R.drawable.mouth2
+    };
 
     public QRCode(String codeContents, String location) {
         this.location = location;
@@ -77,6 +96,34 @@ public class QRCode {
                 score += (int) Math.pow((int)(key-55),(count-1));
             }
         }
+    }
+
+    /**
+     * Creates a unique avatar image for a newly scanned QR code based on the binary representation of its hash
+     * @return an arraylist consisting of drawables that form the avatar image
+     */
+
+    public ArrayList<Integer> setAvatar() {
+        String sixHash = sha256hex.substring(0,5);
+        String binaryRep = new BigInteger(sixHash, 16).toString(2);
+
+        ArrayList<Integer> avatarList = new ArrayList<>();
+
+        avatarList.add(headList[binaryRep.charAt(0)]);
+        avatarList.add(eyebrowList[binaryRep.charAt(1)]);
+        avatarList.add(eyeList[binaryRep.charAt(2)]);
+        avatarList.add(noseList[binaryRep.charAt(3)]);
+        avatarList.add(mouthList[binaryRep.charAt(4)]);
+        return avatarList;
+    }
+
+    /**
+     * Gets unique visual represented avatar of QR code
+     * @return an arraylist consisting of drawables that form the avatar image
+     */
+    public ArrayList<Integer> getAvatarList() {
+        ArrayList<Integer> avatarlist = setAvatar();
+        return avatarlist;
     }
 
     /**
