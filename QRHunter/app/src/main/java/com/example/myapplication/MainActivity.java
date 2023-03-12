@@ -13,8 +13,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.activity.result.ActivityResultLauncher;
 
+
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -39,68 +40,58 @@ public class MainActivity extends AppCompatActivity {
     ListView playerRanks;
     ArrayAdapter<String> adapter;
     FirebaseFirestore db;
+    BottomNavigationView bottomNavigationView;
+    private CameraController cameraController;
 
-    Button btn_scan;
+    //Button btn_scan;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.camera);
-        btn_scan=findViewById(R.id.btn_scan);
-        btn_scan.setOnClickListener(v->
-        {
-            scanCode();
-        });
+//        btn_scan=findViewById(R.id.btn_scan);
+//        btn_scan.setOnClickListener(v->
+//        {
+//            scanCode();
+//        });
 
         setContentView(R.layout.highest_scores);
 
-        BottomNavigationView bottomNavigationView  = (BottomNavigationView) findViewById(R.id.nav_bar);
+        bottomNavigationView  = (BottomNavigationView)findViewById(R.id.nav_bar);
 
         // Testing leaderboard screen (highest scores)
         String names[] = {
-                "Harry", "Draco", "Ron", "Hermione"
+                "Harrys", "Draco", "Ron", "Hermione"
         };
         getSupportActionBar().setTitle("Leaderboard");
         playerRanks = findViewById(R.id.player_ranks);
         adapter = new ArrayAdapter<String> (this, R.layout.userranks, R.id.username, names);
         playerRanks.setAdapter(adapter);
 
-    }
+        ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result -> {
+            if(result.getContents()!=null) {
+                cameraController.handleScanResult(result.getContents());
+            }
+        });
 
-    private void scanCode() {
-        ScanOptions options = new ScanOptions();
-        options.setPrompt("volume up to flash on!!");
-        options.setBeepEnabled(true);
-        options.setOrientationLocked(true);
-        options.setCaptureActivity(CaptureAct.class);
-        barLauncher.launch(options);
         // Bottom Navigation bar functionality
         bottomNavigationView.setOnItemSelectedListener(item -> {
-                    if (item.getItemId() == R.id.camera) {
-                        try {
-                            Intent intent = new Intent();
-                            intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-                            startActivity(intent);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    return true;
-                });
-    }
 
-    ActivityResultLauncher<ScanOptions> barLauncher= registerForActivityResult(new ScanContract(),result -> {
-        if(result.getContents()!=null)
-        {
-            AlertDialog.Builder builder= new AlertDialog.Builder(MainActivity.this);
-            builder.setTitle("result");
-            builder.setMessage(result.getContents());
-            builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
+            cameraController = new CameraController(this, barLauncher);
+            if (item.getItemId() == R.id.camera) {
+                try {
+                    cameraController.scanCode();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            }).show();
-        }
-    });
+            }
+            return true;
+        });
+    }
 }
+
+
+
+
+
