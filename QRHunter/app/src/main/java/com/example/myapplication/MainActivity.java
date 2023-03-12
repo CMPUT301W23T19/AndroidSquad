@@ -19,19 +19,19 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarItemView;
-import com.google.android.material.navigation.NavigationBarMenu;
-import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
@@ -43,20 +43,16 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     private CameraController cameraController;
 
-    //Button btn_scan;
 
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.camera);
-//        btn_scan=findViewById(R.id.btn_scan);
-//        btn_scan.setOnClickListener(v->
-//        {
-//            scanCode();
-//        });
 
         setContentView(R.layout.highest_scores);
+        FirebaseApp.initializeApp(this);
+        db = FirebaseFirestore.getInstance();
 
         bottomNavigationView  = (BottomNavigationView)findViewById(R.id.nav_bar);
 
@@ -88,10 +84,11 @@ public class MainActivity extends AppCompatActivity {
             }
             return true;
         });
+
+        // Testing the add QR code to firebase functionality
+        QRCodeController qrController = new QRCodeController("BFG5DG154", "anna46", db);
+        qrController.validateAndAdd();
+
+
     }
 }
-
-
-
-
-
