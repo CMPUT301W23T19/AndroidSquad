@@ -37,11 +37,12 @@ import com.google.firebase.firestore.Query;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.jar.Attributes;
 
 public class MainActivity extends AppCompatActivity {
 
     FirebaseFirestore db;
-
+    TextView leaderboardText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
         //Query query = playerRef.orderBy("Score",Query.Direction.DESCENDING);
         query.get().addOnSuccessListener(queryDocumentSnapshots -> {
             if (!queryDocumentSnapshots.isEmpty()) {
-
                 DocumentSnapshot document = queryDocumentSnapshots.getDocuments().get(0);
                 long highestScore = document.getLong("highestScore");
                 long lowestScore = document.getLong("lowestScore");
@@ -84,6 +84,26 @@ public class MainActivity extends AppCompatActivity {
                 TextView playerRankTextView = findViewById(R.id.player_ranks);
                 playerRankTextView.setText(playerRanksText);
 
+            }
+        });
+
+        // Retrieve game-wide high scores
+        CollectionReference playersRef = db.collection("Player");
+        Query query1 = playersRef.orderBy("Score", Query.Direction.DESCENDING);
+        query1.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                int rank = 1;
+                StringBuilder sb = new StringBuilder();
+                sb.append("Rank\tPlayers\tHigh Score\n");
+
+                for (DocumentSnapshot document : task.getResult()) {
+                    String name = document.getString("Name");
+                    long Score = document.getLong("Score");
+
+                    sb.append(rank).append("\t").append(name).append("\t").append(Score).append("\n");
+                    rank++;
+                }
+                ((TextView)findViewById(R.id.leaderboard_text)).setText(sb);
             }
         });
     }

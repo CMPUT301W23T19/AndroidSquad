@@ -24,10 +24,10 @@ import java.util.Map;
 public class LearderboardActivity extends AppCompatActivity {
     ListView playerRanks;
     ArrayAdapter<String> adapter;
-
     ArrayList<String> names = new ArrayList<>();
     FirebaseFirestore db;
     String username;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +52,6 @@ public class LearderboardActivity extends AppCompatActivity {
             }
             return true;
         });
-
 
     }
  
