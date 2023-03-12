@@ -68,10 +68,8 @@ public class MainActivity extends AppCompatActivity {
                 });
 
         // Testing the add QR code to firebase functionality
-        QRCodeController qrController = new QRCodeController("BFG5DGW54", "anna46");
+        QRCodeController qrController = new QRCodeController("BFG5DG154", "emily9");
         qrController.validateAndAdd();
-        //qrController.addQRCodetoDatabase();
-
 
     }
 
