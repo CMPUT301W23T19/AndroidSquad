@@ -158,58 +158,12 @@
             android:textColor="#ffff"
             android:textSize="20dp" />
 
-        <Button
-            android:id="@+id/highest_scoring"
-            android:layout_width="82dp"
-            android:layout_height="50dp"
-            android:layout_below="@+id/current_rank"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="5dp"
-            android:backgroundTint="#5E5D5D"
-            android:text="Highest Scores"
-            android:textSize="10dp" />
-
-        <Button
-            android:id="@+id/most_scanned"
-            android:layout_width="85dp"
-            android:layout_height="50dp"
-            android:layout_below="@+id/current_rank"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@+id/highest_scoring"
-            android:backgroundTint="#5E5D5D"
-            android:text="most scanned"
-            android:textSize="10dp" />
-
-        <Button
-            android:id="@+id/greatest_sum"
-            android:layout_width="82dp"
-            android:layout_height="50dp"
-            android:layout_below="@+id/current_rank"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@+id/most_scanned"
-            android:backgroundTint="#5E5D5D"
-            android:text="highest total"
-            android:textSize="10dp" />
-
-        <Button
-            android:id="@+id/region_scores"
-            android:layout_width="82dp"
-            android:layout_height="50dp"
-            android:layout_below="@+id/current_rank"
-            android:layout_marginLeft="10dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
-            android:layout_toRightOf="@+id/greatest_sum"
-            android:backgroundTint="#5E5D5D"
-            android:text="region scores"
-            android:textSize="10dp" />
-
         <ListView
             android:id="@+id/player_ranks"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/highest_scoring"
             android:visibility="visible"
+            android:layout_below="@id/current_rank"
             android:layout_alignParentBottom="true" />
 
 

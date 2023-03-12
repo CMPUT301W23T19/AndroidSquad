@@ -15,6 +15,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
@@ -22,13 +23,19 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarItemView;
 import com.google.android.material.navigation.NavigationBarMenu;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -57,6 +64,27 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             return true;
+        });
+
+        db = FirebaseFirestore.getInstance();
+        CollectionReference playerRef = db.collection("Player");
+        String playerName = "anna46";
+        Query query = playerRef.whereEqualTo("Username", playerName);
+        //Query query = playerRef.orderBy("Score",Query.Direction.DESCENDING);
+        query.get().addOnSuccessListener(queryDocumentSnapshots -> {
+            if (!queryDocumentSnapshots.isEmpty()) {
+
+                DocumentSnapshot document = queryDocumentSnapshots.getDocuments().get(0);
+                long highestScore = document.getLong("highestScore");
+                long lowestScore = document.getLong("lowestScore");
+                long qrCount = ((ArrayList<String>)document.get("QRcode")).size();
+                long totalScore = document.getLong("Score");
+                String playerRanksText = "Highest score: " + highestScore + "\n" + "Lowest score: " + lowestScore+"\nQR scanned: "+qrCount
+                        +"\nTotal Score: " + totalScore;
+                TextView playerRankTextView = findViewById(R.id.player_ranks);
+                playerRankTextView.setText(playerRanksText);
+
+            }
         });
     }
 }
