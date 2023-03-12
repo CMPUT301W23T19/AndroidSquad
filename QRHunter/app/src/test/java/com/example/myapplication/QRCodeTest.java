@@ -11,6 +11,7 @@ public class QRCodeTest {
 
     /**
      * Creates a mock instance of the QR code class
+     * @param codeContents String representation of the QR Code contents
      * @return QRCode instance to be used in testing
      */
     public QRCode createMockQRCode(String codeContents) {

@@ -79,10 +79,11 @@ public class QRCodeController {
     /**
      * Constructor function for QRCodeController
      */
-    public QRCodeController(String codeContents, String username) {
+    public QRCodeController(String codeContents, String username, FirebaseFirestore db) {
         this.codeContents = codeContents;
         user = username;
-        db = FirebaseFirestore.getInstance();
+//        db = FirebaseFirestore.getInstance();
+        this.db = db;
 
         qrCode = new QRCode(codeContents, null);
         name = qrCode.getName();
