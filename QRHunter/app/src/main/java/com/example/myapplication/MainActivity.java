@@ -9,9 +9,13 @@ package com.example.myapplication;
  */
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.activity.result.ActivityResultLauncher;
 
-import android.app.AlertDialog;
+
+import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -32,6 +36,11 @@ import com.google.android.material.navigation.NavigationBarMenu;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+
+import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanOptions;
+
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
@@ -41,26 +50,51 @@ import java.util.List;
 import java.util.jar.Attributes;
 
 public class MainActivity extends AppCompatActivity {
-
+    TextView playerRanks;
+    ArrayAdapter<String> adapter;
     FirebaseFirestore db;
-    TextView leaderboardText;
+    BottomNavigationView bottomNavigationView;
+    private CameraController cameraController;
 
+
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        setContentView(R.layout.camera);
+
         setContentView(R.layout.home_page);
-        BottomNavigationView bottomNavigationView  = (BottomNavigationView) findViewById(R.id.nav_bar);
+        FirebaseApp.initializeApp(this);
         db = FirebaseFirestore.getInstance();
+
+        bottomNavigationView  = (BottomNavigationView)findViewById(R.id.nav_bar);
+
+        // Testing leaderboard screen (highest scores)
+        String names[] = {
+                "Harrys", "Draco", "Ron", "Hermione"
+        };
+
+        playerRanks = findViewById(R.id.player_ranks);
+        adapter = new ArrayAdapter<String> (this, R.layout.userranks, R.id.username, names);
+
+
+        ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result -> {
+            if(result.getContents()!=null) {
+                cameraController.handleScanResult(result.getContents());
+            }
+        });
 
         // Bottom Navigation bar functionality
         bottomNavigationView.setOnItemSelectedListener(item -> {
+
+            cameraController = new CameraController(this, barLauncher);
             if (item.getItemId() == R.id.camera) {
                 try {
-                    Intent intent = new Intent();
-                    intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivity(intent);
+                    cameraController.scanCode();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -119,5 +153,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        // Testing the add QR code to firebase functionality
+        QRCodeController qrController = new QRCodeController("BFG5DG154", "anna46", db);
+        qrController.validateAndAdd();
+
+
     }
 }
