@@ -28,7 +28,7 @@ public class LeaderboardActivity extends AppCompatActivity {
 
     List<HashMap<String, Object>> players = new ArrayList<>();
     FirebaseFirestore db;
-    String userName = "anna46";
+    String userName = "anna46";// Mock player set as default player for now
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +53,7 @@ public class LeaderboardActivity extends AppCompatActivity {
             return true;
         });
 
+        // Get the player rank for the highest score QR scanned
         db = FirebaseFirestore.getInstance();
         CollectionReference playerRef = db.collection("Player");
         Query query = playerRef.orderBy("highestScore", Query.Direction.DESCENDING);
@@ -66,7 +67,6 @@ public class LeaderboardActivity extends AppCompatActivity {
             }
 
             // Find the rank of the player with the given name
-
             int playerRank = -1;
             for (int i = 0; i < players.size(); i++) {
                 String name = (String) players.get(i).get("Username");
@@ -83,7 +83,6 @@ public class LeaderboardActivity extends AppCompatActivity {
         });
 
         // Get the scores collection from Firestore
-
         CollectionReference scoresCollection = db.collection("Player");
         scoresCollection.orderBy("Score",Query.Direction.DESCENDING).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
@@ -99,7 +98,7 @@ public class LeaderboardActivity extends AppCompatActivity {
                     players.add(playerData);
 
                 }
-
+                // Top 3 player in game-wide scores competition
                 for (int i = 0; i < players.size(); i++) {
                     switch (i) {
                         case 0:
@@ -108,10 +107,12 @@ public class LeaderboardActivity extends AppCompatActivity {
                             break;
                         case 1:
                             ((TextView)findViewById(R.id.rank2_name)).setText(players.get(i).get("Username").toString()); // set 2nd username
+                            ((TextView)findViewById(R.id.rank2_score)).setText("Score:\n"+players.get(i).get("Score").toString());
                             break;
 
                         case 2:
                             ((TextView)findViewById(R.id.rank3_name)).setText(players.get(i).get("Username").toString()); // set 1st username
+                            ((TextView)findViewById(R.id.rank3_score)).setText("Score:\n"+players.get(i).get("Score").toString());
                             break;
 
                         default:
@@ -122,7 +123,6 @@ public class LeaderboardActivity extends AppCompatActivity {
                     }
 
                 }
-
 
                 rankAdapter.notifyDataSetChanged();
                 playerRanks.setAdapter(rankAdapter);

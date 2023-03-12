@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
+        // Get highest and lowest scores, sum of scores, total number of QR player scanned
         db = FirebaseFirestore.getInstance();
         CollectionReference playerRef = db.collection("Player");
         String playerName = "anna46";
@@ -108,7 +109,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        // Set the leaderboard to be clickable
+        // Transitions between home page to leaderboard page
         TextView leaderboardText = findViewById(R.id.leaderboard_text);
         leaderboardText.setOnClickListener(new View.OnClickListener() {
             @Override
