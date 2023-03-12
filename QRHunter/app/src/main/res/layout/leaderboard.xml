@@ -47,7 +47,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="10dp"
             android:fontFamily="sans-serif"
-            android:text="Highest Total Points"
+            android:text="High Scores: All Players"
             android:textSize="18dp"
             android:textColor="#515151"
             android:textStyle="bold" />
@@ -56,8 +56,8 @@
             android:id="@+id/rank1"
             android:layout_width="113dp"
             android:layout_height="132dp"
-            android:layout_centerInParent="true"
             android:layout_below="@+id/rank1_score"
+            android:layout_centerInParent="true"
             android:src="@drawable/player" />
 
 
@@ -117,13 +117,14 @@
             android:id="@+id/rank1_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/current_rank"
+            android:layout_above="@+id/player_rank"
             android:layout_below="@+id/rank1"
             android:layout_centerHorizontal="true"
             android:textColor="#434242" />
 
         <TextView
             android:id="@+id/rank2_name"
+            android:text="username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rank2"
@@ -154,11 +155,11 @@
             android:textSize="20dp" />
 
         <ListView
-            android:id="@+id/player_ranks"
+            android:id="@+id/all_players_rank"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="visible"
-            android:layout_below="@id/current_rank"
+            android:layout_below="@id/player_rank"
             android:layout_alignParentBottom="true" />
 
 

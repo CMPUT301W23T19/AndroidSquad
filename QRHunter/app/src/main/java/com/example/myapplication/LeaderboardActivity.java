@@ -3,17 +3,20 @@ package com.example.myapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,20 +24,20 @@ import java.util.List;
 
 public class LeaderboardActivity extends AppCompatActivity {
     ListView playerRanks;
-    ArrayAdapter<String> adapter;
-    ArrayList<String> names = new ArrayList<>();
+    RankAdapter rankAdapter;
+
+    List<HashMap<String, Object>> players = new ArrayList<>();
     FirebaseFirestore db;
-    String username;
+    String userName = "anna46";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.leaderboard);
         BottomNavigationView bottomNavigationView  = findViewById(R.id.nav_bar);
-
-        playerRanks = findViewById(R.id.player_ranks);
-        adapter = new ArrayAdapter<String>(this, R.layout.userranks, R.id.username, names);
-        playerRanks.setAdapter(adapter);
+        playerRanks = findViewById(R.id.all_players_rank);
+        rankAdapter = new RankAdapter(this, players);
+        playerRanks.setAdapter(rankAdapter);
 
         // Bottom Navigation bar functionality
         bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -54,7 +57,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         CollectionReference playerRef = db.collection("Player");
         Query query = playerRef.orderBy("highestScore", Query.Direction.DESCENDING);
         query.get().addOnSuccessListener(queryDocumentSnapshots -> {
-            List<HashMap<String, Object>> players = new ArrayList<>();
+            players = new ArrayList<>();
             for (DocumentSnapshot document : queryDocumentSnapshots) {
                 HashMap<String, Object> playerData = new HashMap<>();
                 playerData.put("Username", document.getString("Username"));
@@ -63,7 +66,7 @@ public class LeaderboardActivity extends AppCompatActivity {
             }
 
             // Find the rank of the player with the given name
-            String userName = "anna46";
+
             int playerRank = -1;
             for (int i = 0; i < players.size(); i++) {
                 String name = (String) players.get(i).get("Username");
@@ -79,7 +82,54 @@ public class LeaderboardActivity extends AppCompatActivity {
             playerRankTextView.setText(playerRankText);
         });
 
+        // Get the scores collection from Firestore
+
+        CollectionReference scoresCollection = db.collection("Player");
+        scoresCollection.orderBy("Score",Query.Direction.DESCENDING).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                List<DocumentSnapshot> documents = queryDocumentSnapshots.getDocuments();
+
+                // Display the top3 player in the rank
+                players = new ArrayList<>();
+                for (DocumentSnapshot document : queryDocumentSnapshots) {
+                    HashMap<String, Object> playerData = new HashMap<>();
+                    playerData.put("Username", document.getString("Username"));
+                    playerData.put("Score", document.getLong("Score"));
+                    players.add(playerData);
+
+                }
+
+                for (int i = 0; i < players.size(); i++) {
+                    switch (i) {
+                        case 0:
+                            ((TextView)findViewById(R.id.rank1_name)).setText(players.get(i).get("Username").toString()); // set 1st username
+                            ((TextView)findViewById(R.id.rank1_score)).setText("Score:\n"+players.get(i).get("Score").toString());
+                            break;
+                        case 1:
+                            ((TextView)findViewById(R.id.rank2_name)).setText(players.get(i).get("Username").toString()); // set 2nd username
+                            break;
+
+                        case 2:
+                            ((TextView)findViewById(R.id.rank3_name)).setText(players.get(i).get("Username").toString()); // set 1st username
+                            break;
+
+                        default:
+                            String name = (String) players.get(i).get("Username");
+                            players.get(i).put("Rank", i); // add Rank attribute into player's hashMap
+
+                            rankAdapter.add(players.get(i));
+                    }
+
+                }
+
+
+                rankAdapter.notifyDataSetChanged();
+                playerRanks.setAdapter(rankAdapter);
+            }
+        });
+
+
     }
- 
 }
 
