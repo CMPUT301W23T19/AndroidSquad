@@ -141,7 +141,7 @@
             android:textColor="#434242" />
 
         <TextView
-            android:id="@+id/current_rank"
+            android:id="@+id/player_rank"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rank2_name"
@@ -150,7 +150,6 @@
             android:background="@drawable/rounded_view"
             android:backgroundTint="#5E5D5D"
             android:padding="20dp"
-            android:text="Your Current Rank: #rank"
             android:textColor="#ffff"
             android:textSize="20dp" />
 
