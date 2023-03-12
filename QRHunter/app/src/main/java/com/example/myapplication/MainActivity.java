@@ -15,16 +15,16 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarItemView;
-import com.google.android.material.navigation.NavigationBarMenu;
-import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.highest_scores);
+        FirebaseApp.initializeApp(this);
+        db = FirebaseFirestore.getInstance();
 
         BottomNavigationView bottomNavigationView  = (BottomNavigationView) findViewById(R.id.nav_bar);
 
@@ -64,5 +66,16 @@ public class MainActivity extends AppCompatActivity {
                     }
                     return true;
                 });
+
+        // Testing the add QR code to firebase functionality
+        QRCodeController qrController = new QRCodeController("BFG5DG154", "anna46", db);
+        qrController.validateAndAdd();
+
+
     }
+
+
+
+
+
 }
