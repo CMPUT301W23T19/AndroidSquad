@@ -37,8 +37,7 @@
         android:layout_marginBottom="100dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@drawable/rounded_view"
-        >
+        android:background="@drawable/rounded_view">
 
         <TextView
             android:id="@+id/title"
@@ -115,40 +114,37 @@
             android:text="score" />
 
         <TextView
-            android:id="@+id/rank1_username"
+            android:id="@+id/rank1_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/current_rank"
             android:layout_below="@+id/rank1"
             android:layout_centerHorizontal="true"
-            android:text="1 username"
             android:textColor="#434242" />
 
         <TextView
-            android:id="@+id/rank2_username"
+            android:id="@+id/rank2_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rank2"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="25dp"
-            android:text="2 username"
             android:textColor="#434242" />
 
         <TextView
-            android:id="@+id/rank3_username"
+            android:id="@+id/rank3_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rank3"
             android:layout_alignParentRight="true"
             android:layout_marginRight="25dp"
-            android:text="3 username"
             android:textColor="#434242" />
 
         <TextView
             android:id="@+id/current_rank"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rank2_username"
+            android:layout_below="@+id/rank2_name"
             android:layout_centerInParent="true"
             android:layout_gravity="center"
             android:background="@drawable/rounded_view"

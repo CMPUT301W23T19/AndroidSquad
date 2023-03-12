@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -104,6 +105,16 @@ public class MainActivity extends AppCompatActivity {
                     rank++;
                 }
                 ((TextView)findViewById(R.id.leaderboard_text)).setText(sb);
+            }
+        });
+
+
+        TextView leaderboardText = findViewById(R.id.leaderboard_text);
+        leaderboardText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, LeaderboardActivity.class);
+                startActivity(intent);
             }
         });
     }
