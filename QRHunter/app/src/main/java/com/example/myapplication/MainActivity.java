@@ -99,6 +99,10 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
+            if (item.getItemId() == R.id.history) {
+                Intent intent = new Intent(this, ScannedQRCodeActivity.class);
+                startActivity(intent);
+            }
             return true;
         });
 
@@ -154,8 +158,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         // Testing the add QR code to firebase functionality
-        QRCodeController qrController = new QRCodeController("BFG5DG154", "anna46", db);
-        qrController.validateAndAdd();
+//        QRCodeController qrController = new QRCodeController("BFG5DG154", "anna46", db);
+//        qrController.validateAndAdd();
 
 
     }
