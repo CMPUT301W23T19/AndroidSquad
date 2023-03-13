@@ -14,14 +14,14 @@
         android:scaleType="centerCrop"
         android:src="@drawable/galaxy"
         tools:layout_editor_absoluteX="-204dp" />
+
     <RelativeLayout
+        android:id="@+id/relativeLayout2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="100dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/rounded_view">
+        android:background="@drawable/rounded_view"
+        tools:layout_editor_absoluteX="10dp"
+        tools:layout_editor_absoluteY="10dp">
 
         <ImageButton
             android:id="@+id/imageView4"
@@ -119,21 +119,32 @@
             app:layout_constraintTop_toBottomOf="@id/button4" />
     </RelativeLayout>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/nav_bar"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_alignParentBottom="true"
-        android:background="#150839"
-        android:backgroundTint="#150839"
-        app:itemIconSize="40dp"
-        app:itemIconTint="#ffff"
-        app:itemTextColor="#ffff"
-        app:layout_constraintBottom_toBottomOf="@+id/galaxy"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:menu="@menu/nav_bar"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="10dp" />
+    <Button
+        android:id="@+id/back_from_history"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back to Homepage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+
+<!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
+<!--        android:id="@+id/nav_bar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="80dp"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:background="#150839"-->
+<!--        android:backgroundTint="#150839"-->
+<!--        app:itemIconSize="40dp"-->
+<!--        app:itemIconTint="#ffff"-->
+<!--        app:itemTextColor="#ffff"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/galaxy"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="1.0"-->
+<!--        app:menu="@menu/nav_bar"-->
+<!--        tools:ignore="MissingConstraints"-->
+<!--        tools:layout_editor_absoluteX="10dp" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>
 

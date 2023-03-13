@@ -16,8 +16,6 @@ import java.util.ArrayList;
 
 public class PlayerController {
 
-
-
     private Number score = 93;
 
     private static String username;

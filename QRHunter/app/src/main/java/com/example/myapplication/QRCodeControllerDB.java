@@ -1,14 +1,25 @@
 package com.example.myapplication;
 
 /**
- * Idea to use Apache Common Codecs https://www.baeldung.com/sha-256-hashing-java
- * Apache Common Codecs: https://mvnrepository.com/artifact/commons-codec/commons-codec/1.15
- * Converting hex string to binary string: https://stackoverflow.com/q/9246326
+ * Idea to use Apache Common Codecs
+ * --URL: https://www.baeldung.com/sha-256-hashing-java
+ * Apache Common Codecs:
+ * --URL: https://mvnrepository.com/artifact/commons-codec/commons-codec/1.15
+ * Converting hex string to binary string:
+ * -- From: www.stackoverflow.com
+ * -- URL:https://stackoverflow.com/q/9246326
  * -- Author(s): https://stackoverflow.com/users/20394/mike-samuel
- * Iterating over key-val pairs in a HashMap: https://stackoverflow.com/q/585654
+ * -- License: CC BY-SA
+ * Iterating over key-val pairs in a HashMap:
+ * -- From: www.stackoverflow.com
+ * -- URL: https://stackoverflow.com/q/585654
  * -- Author(s): https://stackoverflow.com/users/40342/joachim-sauer
- * Creating and executing a query: https://firebase.google.com/docs/firestore/query-data/queries
- * Updating a document and using arrayUnion() to add items to an array field: https://cloud.google.com/firestore/docs/manage-data/add-data#javaandroid_12
+ * -- License: CC BY-SA
+ * Creating and executing a query:
+ * -- From www.firebase.google.com
+ * -- URL: https://firebase.google.com/docs/firestore/query-data/queries
+ * Updating a document and using arrayUnion() to add items to an array field:
+ * --URL: https://cloud.google.com/firestore/docs/manage-data/add-data#javaandroid_12
  */
 
 import android.util.Log;
@@ -39,18 +50,6 @@ public class QRCodeControllerDB {
     private QRCode qrCode;
     private FirebaseFirestore db;
     private ArrayList<Integer> features;
-
-
-    // codeContents and username should be passed in from Camera Activity or different class
-
-//    CameraActivity will scan a QR code and get the code contents. Then it will call a different class
-//    and pass username and code contents.
-//    In a different class (HandleScannedQrCode), create an instance of QRCodeController and pass in username and
-//    code contents. In this class, call function checkIfExists to determine whether or not the QR code is
-//    already in the database. If not, then call then
-//    store in database by calling addQRCode. If it already exists, check if user has already scanned it
-//    by calling checkIfScanned. If it is, then display error message. If not, then get QR code info from
-//    QR code collection and display relevant information + add to user's history of QR codes.
 
     /**
      * Constructor function for QRCodeController

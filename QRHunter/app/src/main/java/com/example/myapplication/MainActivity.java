@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
     FirebaseFirestore db;
     BottomNavigationView bottomNavigationView;
     private CameraController cameraController;
+    private QRCodeControllerDB qrCodeControllerDB;
+
 
 
     @SuppressLint("MissingInflatedId")
@@ -62,9 +64,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-
         setContentView(R.layout.camera);
 
         setContentView(R.layout.home_page);
@@ -81,12 +81,12 @@ public class MainActivity extends AppCompatActivity {
         playerRanks = findViewById(R.id.player_ranks);
         adapter = new ArrayAdapter<String> (this, R.layout.userranks, R.id.username, names);
 
-
         ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result -> {
             if(result.getContents()!=null) {
-                cameraController.handleScanResult(result.getContents());
+                cameraController.handleScanResult(result.getContents(), db, this);
             }
         });
+
 
         // Bottom Navigation bar functionality
         bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -110,8 +110,9 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
+
+
         // Get highest and lowest scores, sum of scores, total number of QR player scanned
-        db = FirebaseFirestore.getInstance();
         CollectionReference playerRef = db.collection("Player");
         String playerName = "anna46";
         Query query = playerRef.whereEqualTo("Username", playerName);
@@ -161,9 +162,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        // Testing the add QR code to firebase functionality
-//        QRCodeController qrController = new QRCodeController("BFG5DG154", "anna46", db);
-//        qrController.validateAndAdd();
 
 
     }
