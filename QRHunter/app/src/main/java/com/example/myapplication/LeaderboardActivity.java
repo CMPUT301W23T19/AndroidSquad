@@ -39,19 +39,19 @@ public class LeaderboardActivity extends AppCompatActivity {
         rankAdapter = new RankAdapter(this, players);
         playerRanks.setAdapter(rankAdapter);
 
-        // Bottom Navigation bar functionality
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            if (item.getItemId() == R.id.camera) {
-                try {
-                    Intent intent = new Intent();
-                    intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivity(intent);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            return true;
-        });
+//        // Bottom Navigation bar functionality
+//        bottomNavigationView.setOnItemSelectedListener(item -> {
+//            if (item.getItemId() == R.id.camera) {
+//                try {
+//                    Intent intent = new Intent();
+//                    intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+//                    startActivity(intent);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//            return true;
+//        });
 
         // Get the player rank for the highest score QR scanned
         db = FirebaseFirestore.getInstance();

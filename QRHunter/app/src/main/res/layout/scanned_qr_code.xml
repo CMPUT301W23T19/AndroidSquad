@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#7F00FF">
+    android:background="#390ca1">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -12,14 +12,14 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/rounded_view"
-        android:backgroundTint="#FAF9F6">
+        android:backgroundTint="#dddbda">
 
         <ImageView
             android:id="@+id/face1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
             android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
             android:layout_marginTop="90dp"
             android:src="@drawable/head1"
             android:visibility="invisible" />
@@ -118,18 +118,18 @@
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
             android:layout_below="@+id/face1"
+            android:layout_centerInParent="true"
             android:text="Name"
-            android:textSize="20dp"/>
+            android:textSize="20dp" />
 
 
         <TextView
             android:id="@+id/qrScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_below="@+id/name"
+            android:layout_centerHorizontal="true"
             android:text="Score"
             android:textSize="30dp" />
 
@@ -137,8 +137,8 @@
             android:id="@+id/player_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_below="@+id/qrScore"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
             android:text="player_count"
             android:textSize="20dp" />
@@ -147,10 +147,10 @@
             android:id="@+id/confirm_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/player_count"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:layout_below="@+id/player_count"
             android:layout_marginBottom="50dp"
-            android:text="Confirm"/>
+            android:text="Confirm" />
     </RelativeLayout>
 </RelativeLayout>

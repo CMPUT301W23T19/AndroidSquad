@@ -147,21 +147,21 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.412" />
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/nav_bar"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="653dp"
-            android:layout_marginBottom="1dp"
-            android:background="#150839"
-            android:backgroundTint="#150839"
-            app:itemIconSize="40dp"
-            app:itemIconTint="#ffff"
-            app:itemTextColor="#ffff"
-            app:menu="@menu/nav_bar"
-            tools:ignore="MissingConstraints" />
+<!--        <com.google.android.material.bottomnavigation.BottomNavigationView-->
+<!--            android:id="@+id/nav_bar"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="80dp"-->
+<!--            android:layout_alignParentTop="true"-->
+<!--            android:layout_alignParentBottom="true"-->
+<!--            android:layout_marginTop="653dp"-->
+<!--            android:layout_marginBottom="1dp"-->
+<!--            android:background="#150839"-->
+<!--            android:backgroundTint="#150839"-->
+<!--            app:itemIconSize="40dp"-->
+<!--            app:itemIconTint="#ffff"-->
+<!--            app:itemTextColor="#ffff"-->
+<!--            app:menu="@menu/nav_bar"-->
+<!--            tools:ignore="MissingConstraints" />-->
     </RelativeLayout>
 
 
