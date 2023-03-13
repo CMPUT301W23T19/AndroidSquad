@@ -11,59 +11,35 @@ package com.example.myapplication;
  * Updating a document and using arrayUnion() to add items to an array field: https://cloud.google.com/firestore/docs/manage-data/add-data#javaandroid_12
  */
 
-import java.util.Set;
-
-import android.nfc.Tag;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.apache.commons.codec.digest.DigestUtils;
-
-import java.lang.reflect.GenericArrayType;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.List;
 import java.util.Map;
 
 /**
  * Responsible for adding, modifying, deleting QR codes from database
  */
-public class QRCodeController {
+public class QRCodeControllerDB {
     private String name;
     private int score;
     public String sha256hex;
     private String codeContents;
     private String user;
-    QRCode qrCode;
-    FirebaseFirestore db;
+    private QRCode qrCode;
+    private FirebaseFirestore db;
+    private ArrayList<Integer> features;
+
 
     // codeContents and username should be passed in from Camera Activity or different class
 
@@ -79,42 +55,18 @@ public class QRCodeController {
     /**
      * Constructor function for QRCodeController
      */
-    public QRCodeController(String codeContents, String username, FirebaseFirestore db) {
+    public QRCodeControllerDB(String codeContents, String username, FirebaseFirestore db) {
         this.codeContents = codeContents;
         user = username;
-//        db = FirebaseFirestore.getInstance();
         this.db = db;
 
         qrCode = new QRCode(codeContents, null);
         name = qrCode.getName();
         score = qrCode.getScore();
         sha256hex = qrCode.getHash();
+        features = qrCode.getAvatarList();
     }
 
-
-    /**
-     * Gets name of QR code
-     * @return string representation of the name
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Gets QR code score
-     * @return integer representation of the QR code score
-     */
-    public int getScore() {
-        return score;
-    }
-
-    /**
-     * Gets QR code location
-     * @return string representation of the QR code's geolocation
-     */
-    public String getLocation() {
-        return qrCode.getLocation();
-    }
 
     /**
      * Checks if QR code exists in database and adds it to the firebase if it does not.
@@ -221,6 +173,7 @@ public class QRCodeController {
         qrCode.put("Photo", "code.png");
         qrCode.put("Score", score);
         qrCode.put("Username", usernames);
+        qrCode.put("Avatar", features);
 
         db.collection("QR Code").document(name)
             .set(qrCode)

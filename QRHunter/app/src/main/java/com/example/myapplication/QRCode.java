@@ -1,4 +1,23 @@
+/**
+ * Idea to use Apache Common Codecs https://www.baeldung.com/sha-256-hashing-java
+ * Apache Common Codecs: https://mvnrepository.com/artifact/commons-codec/commons-codec/1.15
+ * Converting hex string to binary string: https://stackoverflow.com/q/9246326
+ * -- Author(s): https://stackoverflow.com/users/20394/mike-samuel
+ * Iterating over key-val pairs in a HashMap: https://stackoverflow.com/q/585654
+ * -- Author(s): https://stackoverflow.com/users/40342/joachim-sauer
+ * Creating and executing a query: https://firebase.google.com/docs/firestore/query-data/queries
+ * Updating a document and using arrayUnion() to add items to an array field: https://cloud.google.com/firestore/docs/manage-data/add-data#javaandroid_12
+ * Inspired by youtube video to create parts of the avatar (https://www.youtube.com/watch?v=L1E_7FoTrik
+ * -- Author(s): https://www.youtube.com/@TheTechTrain/about
+ * Used PNG to SVG converter (https://image.online-convert.com/convert-to-svg)
+ * Site used to make avatar (https://boxy-svg.com)
+ */
+
+
+
 package com.example.myapplication;
+
+import android.util.Log;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -16,29 +35,14 @@ public class QRCode {
     private String sha256hex;
     private String location;
 
-    private int headList[] = {
-            R.drawable.face1, R.drawable.face2
-    };
-    private int eyebrowList[] = {
-            R.drawable.eyebrow1, R.drawable.eyebrow2
-    };
 
-    private int eyeList[] = {
-            R.drawable.eye1, R.drawable.eye2
-    };
-
-    private int noseList[] = {
-            R.drawable.nose1, R.drawable.nose2
-    };
-    private int mouthList[] = {
-            R.drawable.mouth1, R.drawable.mouth2
-    };
 
     public QRCode(String codeContents, String location) {
         this.location = location;
         sha256hex = DigestUtils.sha256Hex(codeContents);
         setName();
         setScore();
+
     }
 
     /**
@@ -109,11 +113,20 @@ public class QRCode {
 
         ArrayList<Integer> avatarList = new ArrayList<>();
 
-        avatarList.add(headList[binaryRep.charAt(0)]);
-        avatarList.add(eyebrowList[binaryRep.charAt(1)]);
-        avatarList.add(eyeList[binaryRep.charAt(2)]);
-        avatarList.add(noseList[binaryRep.charAt(3)]);
-        avatarList.add(mouthList[binaryRep.charAt(4)]);
+        HashMap<Integer, Integer[]> faces = new HashMap<>();
+        faces.put(0, new Integer[]{R.id.face1, R.id.face2});
+        faces.put(1, new Integer[]{R.id.eyebrow1, R.id.eyebrow2});
+        faces.put(2, new Integer[]{R.id.eye1, R.id.eye2});
+        faces.put(3, new Integer[]{R.id.nose1, R.id.nose2});
+        faces.put(4, new Integer[]{R.id.mouth1, R.id.mouth2});
+
+      for (int i = 0; i < 5; i++) {
+          if (binaryRep.charAt(i) == '0') {
+              avatarList.add(faces.get(i)[0]);
+          } else {
+              avatarList.add(faces.get(i)[1]);
+          }
+      }
         return avatarList;
     }
 
