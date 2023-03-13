@@ -1,0 +1,37 @@
+package com.example.myapplication;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.ImageButton;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class HistoryActivity extends AppCompatActivity {
+    ImageButton imageView;
+    Button bb;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.search_main);
+        // initialize imageView
+        // with method findViewById()
+        imageView = (ImageButton) findViewById(R.id.imageView4);
+
+        // Apply OnClickListener  to imageView to
+        // switch from one activity to another
+        imageView.setOnClickListener((v) -> {openActivity2();});
+        bb = (Button) findViewById(R.id.button5);
+        bb.setOnClickListener(v -> {activity();});
+    }
+    public void openActivity2(){
+        Intent intent = new Intent(this, HistoryClickActivity.class);
+        startActivity(intent);
+    }
+    public void activity(){
+        Intent intent = new Intent(this, CommentActivity.class);
+        startActivity(intent);
+
+    }
+}
