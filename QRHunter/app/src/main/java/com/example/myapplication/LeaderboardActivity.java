@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,6 +27,7 @@ import java.util.List;
 public class LeaderboardActivity extends AppCompatActivity {
     ListView playerRanks;
     RankAdapter rankAdapter;
+    Button back;
 
     List<HashMap<String, Object>> players = new ArrayList<>();
     FirebaseFirestore db;
@@ -38,6 +41,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         playerRanks = findViewById(R.id.all_players_rank);
         rankAdapter = new RankAdapter(this, players);
         playerRanks.setAdapter(rankAdapter);
+        back = findViewById(R.id.back_from_leaderboard);
 
 //        // Bottom Navigation bar functionality
 //        bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -126,6 +130,13 @@ public class LeaderboardActivity extends AppCompatActivity {
 
                 rankAdapter.notifyDataSetChanged();
                 playerRanks.setAdapter(rankAdapter);
+            }
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 

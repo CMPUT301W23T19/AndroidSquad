@@ -1,13 +1,12 @@
 package com.example.myapplication;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.journeyapps.barcodescanner.ScanContract;
@@ -37,11 +36,15 @@ public class CameraController {
         return barLauncher;
     }
 
+    /**
+     * Handles scanning QR code event
+     * @param contents QR code contents in string format
+     * @param db FirestoreFirebase where data is being stored, added and modified
+     * @param context Context context of previous Activity
+     */
     public void handleScanResult(String contents, FirebaseFirestore db, Context context) {
-        qrCodeControllerDB = new QRCodeControllerDB(contents, "emily9", db);
-        qrCodeControllerDB.validateAndAdd();
-        Intent intent = new Intent(context, ScannedQRCodeActivity.class);
-        intent.putExtra("contents", contents);
-        context.startActivity(intent);
+        qrCodeControllerDB = new QRCodeControllerDB(contents, "anna46", db);
+        qrCodeControllerDB.validateAndAdd(context);
+
     }
 }

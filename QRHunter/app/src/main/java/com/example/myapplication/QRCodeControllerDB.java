@@ -22,9 +22,13 @@ package com.example.myapplication;
  * --URL: https://cloud.google.com/firestore/docs/manage-data/add-data#javaandroid_12
  */
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -39,7 +43,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Responsible for adding, modifying, deleting QR codes from database
+ * Responsible for adding, modifying, deleting QR codes from database and starting ScannedQRCodeActivity
  */
 public class QRCodeControllerDB {
     private String name;
@@ -50,6 +54,7 @@ public class QRCodeControllerDB {
     private QRCode qrCode;
     private FirebaseFirestore db;
     private ArrayList<Integer> features;
+
 
     /**
      * Constructor function for QRCodeController
@@ -66,11 +71,10 @@ public class QRCodeControllerDB {
         features = qrCode.getAvatarList();
     }
 
-
     /**
      * Checks if QR code exists in database and adds it to the firebase if it does not.
      */
-    public void validateAndAdd() {
+    public void validateAndAdd(Context context) {
         db.collection("QR Code")
                 .whereEqualTo("Name", name)
                 .get()
@@ -78,10 +82,10 @@ public class QRCodeControllerDB {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            if (task.getResult().isEmpty()) {       // new qr code
-                                addQRCodetoDatabase();
+                            if (task.getResult().isEmpty()) {       // add new qr code
+                                addQRCodetoDatabase(context);
                             } else {
-                                checkIfScanned();
+                                checkIfScanned(context);
                             }
                             addToHistoryofQRCodes();
                         }
@@ -92,7 +96,7 @@ public class QRCodeControllerDB {
     /**
      * Checks if user has already scanned QR code and adds username to list of users who have scanned QR code if not previously scanned by current user
      */
-    public void checkIfScanned() {
+    public void checkIfScanned(Context context) {
        db.collection("QR Code")
                .whereEqualTo("Name", name)
                .whereArrayContains("Username", user)
@@ -102,9 +106,19 @@ public class QRCodeControllerDB {
                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
                        if (task.isSuccessful()) {
                            if(task.getResult().isEmpty()) {     // user has not scanned QR code before
-                               addToHistoryofUsers();
+                               Log.d("TAG", "User has not scanned it before");
+                               addToHistoryofUsers(context);
                            } else {
                                Log.d("TAG", "User has scanned it previously");
+                               AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                               builder.setTitle("Sorry!");
+                               builder.setMessage("You have already scanned this QR code! Keep searching :)");
+                               builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                   @Override
+                                   public void onClick(DialogInterface dialogInterface, int i) {
+                                       dialogInterface.dismiss();
+                                   }
+                               }).show();
                            }
                        } else {
                            Log.e("TAG", "Error getting data");
@@ -116,7 +130,7 @@ public class QRCodeControllerDB {
     /**
      * Adds current user to list of users that have scanned QR code
      */
-    public void addToHistoryofUsers() {
+    public void addToHistoryofUsers(Context context) {
         db.collection("QR Code").document(name)
                 .update("Username", FieldValue.arrayUnion(user))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -131,6 +145,16 @@ public class QRCodeControllerDB {
                         Log.d("TAG", "Error adding user");
                     }
                 });
+       start(context);
+    }
+
+    /**
+     * Start ScannedQRCodeActivity
+     */
+    private void start(Context context) {
+        Intent intent = new Intent(context, ScannedQRCodeActivity.class);
+        intent.putExtra("contents", codeContents);
+        context.startActivity(intent);
     }
 
     /**
@@ -156,7 +180,7 @@ public class QRCodeControllerDB {
     /**
      * Adds QR code to Firestore Firebase database
      */
-    public void addQRCodetoDatabase() {
+    public void addQRCodetoDatabase(Context context) {
         Map<String, String> comments = new HashMap<>();
         ArrayList<String> usernames = new ArrayList<>();
 
@@ -189,7 +213,7 @@ public class QRCodeControllerDB {
             }
         });
 
+        start(context);
     }
-
 
 }

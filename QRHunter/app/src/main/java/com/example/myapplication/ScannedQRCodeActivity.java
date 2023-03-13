@@ -87,9 +87,13 @@ public class ScannedQRCodeActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
+                            int count = 0;
                             Log.d("TAG", "Successfully accessed usernames (to be counted) in QR code Database!");
                             ArrayList<String> usernames = (ArrayList<String>) task.getResult().get("Username");
-                            playerCount.setText(String.valueOf(qrControllerView.assignPlayerCount(usernames)) + " other players scanned this QR code!");
+                            for (int i = 0; i < usernames.size(); i++) {
+                                count += 1;
+                            }
+                            playerCount.setText(String.valueOf(count) + " other player(s) scanned this QR code!");
                         }
                     }
                 })
