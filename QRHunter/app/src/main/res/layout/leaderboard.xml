@@ -18,23 +18,24 @@
         android:src="@drawable/galaxy"
         tools:layout_editor_absoluteX="-204dp" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/nav_bar"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="#150839"
-        android:backgroundTint="#150839"
-        android:layout_alignParentBottom="true"
-        app:itemIconTint="#ffff"
-        app:itemIconSize="40dp"
-        app:itemTextColor="#ffff"
-        app:menu="@menu/nav_bar" />
+<!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
+<!--        android:id="@+id/nav_bar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="80dp"-->
+<!--        android:background="#150839"-->
+<!--        android:backgroundTint="#150839"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        app:itemIconTint="#ffff"-->
+<!--        app:itemIconSize="40dp"-->
+<!--        app:itemTextColor="#ffff"-->
+<!--        app:menu="@menu/nav_bar" />-->
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="100dp"
+       android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/rounded_view">
@@ -184,6 +185,13 @@
             android:layout_below="@id/player_rank"
             android:layout_alignParentBottom="true" />
 
+        <Button
+            android:id="@+id/back_from_leaderboard"
+            android:layout_width="wrap_content"
+            android:textSize="15dp"
+            android:layout_toLeftOf="@+id/title"
+            android:layout_height="wrap_content"
+            android:text="Back to Home"/>
 
 
     </RelativeLayout>

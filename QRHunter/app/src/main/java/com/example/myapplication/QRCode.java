@@ -60,7 +60,6 @@ public class QRCode {
 
         String sixHash = sha256hex.substring(0,5);
         String binaryRep = new BigInteger(sixHash, 16).toString(2);
-
         for (int i = 0; i < 6; i++) {
             if (binaryRep.charAt(i) == '0') {
                 name += names.get(i)[0];
