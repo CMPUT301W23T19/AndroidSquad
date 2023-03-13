@@ -100,8 +100,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             if (item.getItemId() == R.id.history) {
-                Intent intent = new Intent(this, ScannedQRCodeActivity.class);
-                startActivity(intent);
+                try {
+                    Intent intent = new Intent(this,HistoryActivity.class);
+                    startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
             return true;
         });
