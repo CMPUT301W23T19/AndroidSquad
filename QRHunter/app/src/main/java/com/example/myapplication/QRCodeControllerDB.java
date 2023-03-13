@@ -40,18 +40,6 @@ public class QRCodeControllerDB {
     private FirebaseFirestore db;
     private ArrayList<Integer> features;
 
-
-    // codeContents and username should be passed in from Camera Activity or different class
-
-//    CameraActivity will scan a QR code and get the code contents. Then it will call a different class
-//    and pass username and code contents.
-//    In a different class (HandleScannedQrCode), create an instance of QRCodeController and pass in username and
-//    code contents. In this class, call function checkIfExists to determine whether or not the QR code is
-//    already in the database. If not, then call then
-//    store in database by calling addQRCode. If it already exists, check if user has already scanned it
-//    by calling checkIfScanned. If it is, then display error message. If not, then get QR code info from
-//    QR code collection and display relevant information + add to user's history of QR codes.
-
     /**
      * Constructor function for QRCodeController
      */

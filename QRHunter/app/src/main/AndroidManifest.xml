@@ -26,7 +26,8 @@
 
         <activity
             android:name=".LeaderboardActivity"
-            android:exported="true">
+            android:exported="true"
+            android:launchMode="singleTop">
         </activity>
 
         <activity

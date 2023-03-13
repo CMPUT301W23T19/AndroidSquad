@@ -2,144 +2,155 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#7F00FF">
 
-    <ImageView
-        android:id="@+id/face1"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="90dp"
-        android:src="@drawable/head1"
-        android:visibility="invisible" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/rounded_view"
+        android:backgroundTint="#FAF9F6">
 
-    <ImageView
-        android:id="@+id/face2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="90dp"
-        android:src="@drawable/head2"
-        android:visibility="invisible" />
+        <ImageView
+            android:id="@+id/face1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="90dp"
+            android:src="@drawable/head1"
+            android:visibility="invisible" />
 
-    <ImageView
-        android:id="@+id/eye1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="90dp"
-        android:src="@drawable/eye1"
-        android:visibility="invisible" />
+        <ImageView
+            android:id="@+id/face2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="90dp"
+            android:src="@drawable/head2"
+            android:visibility="invisible" />
 
-    <ImageView
-        android:id="@+id/eye2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="90dp"
-        android:src="@drawable/eye2"
-        android:visibility="invisible" />
+        <ImageView
+            android:id="@+id/eye1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="90dp"
+            android:src="@drawable/eye1"
+            android:visibility="invisible" />
 
-    <ImageView
-        android:id="@+id/eyebrow1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="90dp"
-        android:src="@drawable/eyebrow1"
-        android:visibility="invisible" />
+        <ImageView
+            android:id="@+id/eye2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="90dp"
+            android:src="@drawable/eye2"
+            android:visibility="invisible" />
 
-    <ImageView
-        android:id="@+id/eyebrow2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="90dp"
-        android:src="@drawable/eyebrow2"
-        android:visibility="invisible" />
+        <ImageView
+            android:id="@+id/eyebrow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="90dp"
+            android:src="@drawable/eyebrow1"
+            android:visibility="invisible" />
 
-    <ImageView
-        android:id="@+id/nose1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="90dp"
-        android:src="@drawable/nose1"
-        android:visibility="invisible" />
+        <ImageView
+            android:id="@+id/eyebrow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="90dp"
+            android:src="@drawable/eyebrow2"
+            android:visibility="invisible" />
 
-    <ImageView
-        android:id="@+id/nose2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="90dp"
-        android:src="@drawable/nose2"
-        android:visibility="invisible" />
+        <ImageView
+            android:id="@+id/nose1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="90dp"
+            android:src="@drawable/nose1"
+            android:visibility="invisible" />
 
-    <ImageView
-        android:id="@+id/mouth1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="90dp"
-        android:src="@drawable/mouth1"
-        android:visibility="invisible" />
+        <ImageView
+            android:id="@+id/nose2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="90dp"
+            android:src="@drawable/nose2"
+            android:visibility="invisible" />
 
-    <ImageView
-        android:id="@+id/mouth2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="90dp"
-        android:src="@drawable/mouth2"
-        android:visibility="invisible" />
+        <ImageView
+            android:id="@+id/mouth1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="90dp"
+            android:src="@drawable/mouth1"
+            android:visibility="invisible" />
 
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_below="@+id/face1"
-        android:text="Name"
-        android:textSize="20dp"/>
+        <ImageView
+            android:id="@+id/mouth2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="90dp"
+            android:src="@drawable/mouth2"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/face1"
+            android:text="Name"
+            android:textSize="20dp"/>
 
 
-    <TextView
-        android:id="@+id/qrScore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/name"
-        android:text="Score"
-        android:textSize="30dp" />
+        <TextView
+            android:id="@+id/qrScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/name"
+            android:text="Score"
+            android:textSize="30dp" />
 
-    <TextView
-        android:id="@+id/player_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/qrScore"
-        android:layout_marginTop="20dp"
-        android:text="player_count"
-        android:textSize="20dp" />
+        <TextView
+            android:id="@+id/player_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/qrScore"
+            android:layout_marginTop="20dp"
+            android:text="player_count"
+            android:textSize="20dp" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/player_count"
-        android:layout_marginBottom="50dp"
-        android:text="Confirm"/>
-
+        <Button
+            android:id="@+id/confirm_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/player_count"
+            android:layout_marginBottom="50dp"
+            android:text="Confirm"/>
+    </RelativeLayout>
 </RelativeLayout>
