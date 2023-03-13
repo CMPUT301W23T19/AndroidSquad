@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     FirebaseFirestore db;
     BottomNavigationView bottomNavigationView;
     private CameraController cameraController;
-
+    ActivityResultLauncher<ScanOptions> barLauncher;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         adapter = new ArrayAdapter<String> (this, R.layout.userranks, R.id.username, names);
         playerRanks.setAdapter(adapter);
 
-        ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result -> {
+         barLauncher = registerForActivityResult(new ScanContract(), result -> {
             if(result.getContents()!=null) {
                 cameraController.handleScanResult(result.getContents());
             }
@@ -73,8 +73,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Bottom Navigation bar functionality
         bottomNavigationView.setOnItemSelectedListener(item -> {
+            cameraController = new CameraController(this, barLauncher,db);
 
-            cameraController = new CameraController(this, barLauncher);
             if (item.getItemId() == R.id.camera) {
                 try {
                     cameraController.scanCode();
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Testing the add QR code to firebase functionality
-        QRCodeController qrController = new QRCodeController("BFG5DG154", "anna46", db);
+        QRCodeController qrController = new QRCodeController("fggfg", "anna46", db);
         qrController.validateAndAdd();
 
 
