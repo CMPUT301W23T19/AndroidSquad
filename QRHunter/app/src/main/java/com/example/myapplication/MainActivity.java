@@ -71,6 +71,16 @@ public class MainActivity extends AppCompatActivity {
 
                 currentPlayer = (Player)bundle.getSerializable("CurrentUser");
                 Log.e("MainActivity: ", "User " + currentPlayer.getUsername());
+
+
+                long highestScore = (long) currentPlayer.getHighestscore();
+                long lowestScore = (long) currentPlayer.getLowestscore();
+                long qrCount = currentPlayer.getQrcode().size();
+                long totalScore = (long) currentPlayer.getScore();
+                String playerRanksText = "Highest score: " + highestScore + "\n" + "Lowest score: " + lowestScore+"\nQR scanned: "+qrCount
+                        +"\nTotal Score: " + totalScore;
+                TextView playerRankTextView = findViewById(R.id.player_ranks);
+                playerRankTextView.setText(playerRanksText);
             }
         }
     });

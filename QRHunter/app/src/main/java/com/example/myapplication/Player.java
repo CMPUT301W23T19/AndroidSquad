@@ -1,25 +1,23 @@
 package com.example.myapplication;
 
+import android.graphics.Bitmap;
+
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Player implements Serializable {
-    private String Avatar;
-    private String Machinecode;
-    private static String Name;
-    private ArrayList<String> Qrcode;
+    private String avatar;
+    private String machinecode;
+    private String name;
+    private ArrayList<String> qrcode;
     private Number score;
     private static String username;
     private Number highestscore;
     private Number lowestscore;
 
-    public String getAvatar() {
-        return Avatar;
-    }
-
-
+    //#TODO: Remove this Constructor is a must. Please change all related usages to Constructor below
     public Player(Number score, String username, Number highestscore, Number lowestscore) {
 //        Avatar = avatar;
 //        Machinecode = machinecode;
@@ -30,13 +28,23 @@ public class Player implements Serializable {
         this.highestscore = highestscore;
         this.lowestscore = lowestscore;
     }
+    public Player(String name, Number score, String username, Number highestscore, Number lowestscore,ArrayList<String> qrcode, String machineCode, String avatar) {
+        this.avatar = avatar;
+        this.machinecode = machineCode;
+        this.name = name;
+        this.qrcode = qrcode;
+        this.score = score;
+        this.username = username;
+        this.highestscore = highestscore;
+        this.lowestscore = lowestscore;
+    }
 
     public String getMachinecode() {
-        return Machinecode;
+        return this.machinecode;
     }
 
     public void setMachinecode(String machinecode) {
-        Machinecode = machinecode;
+        this.machinecode = machinecode;
     }
 
     public Number getHighestscore() {
@@ -72,22 +80,22 @@ public class Player implements Serializable {
     }
 
     public ArrayList<String> getQrcode() {
-        return Qrcode;
+        return this.qrcode;
     }
 
     public void setQrcode(ArrayList<String> qrcode) {
-        Qrcode = qrcode;
+        this.qrcode = qrcode;
     }
 
     public void setAvatar(String avatar) {
-        Avatar = avatar;
+        this.avatar = avatar;
     }
 
-    public static String getName() {
-        return Name;
+    public String getName() {
+        return this.name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 }
