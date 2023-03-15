@@ -117,7 +117,14 @@ public class SignUpActivity extends AppCompatActivity {
                                                 public void onSuccess(Void unused) {
                                                     Toast.makeText(SignUpActivity.this, "SignUp Successful!", Toast.LENGTH_SHORT);
                                                     Intent intent = new Intent();
-                                                    Player player = new Player(0, newUsername, 0, 0); //Init a new Player class locally
+                                                    Player player = new Player(firstName.getText().toString() + " "+ lastName.getText().toString(),
+                                                                                0,
+                                                                                newUsername,
+                                                                                0,
+                                                                                0,
+                                                                                new ArrayList<String>(),
+                                                                                id,
+                                                            ((BitmapDrawable)avatar.getDrawable()).getBitmap().toString()); //Init a new Player class locally
                                                     Bundle bundle = new Bundle();
                                                     bundle.putSerializable("CurrentUser", player);
                                                     intent.putExtras(bundle);
@@ -140,7 +147,7 @@ public class SignUpActivity extends AppCompatActivity {
             } else { // Player found! Send player back to homepage, logged in.
                 Intent intent = new Intent();
                 DocumentSnapshot document = queryDocumentSnapshots.getDocuments().get(0);
-                Player player = new Player(document.getLong("Score"), document.getString("Username"), document.getLong("highestScore"), document.getLong("lowestScore"));
+                Player player = new Player(document.getString("Name"),document.getLong("Score"), document.getString("Username"), document.getLong("highestScore"), document.getLong("lowestScore"), (ArrayList<String>) document.get("QRcode"), document.getString("MachineCode"), document.getString("Avatar"));
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("CurrentUser", player);
                 intent.putExtras(bundle);
