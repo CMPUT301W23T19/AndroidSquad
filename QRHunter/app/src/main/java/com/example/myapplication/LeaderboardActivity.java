@@ -37,7 +37,7 @@ public class LeaderboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.leaderboard);
-        BottomNavigationView bottomNavigationView  = findViewById(R.id.nav_bar);
+        //BottomNavigationView bottomNavigationView  = findViewById(R.id.nav_bar);
         playerRanks = findViewById(R.id.all_players_rank);
         rankAdapter = new RankAdapter(this, players);
         playerRanks.setAdapter(rankAdapter);

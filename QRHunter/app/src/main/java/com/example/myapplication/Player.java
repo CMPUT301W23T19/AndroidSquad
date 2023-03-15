@@ -2,9 +2,10 @@ package com.example.myapplication;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Player {
+public class Player implements Serializable {
     private String Avatar;
     private String Machinecode;
     private static String Name;
