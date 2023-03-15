@@ -47,7 +47,7 @@ public class Player implements Serializable {
         this.highestscore = highestscore;
     }
 
-    public static String getUsername() {
+    public String getUsername() {
         return username;
     }
 
