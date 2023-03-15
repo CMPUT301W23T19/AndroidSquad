@@ -66,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
             Log.e("MainActivity: ", "I think Signup Activity is done?");
             Log.e("MainActivity: the result is: ", result.toString());
             if (result != null && result.getResultCode() == RESULT_OK) {
-                Intent intent = MainActivity.this.getIntent();
-                Bundle bundle = intent.getExtras();
+
+                Bundle bundle = result.getData().getExtras();
 
                 currentPlayer = (Player)bundle.getSerializable("CurrentUser");
                 Log.e("MainActivity: ", "User " + currentPlayer.getUsername());

@@ -121,6 +121,7 @@ public class SignUpActivity extends AppCompatActivity {
                                                     Bundle bundle = new Bundle();
                                                     bundle.putSerializable("CurrentUser", player);
                                                     intent.putExtras(bundle);
+                                                    setResult(RESULT_OK, intent);
                                                     finish(); // Send user back to homepage
                                                 }
                                             });
@@ -143,6 +144,8 @@ public class SignUpActivity extends AppCompatActivity {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("CurrentUser", player);
                 intent.putExtras(bundle);
+
+                setResult(RESULT_OK, intent);
                 finish();
             }
         });
