@@ -8,6 +8,9 @@ package com.example.myapplication;
  *
  */
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -56,8 +59,31 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     private CameraController cameraController;
     private QRCodeControllerDB qrCodeControllerDB;
+    private Player currentPlayer;
+    ActivityResultLauncher<Intent> forResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            Log.e("MainActivity: ", "I think Signup Activity is done?");
+            Log.e("MainActivity: the result is: ", result.toString());
+            if (result != null && result.getResultCode() == RESULT_OK) {
+
+                Bundle bundle = result.getData().getExtras();
+
+                currentPlayer = (Player)bundle.getSerializable("CurrentUser");
+                Log.e("MainActivity: ", "User " + currentPlayer.getUsername());
 
 
+                long highestScore = (long) currentPlayer.getHighestscore();
+                long lowestScore = (long) currentPlayer.getLowestscore();
+                long qrCount = currentPlayer.getQrcode().size();
+                long totalScore = (long) currentPlayer.getScore();
+                String playerRanksText = "Highest score: " + highestScore + "\n" + "Lowest score: " + lowestScore+"\nQR scanned: "+qrCount
+                        +"\nTotal Score: " + totalScore;
+                TextView playerRankTextView = findViewById(R.id.player_ranks);
+                playerRankTextView.setText(playerRanksText);
+            }
+        }
+    });
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -110,7 +136,8 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-
+        Intent signup = new Intent(MainActivity.this, SignUpActivity.class);
+        forResult.launch(signup);
 
         // Get highest and lowest scores, sum of scores, total number of QR player scanned
         CollectionReference playerRef = db.collection("Player");
