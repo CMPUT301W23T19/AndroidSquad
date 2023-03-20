@@ -30,6 +30,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
+/** Activity class that displays newly scanned QR code information*/
 public class ScannedQRCodeActivity extends AppCompatActivity {
     private QRCodeControllerView qrControllerView;
     private FirebaseFirestore db;

@@ -52,6 +52,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.jar.Attributes;
 
+/** Activity class that initializes Home Screen and contains a navigation bar to navigate to different parts of the app */
 public class MainActivity extends AppCompatActivity {
     TextView playerRanks;
     ArrayAdapter<String> adapter;

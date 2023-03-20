@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+/** Activity class that displays comprehensive information on selected QR code */
 public class HistoryClickActivity extends AppCompatActivity {
     private Button back;
 
