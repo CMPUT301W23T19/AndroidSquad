@@ -42,8 +42,8 @@ public class CameraController {
      * @param db FirestoreFirebase where data is being stored, added and modified
      * @param context Context context of previous Activity
      */
-    public void handleScanResult(String contents, FirebaseFirestore db, Context context) {
-        qrCodeControllerDB = new QRCodeControllerDB(contents, "michealscott", db);
+    public void handleScanResult(String contents, FirebaseFirestore db, Context context, String username) {
+        qrCodeControllerDB = new QRCodeControllerDB(contents, username, db);
         qrCodeControllerDB.validateAndAdd(context);
 
     }

@@ -64,22 +64,13 @@
 
         <TextView
             android:id="@+id/qr_code_score"
-            android:layout_width="123dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="159dp"
-            android:layout_marginEnd="127dp"
-            android:layout_marginBottom="312dp"
+            android:layout_below="@+id/qr_code_name"
+            android:layout_centerInParent="true"
             android:text="Score: 27"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.363"
             tools:ignore="MissingConstraints" />
 
         <TextView
@@ -92,7 +83,6 @@
             android:layout_marginBottom="239dp"
             android:text="10345 34 Ave NW, Edmonton"
             android:textSize="20sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

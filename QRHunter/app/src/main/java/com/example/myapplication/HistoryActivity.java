@@ -16,7 +16,8 @@ import org.checkerframework.checker.units.qual.A;
 public class HistoryActivity extends AppCompatActivity {
     ImageButton imageView;
     Button bb;
-    private ImageButton back;
+    ImageButton back;
+    private String username;
     ArrayAdapter<String> arrayAdapter;
     ListView historyList;
 
@@ -26,6 +27,8 @@ public class HistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.history_list);
         back = findViewById(R.id.back);
+        Intent intent = getIntent();
+        username = intent.getStringExtra("username");
 
         // Testing history list
         historyList = findViewById(R.id.history_list);
@@ -63,7 +66,7 @@ public class HistoryActivity extends AppCompatActivity {
     public void openScannedQRCodeProfile(String name){
         Intent intent = new Intent(this, PreviouslyScannedQRCodeActivity.class);
         intent.putExtra("qrCodeName", name);
-        intent.putExtra("username", "michealscott");   // TODO: pass in current username from CameraActivity and QRCodeControllerDB class
+        intent.putExtra("username", username);
         startActivity(intent);
     }
     public void activity(){
