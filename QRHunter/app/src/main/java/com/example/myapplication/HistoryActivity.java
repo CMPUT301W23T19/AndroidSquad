@@ -3,8 +3,11 @@ package com.example.myapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,22 +15,41 @@ import androidx.appcompat.app.AppCompatActivity;
 public class HistoryActivity extends AppCompatActivity {
     ImageButton imageView;
     Button bb;
-    Button back;
+    private ImageButton back;
+    ArrayAdapter<String> arrayAdapter;
+    ListView historyList;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.search_main);
+        setContentView(R.layout.history_list);
+        back = findViewById(R.id.back);
+
+        // Testing history list
+        historyList = findViewById(R.id.history_list);
+        String[] qrNames = {"SolarGloStelMegaSonicTitan", "SolarFloGalMegaSonicSupernova"};
+        arrayAdapter = new ArrayAdapter(this, R.layout.history_list_contents, R.id.scanned_name, qrNames);
+        historyList.setAdapter(arrayAdapter);
+
+
+
         // initialize imageView
         // with method findViewById()
-        imageView = (ImageButton) findViewById(R.id.imageView4);
-        back = findViewById(R.id.back_from_history);
+//        imageView = (ImageButton) findViewById(R.id.imageView4);
+//        back = findViewById(R.id.back_from_history);
         // Apply OnClickListener  to imageView to
         // switch from one activity to another
-        imageView.setOnClickListener((v) -> {openActivity2();});
-        bb = (Button) findViewById(R.id.button5);
-        bb.setOnClickListener(v -> {activity();});
+//        imageView.setOnClickListener((v) -> {openActivity2();});
+//        bb = (Button) findViewById(R.id.button5);
+//        bb.setOnClickListener(v -> {activity();});
+
+        historyList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                openScannedQRCodeProfile(qrNames[position]);    // for testing purposes
+            }
+        });
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,8 +58,11 @@ public class HistoryActivity extends AppCompatActivity {
             }
         });
     }
-    public void openActivity2(){
-        Intent intent = new Intent(this, HistoryClickActivity.class);
+
+    public void openScannedQRCodeProfile(String name){
+        Intent intent = new Intent(this, PreviouslyScannedQRCodeActivity.class);
+        intent.putExtra("qrCodeName", name);
+        intent.putExtra("username", "michealscott");   // TODO: pass in current username from CameraActivity and QRCodeControllerDB class
         startActivity(intent);
     }
     public void activity(){

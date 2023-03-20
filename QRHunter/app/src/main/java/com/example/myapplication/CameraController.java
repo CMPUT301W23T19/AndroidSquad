@@ -43,7 +43,7 @@ public class CameraController {
      * @param context Context context of previous Activity
      */
     public void handleScanResult(String contents, FirebaseFirestore db, Context context) {
-        qrCodeControllerDB = new QRCodeControllerDB(contents, "anna46", db);
+        qrCodeControllerDB = new QRCodeControllerDB(contents, "michealscott", db);
         qrCodeControllerDB.validateAndAdd(context);
 
     }

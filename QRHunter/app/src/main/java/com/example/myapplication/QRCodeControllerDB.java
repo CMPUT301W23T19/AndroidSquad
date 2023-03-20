@@ -38,6 +38,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,7 +56,6 @@ public class QRCodeControllerDB {
     private FirebaseFirestore db;
     private ArrayList<Integer> features;
 
-
     /**
      * Constructor function for QRCodeController
      */
@@ -64,11 +64,13 @@ public class QRCodeControllerDB {
         user = username;
         this.db = db;
 
-        qrCode = new QRCode(codeContents, null);
-        name = qrCode.getName();
-        score = qrCode.getScore();
-        sha256hex = qrCode.getHash();
-        features = qrCode.getAvatarList();
+        if (codeContents != null) {
+            qrCode = new QRCode(codeContents, null);
+            name = qrCode.getName();
+            score = qrCode.getScore();
+            sha256hex = qrCode.getHash();
+            features = qrCode.getAvatarList();
+        }
     }
 
     /**
@@ -84,6 +86,7 @@ public class QRCodeControllerDB {
                         if (task.isSuccessful()) {
                             if (task.getResult().isEmpty()) {       // add new qr code
                                 addQRCodetoDatabase(context);
+                                // increase player score
                             } else {
                                 checkIfScanned(context);
                             }
@@ -109,8 +112,8 @@ public class QRCodeControllerDB {
                                Log.d("TAG", "User has not scanned it before");
                                addToHistoryofUsers(context);
                            } else {
-                               Log.d("TAG", "User has scanned it previously");
-                               AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                               Log.e("TAG", "User has scanned it previously");
+                               AlertDialog.Builder builder = new AlertDialog.Builder(context);     // Creates window telling user they have already scanned it
                                builder.setTitle("Sorry!");
                                builder.setMessage("You have already scanned this QR code! Keep searching :)");
                                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -136,13 +139,14 @@ public class QRCodeControllerDB {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
+                        // increase user score
                         Log.d("TAG", "Successfully added user!");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d("TAG", "Error adding user");
+                        Log.e("TAG", "Error adding user");
                     }
                 });
        start(context);
@@ -153,7 +157,7 @@ public class QRCodeControllerDB {
      */
     private void start(Context context) {
         Intent intent = new Intent(context, ScannedQRCodeActivity.class);
-        intent.putExtra("contents", codeContents);
+        intent.putExtra("qrCode", (Serializable) qrCode);
         context.startActivity(intent);
     }
 
@@ -162,11 +166,11 @@ public class QRCodeControllerDB {
      */
     public void addToHistoryofQRCodes() {
         db.collection("Player").document(user)
-                .update("QRcode", FieldValue.arrayUnion(sha256hex))
+                .update("QRcode", FieldValue.arrayUnion(name))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        Log.d("TAG", "Successfully added QR code to history!");
+                        Log.e("TAG", "Successfully added QR code to history!");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -212,8 +216,24 @@ public class QRCodeControllerDB {
                 Log.w("TAG", "Error adding QR code");
             }
         });
-
         start(context);
     }
 
+    public void deleteUser(String qrName) {
+
+        db.collection("QR Code").document(qrName)
+                .update("Username", FieldValue.arrayRemove(user))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d("TAG", "Successfully deleted " + user + " from history!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("TAG", "Failed to delete user");
+                    }
+                });
+    }
 }

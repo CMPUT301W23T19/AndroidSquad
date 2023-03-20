@@ -20,9 +20,9 @@ public class QRCodeControllerView {
     QRCode qrCode;
     private int playerCount;
 
-    public QRCodeControllerView(String codeContents, FirebaseFirestore db){
+    public QRCodeControllerView(QRCode qrCode, FirebaseFirestore db){
         this.db = db;
-        qrCode = new QRCode(codeContents, null);
+        this.qrCode = qrCode;
         playerCount = 0;
     }
 

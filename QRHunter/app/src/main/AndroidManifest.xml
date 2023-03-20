@@ -47,7 +47,7 @@
             android:parentActivityName=".MainActivity">
         </activity>
 
-        <activity android:name="com.example.myapplication.HistoryClickActivity"
+        <activity android:name="com.example.myapplication.PreviouslyScannedQRCodeActivity"
             android:parentActivityName=".HistoryActivity">
         </activity>
 

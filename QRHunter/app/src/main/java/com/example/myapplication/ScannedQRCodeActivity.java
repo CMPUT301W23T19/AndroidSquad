@@ -46,10 +46,10 @@ public class ScannedQRCodeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scanned_qr_code);
         Intent intent = getIntent();
-        String codeContents = intent.getStringExtra("contents");
+        QRCode qrCode = (QRCode) intent.getSerializableExtra("qrCode");
         db = FirebaseFirestore.getInstance();
 
-        qrControllerView = new QRCodeControllerView(codeContents, db);
+        qrControllerView = new QRCodeControllerView(qrCode, db);
 
         // get QR code visual representation to appear
         ArrayList<Integer> faces = qrControllerView.getAvatarlist();

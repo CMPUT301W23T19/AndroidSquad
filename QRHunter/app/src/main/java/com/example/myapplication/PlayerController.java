@@ -28,17 +28,17 @@ public class PlayerController {
 
     FirebaseFirestore db;
 
-    public PlayerController(Number scores, Number highest, Number lowest, String usersname, FirebaseFirestore db) {
-
-        username = usersname;
+    public PlayerController(Number scores, Number highest, Number lowest, String username, FirebaseFirestore db) {
+        this.username = username;
         this.db = db;
 
-        this.score = scores;
-        this.highestScore = highest;
-        this.lowestScore = lowest;
+        if (scores != null) {
+            this.score = scores;
+            this.highestScore = highest;
+            this.lowestScore = lowest;
 
-
-        player = new Player(score,username,highestScore,lowestScore);
+            player = new Player(score,username,highestScore,lowestScore);
+        }
 
     }
 
@@ -67,6 +67,7 @@ public class PlayerController {
     }
     public void addToHistoryofUserscore() {
         db.collection("Username").document(username)
+
                 .update("Score", FieldValue.arrayUnion(score))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -161,11 +162,21 @@ public class PlayerController {
                 });
     }
 
-
-
-
-
-
-
+    public void deleteQRFromHistory(String qrName) {
+        db.collection("Player").document(username)
+                .update("QRcode", FieldValue.arrayRemove(qrName))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d("TAG", "Successfully deleted QR Code!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("TAG", "Failed to delete QR Code");
+                    }
+                });
+    }
 }
 
