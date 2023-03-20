@@ -11,7 +11,8 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-/** Activity Class that displays a list of previously scanned QR codes */
+import org.checkerframework.checker.units.qual.A;
+
 public class HistoryActivity extends AppCompatActivity {
     ImageButton imageView;
     Button bb;

@@ -70,7 +70,7 @@ public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
                         // reduce score of player
                         // check lowest and highest and update if necessary
     //                  arrayAdapter.notifyDataSetChanged();    // delete from listview
-                        
+
                         dialogInterface.dismiss();
                         finish();      // return to HistoryActivity
                     }
