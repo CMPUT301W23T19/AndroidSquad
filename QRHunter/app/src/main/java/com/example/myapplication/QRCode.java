@@ -21,6 +21,7 @@ import android.util.Log;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +30,7 @@ import java.util.Map;
 /**
  * Class that represents a QR code
  */
-public class QRCode {
+public class QRCode implements Serializable {
     private String name;
     private int score;
     private String sha256hex;
@@ -42,7 +43,6 @@ public class QRCode {
         sha256hex = DigestUtils.sha256Hex(codeContents);
         setName();
         setScore();
-
     }
 
     /**

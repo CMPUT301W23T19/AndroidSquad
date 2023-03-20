@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/galaxy"
+    tools:context = ".HistoryActivity">
+
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="10dp"
+        android:background="@drawable/rounded_view"
+        tools:layout_editor_absoluteX="-59dp"
+        tools:layout_editor_absoluteY="30dp">
+
+        <ImageButton
+            android:id="@+id/back"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:background="@drawable/rounded_view"
+            android:src="@drawable/back"
+            android:backgroundTint="#9C9A9A"
+            app:tint="#120E10"/>
+
+        <ImageView
+            android:id="@+id/qr_code_face"
+            android:layout_width="181dp"
+            android:layout_height="136dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="120dp"
+            android:layout_marginTop="82dp"
+            android:layout_marginEnd="109dp"
+            android:layout_marginBottom="417dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.547"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.11"
+            app:srcCompat="@android:drawable/ic_menu_myplaces"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/qr_code_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Climber"
+            android:layout_centerInParent="true"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.311"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/qr_code_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/qr_code_name"
+            android:layout_centerInParent="true"
+            android:text="Score: 27"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/qr_code_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/location"
+            android:layout_centerInParent="true"
+            android:text="10345 34 Ave NW, Edmonton"
+            android:textSize="20sp"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/count_players_scanned_qr_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/qr_code_location"
+            android:text="100 other player scanned this QR Code"
+            android:textSize="20sp"
+            android:layout_marginTop="30dp"
+            android:textStyle="bold"
+             />
+
+        <TextView
+            android:id="@+id/location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/qr_code_score"
+            android:text="Geolocation"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginTop="30dp" />
+
+        <Button
+            android:id="@+id/delete"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="delete"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="30dp"
+            android:background="@drawable/rounded_view"
+            android:backgroundTint="#9C0A0A"/>
+
+        <Button
+            android:id="@+id/comment"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="comment"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/rounded_view"
+            android:backgroundTint="#1F0B42"/>
+
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

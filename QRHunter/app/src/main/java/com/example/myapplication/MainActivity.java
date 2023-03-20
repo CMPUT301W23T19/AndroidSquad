@@ -99,17 +99,9 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView  = (BottomNavigationView)findViewById(R.id.nav_bar);
 
-        // Testing leaderboard screen (highest scores)
-        String names[] = {
-                "Harrys", "Draco", "Ron", "Hermione"
-        };
-
-        playerRanks = findViewById(R.id.player_ranks);
-        adapter = new ArrayAdapter<String> (this, R.layout.userranks, R.id.username, names);
-
         ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result -> {
             if(result.getContents()!=null) {
-                cameraController.handleScanResult(result.getContents(), db, this);
+                cameraController.handleScanResult(result.getContents(), db, this, currentPlayer.getUsername());
             }
         });
 
@@ -128,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
             if (item.getItemId() == R.id.history) {
                 try {
                     Intent intent = new Intent(this,HistoryActivity.class);
+                    intent.putExtra("username", currentPlayer.getUsername());
                     startActivity(intent);
                 } catch (Exception e) {
                     e.printStackTrace();

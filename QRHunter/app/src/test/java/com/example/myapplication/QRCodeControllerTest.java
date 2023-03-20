@@ -7,8 +7,6 @@ import android.content.Context;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import androidx.test.core.app.ApplicationProvider;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
