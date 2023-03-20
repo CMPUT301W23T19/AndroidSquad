@@ -1,21 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Resource(s):-->
 <!-- Creating a bottom navigation bar:
-    https://www.geeksforgeeks.org/bottom-navigation-bar-in-android/-->
+    From: www.geeksforgeeks.org
+    URL: https://www.geeksforgeeks.org/bottom-navigation-bar-in-android/
+    From: https://auth.geeksforgeeks.org/user/agarwalkeshav8399/articles
+    License: CC BY-SA -->
 <!-- Getting and modifying android studio icons:
-    https://www.geeksforgeeks.org/how-to-add-vector-assets-in-android-studio/-->
-<!-- Changing background to an image:
-    https://www.bragitoff.com/2016/06/changing-background-appactivity-using-android-studio/-->
-<!-- Using frame layout:
-    https://abhiandroid.com/ui/fragment -->
+    From: www.geeksforgeeks.org
+    URL: https://www.geeksforgeeks.org/how-to-add-vector-assets-in-android-studio/
+    Author: https://auth.geeksforgeeks.org/user/annulata2402/articles
+    License: CC BY-SA -->
 <!-- Changing icon colour:
     From: www.stackoverflow.com
     URL: https://stackoverflow.com/q/71280302
-    Author: https://stackoverflow.com/users/18362930/sandesh-khutalsaheb -->
+    Author: https://stackoverflow.com/users/18362930/sandesh-khutalsaheb
+    License: CC BY-SA -->
 <!-- Positioning a ListView inside a RelativeLayout
      From: www.stackoverflow.com
      URL: https://stackoverflow.com/q/7836035
-     Author: https://stackoverflow.com/a/7836088-->
+     Author: https://stackoverflow.com/a/7836088
+     License: CC BY-SA -->
+
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"

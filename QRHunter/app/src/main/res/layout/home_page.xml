@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="#150839"
+        android:gravity="top"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/home_text"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="#150839"
+            android:backgroundTint="#150839"
+            android:gravity="center"
+            android:text="Home"
+            android:textSize="23dp"
+            android:textColor="@color/white"
+            android:layout_centerVertical="true"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/search_button"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="52dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="6dp"
+            android:gravity="center_horizontal|top"
+            app:icon="?android:attr/actionModeWebSearchDrawable" />
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/player_ranks"
+        android:layout_width="match_parent"
+        android:layout_height="334dp"
+        android:padding="10dp"
+        android:textColor="@color/black"
+        android:textSize="15dp">
+
+    </TextView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:layout_gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/leaderboard_text"
+            android:layout_width="240dp"
+            android:layout_height="match_parent"
+            android:paddingLeft="10dp"
+            android:text="Leaderboard" />
+
+
+        <TextView
+            android:id="@+id/nearby_qr_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="10dp"
+            android:text="Nearby QRCodes" />
+
+
+    </LinearLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_gravity="bottom"
+        android:id="@+id/nav_bar"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="#150839"
+        android:backgroundTint="#150839"
+        app:itemIconSize="40dp"
+        app:itemIconTint="#ffff"
+        app:itemTextColor="#ffff"
+        app:menu="@menu/nav_bar" />
+</LinearLayout>
+
+
+

@@ -1,39 +1,33 @@
 package com.example.myapplication;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.util.Log;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.firestore.FirebaseFirestore;
 
-public class CameraController{
+public class CameraController {
     private final Context context;
     private final ActivityResultLauncher<ScanOptions> barLauncher;
-    FirebaseFirestore db;
+    private QRCodeControllerDB qrControllerDB;
+    private QRCodeControllerDB qrCodeControllerDB;
 
-
-
-    public CameraController(Context context, ActivityResultLauncher<ScanOptions> barLauncher,FirebaseFirestore db) {
+    public CameraController(Context context, ActivityResultLauncher<ScanOptions> barLauncher) {
         this.context = context;
         this.barLauncher = barLauncher;
-        this.db=db;
-        //db= FirebaseFirestore.getInstance();
-
     }
-
     public void scanCode() {
         ScanOptions options = new ScanOptions();
         options.setPrompt("volume up to flash on!!");
         options.setBeepEnabled(true);
         options.setOrientationLocked(true);
-        options.setCaptureActivity(CaptureAct.class);
+        options.setCaptureActivity(CameraActivity.class);
         barLauncher.launch(options);
 
     }
@@ -42,32 +36,15 @@ public class CameraController{
         return barLauncher;
     }
 
-    public void handleScanResult(String contents) {
-        String serialNumber = extractSerialNumber(contents);
-        //QRCodeController qrController = new QRCodeController("wawawawa", "anna46", db);
-        //qrController.validateAndAdd();
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("result");
-        builder.setMessage(serialNumber);
-        builder.setMessage(contents);
-        builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-        builder.show();
-    }
+    /**
+     * Handles scanning QR code event
+     * @param contents QR code contents in string format
+     * @param db FirestoreFirebase where data is being stored, added and modified
+     * @param context Context context of previous Activity
+     */
+    public void handleScanResult(String contents, FirebaseFirestore db, Context context) {
+        qrCodeControllerDB = new QRCodeControllerDB(contents, "anna46", db);
+        qrCodeControllerDB.validateAndAdd(context);
 
-    private String extractSerialNumber(String qrData) {
-        String serialNumber = null;
-        if (qrData != null) {
-            // Assuming the QR code contains the serial number as a string followed by a separator character
-            String[] parts = qrData.split(":"); // Replace ":" with your separator character
-            if (parts.length > 0) {
-                serialNumber = parts[0];
-            }
-        }
-        return serialNumber;
     }
 }
