@@ -82,7 +82,7 @@ public class HistoryActivity extends AppCompatActivity {
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() > -1) {      // delete qr code
                         // delete from qr codes list
-                        Log.e("TAG","Position of item to be deleted: " + String.valueOf(result.getResultCode()));
+                        Log.e("HistoryActivity","Position of item to be deleted: " + String.valueOf(result.getResultCode()));
                         qrNames.remove(result.getResultCode());
                         arrayAdapter.notifyDataSetChanged();
                     }
