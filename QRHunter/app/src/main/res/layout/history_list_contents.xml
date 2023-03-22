@@ -33,6 +33,6 @@
             android:textSize="15dp"
             android:textColor="#433b3f">
         </TextView>
-
     </LinearLayout>
+
 </LinearLayout>
