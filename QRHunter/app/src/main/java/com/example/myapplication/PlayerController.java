@@ -8,6 +8,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -178,5 +180,59 @@ public class PlayerController {
                     }
                 });
     }
+
+    /**
+     * Adds QR code to user's history of scanned QR codes
+     */
+    public void addToHistoryofQRCodes(String qr_name) {
+        db.collection("Player").document(username)
+                .update("QRcode", FieldValue.arrayUnion(qr_name))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.e("TAG", "Successfully added QR code to history!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("TAG", "Could not add QR Code");
+                    }
+                });
+    }
+
+    public void updateScore(int qr_score) {
+        db.collection("Player")
+                .document(username)
+                .update("Score", FieldValue.increment(qr_score))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d("TAG", "Updated user score successfully");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("TAG", "Failed to update user's score");
+                    }
+                });
+    }
+
+//    public void updateHighScore(int qr_score){
+//        DocumentReference docRef = db.collection("Player").document(username);
+//        db.collection("Player")
+//                .document(username)
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                        if ((int) task.getResult().get("highestScore") == qr_score) {
+//                            docRef.update("highestScore")
+//                        }
+//                    }
+//                })
+//    };
+
 }
 

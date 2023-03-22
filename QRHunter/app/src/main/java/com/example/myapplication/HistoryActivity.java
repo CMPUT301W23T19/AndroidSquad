@@ -1,7 +1,9 @@
 package com.example.myapplication;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -9,17 +11,26 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 
 import org.checkerframework.checker.units.qual.A;
 
+import java.util.ArrayList;
+
 public class HistoryActivity extends AppCompatActivity {
-    ImageButton imageView;
-    Button bb;
+//    ImageButton imageView;
+//    Button bb;
     ImageButton back;
     private String username;
     ArrayAdapter<String> arrayAdapter;
     ListView historyList;
+    ArrayList<String> qrNames;
+
 
 
     @Override
@@ -32,11 +43,11 @@ public class HistoryActivity extends AppCompatActivity {
 
         // Testing history list
         historyList = findViewById(R.id.history_list);
-        String[] qrNames = {"SolarGloStelMegaSonicTitan", "SolarFloGalMegaSonicSupernova"};
+        qrNames = new ArrayList<>();
+        qrNames.add("Poker");
+        qrNames.add("SolarFloGalMegaSonicSupernova");
         arrayAdapter = new ArrayAdapter(this, R.layout.history_list_contents, R.id.scanned_name, qrNames);
         historyList.setAdapter(arrayAdapter);
-
-
 
         // initialize imageView
         // with method findViewById()
@@ -51,7 +62,7 @@ public class HistoryActivity extends AppCompatActivity {
         historyList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openScannedQRCodeProfile(qrNames[position]);    // for testing purposes
+                openScannedQRCodeProfile(qrNames.get(position), position);    // for testing purposes
             }
         });
 
@@ -63,13 +74,30 @@ public class HistoryActivity extends AppCompatActivity {
         });
     }
 
-    public void openScannedQRCodeProfile(String name){
+
+    // Get data from child activity (PreviouslyScannedQRCodeActivity)
+    ActivityResultLauncher<Intent> startForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() > -1) {      // delete qr code
+                        // delete from qr codes list
+                        Log.e("TAG","Position of item to be deleted: " + String.valueOf(result.getResultCode()));
+                        qrNames.remove(result.getResultCode());
+                        arrayAdapter.notifyDataSetChanged();
+                    }
+                }
+            });
+
+    public void openScannedQRCodeProfile(String name, int position){
         Intent intent = new Intent(this, PreviouslyScannedQRCodeActivity.class);
         intent.putExtra("qrCodeName", name);
         intent.putExtra("username", username);
-        startActivity(intent);
+        intent.putExtra("position", position);
+        startForResult.launch(intent);
     }
-    public void activity(){
+
+    public void commentActivity(){
         Intent intent = new Intent(this, CommentActivity.class);
         startActivity(intent);
 
