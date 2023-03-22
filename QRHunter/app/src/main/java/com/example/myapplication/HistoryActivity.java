@@ -1,5 +1,14 @@
 package com.example.myapplication;
 
+/**
+ * Resource(s):
+ * Passing and retrieving data from child activity to parent:
+ * --From: www.stackoverflow.com
+ * --URL: https://stackoverflow.com/q/62671106
+ * --Author: https://stackoverflow.com/users/12256844/abhijeet
+ * --License: CC BY-SA
+ */
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
