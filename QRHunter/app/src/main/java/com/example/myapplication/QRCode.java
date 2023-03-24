@@ -42,6 +42,7 @@ public class QRCode implements Serializable {
         this.location = location;
         sha256hex = DigestUtils.sha256Hex(codeContents);
         setName();
+        Log.e("QRCode", name);
         setScore();
     }
 
@@ -60,8 +61,9 @@ public class QRCode implements Serializable {
 
         String sixHash = sha256hex.substring(0,5);
         String binaryRep = new BigInteger(sixHash, 16).toString(2);
+        Log.e("QRCode", binaryRep);
         for (int i = 0; i < 6; i++) {
-            if (binaryRep.charAt(i) == '0') {
+            if (binaryRep.charAt(i+1) == '0') {
                 name += names.get(i)[0];
             }
             else {
@@ -120,7 +122,7 @@ public class QRCode implements Serializable {
         faces.put(4, new Integer[]{R.id.mouth1, R.id.mouth2});
 
       for (int i = 0; i < 5; i++) {
-          if (binaryRep.charAt(i) == '0') {
+          if (binaryRep.charAt(i+1) == '0') {
               avatarList.add(faces.get(i)[0]);
           } else {
               avatarList.add(faces.get(i)[1]);

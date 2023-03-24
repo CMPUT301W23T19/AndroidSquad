@@ -93,6 +93,9 @@ public class ScannedQRCodeActivity extends AppCompatActivity {
                             for (int i = 0; i < usernames.size(); i++) {
                                 count += 1;
                             }
+                            if (count == 1) {
+                                count = 0;
+                            }
                             playerCount.setText(String.valueOf(count) + " other player(s) scanned this QR code!");
                         }
                     }
