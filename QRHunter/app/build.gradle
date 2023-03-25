@@ -73,7 +73,11 @@ dependencies {
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
     implementation group: 'commons-codec', name: 'commons-codec', version: '1.15'
     //implementation files('/Users/randyluna/Library/Android/sdk/platforms/android-33/android.jar')
+    //implementation 'com.google.android.gms:play-services-maps:17.0.0'
 
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
+    implementation 'com.karumi:dexter:6.2.1'
 }
 
 
