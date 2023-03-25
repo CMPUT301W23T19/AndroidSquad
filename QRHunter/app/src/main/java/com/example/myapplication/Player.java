@@ -2,8 +2,6 @@ package com.example.myapplication;
 
 import android.graphics.Bitmap;
 
-import org.apache.commons.codec.digest.DigestUtils;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 

@@ -70,8 +70,6 @@ dependencies {
     // required if you want to use Mockito for Android tests
     androidTestImplementation 'org.mockito:mockito-android:4.0.0'
 
-    // https://mvnrepository.com/artifact/commons-codec/commons-codec
-    implementation group: 'commons-codec', name: 'commons-codec', version: '1.15'
     //implementation files('/Users/randyluna/Library/Android/sdk/platforms/android-33/android.jar')
     //implementation 'com.google.android.gms:play-services-maps:17.0.0'
 

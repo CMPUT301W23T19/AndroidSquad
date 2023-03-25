@@ -1,6 +1,9 @@
 /**
- * Idea to use Apache Common Codecs https://www.baeldung.com/sha-256-hashing-java
- * Apache Common Codecs: https://mvnrepository.com/artifact/commons-codec/commons-codec/1.15
+ * Converting string to sha256hex:
+ * From: www.stackoverflow.com
+ * URL: https://stackoverflow.com/q/5531455
+ * Author: https://stackoverflow.com/users/69875/jonathan
+ * License: CC BY-SA
  * Converting hex string to binary string: https://stackoverflow.com/q/9246326
  * -- Author(s): https://stackoverflow.com/users/20394/mike-samuel
  * Iterating over key-val pairs in a HashMap: https://stackoverflow.com/q/585654
@@ -21,7 +24,6 @@ import android.util.Log;
 
 import com.google.common.hash.Hashing;
 
-import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
