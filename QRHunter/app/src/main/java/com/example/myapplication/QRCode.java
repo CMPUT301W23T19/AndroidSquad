@@ -19,10 +19,16 @@ package com.example.myapplication;
 
 import android.util.Log;
 
+import com.google.common.hash.Hashing;
+
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,9 +46,12 @@ public class QRCode implements Serializable {
 
     public QRCode(String codeContents, String location) {
         this.location = location;
-        sha256hex = DigestUtils.sha256Hex(codeContents);
+        sha256hex = Hashing.sha256()
+                .hashString(codeContents, StandardCharsets.UTF_8)
+                .toString();
         setName();
         setScore();
+        Log.e("QRCode", name);
     }
 
     /**
