@@ -1,5 +1,9 @@
 /**
- * Idea to use Apache Common Codecs https://www.baeldung.com/sha-256-hashing-java
+ * Converting string to sha256hex:
+ * From: www.stackoverflow.com
+ * URL: https://stackoverflow.com/q/5531455
+ * Author: https://stackoverflow.com/users/69875/jonathan
+ * License: CC BY-SA
  * Apache Common Codecs: https://mvnrepository.com/artifact/commons-codec/commons-codec/1.15
  * Converting hex string to binary string: https://stackoverflow.com/q/9246326
  * -- Author(s): https://stackoverflow.com/users/20394/mike-samuel
@@ -19,10 +23,12 @@ package com.example.myapplication;
 
 import android.util.Log;
 
-import org.apache.commons.codec.digest.DigestUtils;
+
+import com.google.common.hash.Hashing;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +46,9 @@ public class QRCode implements Serializable {
 
     public QRCode(String codeContents, String location) {
         this.location = location;
-        sha256hex = DigestUtils.sha256Hex(codeContents);
+        sha256hex = Hashing.sha256()
+                .hashString(codeContents, StandardCharsets.UTF_8)
+                .toString();
         setName();
         Log.e("QRCode", name);
         setScore();
