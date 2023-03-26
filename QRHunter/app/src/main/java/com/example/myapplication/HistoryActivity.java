@@ -1,5 +1,15 @@
 package com.example.myapplication;
 
+/**
+ * Resource(s):
+ * Passing and retrieving data from child activity to parent:
+ * --From: www.stackoverflow.com
+ * --URL: https://stackoverflow.com/q/62671106
+ * --Author: https://stackoverflow.com/users/12256844/abhijeet
+ * --License: CC BY-SA
+ */
+
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,7 +23,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -25,15 +40,19 @@ import org.checkerframework.checker.units.qual.A;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.ArrayList;
+
 public class HistoryActivity extends AppCompatActivity {
     ImageButton imageView;
     Button bb;
     ImageButton back;
     private String username;
-
+    ArrayAdapter<String> arrayAdapter;
     ListView historyList;
     private FirebaseFirestore db;
     ArrayList<HistoryModel> HistoryAdapterlist = new ArrayList<>();
+    ArrayList<String> qrNames;
+
 
 
     @Override
@@ -47,6 +66,11 @@ public class HistoryActivity extends AppCompatActivity {
         // Testing history list
         historyList = findViewById(R.id.history_list);
         ListView listView = findViewById(R.id.history_list);
+        qrNames = new ArrayList<>();
+        qrNames.add("Poker");
+        qrNames.add("SolarFloGalMegaSonicSupernova");
+        arrayAdapter = new ArrayAdapter(this, R.layout.history_list_contents, R.id.scanned_name, qrNames);
+        historyList.setAdapter(arrayAdapter);
 
 
         // custom array adapter
@@ -58,6 +82,7 @@ public class HistoryActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 openScannedQRCodeProfile(adapter.getItem(position).getName(),adapter.getItem(position).getScore());
+                openScannedQRCodeProfile(qrNames.get(position), position);    // for testing purposes
             }
         });
 
@@ -69,6 +94,21 @@ public class HistoryActivity extends AppCompatActivity {
         });
     }
 
+
+    // Get data from child activity (PreviouslyScannedQRCodeActivity)
+    ActivityResultLauncher<Intent> startForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() > -1) {      // delete qr code
+                        // delete from qr codes list
+                        Log.e("HistoryActivity","Position of item to be deleted: " + String.valueOf(result.getResultCode()));
+                        qrNames.remove(result.getResultCode());
+                        arrayAdapter.notifyDataSetChanged();
+                    }
+                }
+            });
+
     public void openScannedQRCodeProfile(String name, Long score){
         // push the history model
         Intent intent = new Intent(this, PreviouslyScannedQRCodeActivity.class);
@@ -76,8 +116,11 @@ public class HistoryActivity extends AppCompatActivity {
         intent.putExtra("username", username);
         intent.putExtra("qrscore",score);
         startActivity(intent);
+        intent.putExtra("position", position);
+        startForResult.launch(intent);
     }
-    public void activity(){
+
+    public void commentActivity(){
         Intent intent = new Intent(this, CommentActivity.class);
         startActivity(intent);
     }
