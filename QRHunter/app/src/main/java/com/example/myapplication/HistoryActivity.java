@@ -57,7 +57,7 @@ public class HistoryActivity extends AppCompatActivity {
         historyList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //openScannedQRCodeProfile(qrNames.get(position));    // for testing purposes
+                openScannedQRCodeProfile(adapter.getItem(position).getName(),adapter.getItem(position).getScore());
             }
         });
 
@@ -69,10 +69,12 @@ public class HistoryActivity extends AppCompatActivity {
         });
     }
 
-    public void openScannedQRCodeProfile(String name){
+    public void openScannedQRCodeProfile(String name, Long score){
+        // push the history model
         Intent intent = new Intent(this, PreviouslyScannedQRCodeActivity.class);
         intent.putExtra("qrCodeName", name);
         intent.putExtra("username", username);
+        intent.putExtra("qrscore",score);
         startActivity(intent);
     }
     public void activity(){

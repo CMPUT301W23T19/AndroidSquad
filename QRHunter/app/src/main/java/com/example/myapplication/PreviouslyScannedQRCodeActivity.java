@@ -21,8 +21,10 @@ public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
     // implement delete button
     private Button delete;
     private String qrName;
+    private Long qrScore;
     private ImageButton back;
     private TextView name;
+    private TextView score;
     private QRCodeControllerDB qrCodeControllerDB;
     private PlayerController playerController;
     private String username;
@@ -38,7 +40,7 @@ public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
         Intent intent = getIntent();
         username = intent.getStringExtra("username");
         qrName = intent.getStringExtra("qrCodeName");
-
+        qrScore = intent.getLongExtra("qrscore",0);
         playerController = new PlayerController(null, null, null,username, db);
         qrCodeControllerDB = new QRCodeControllerDB(null, username, db);
 
@@ -46,6 +48,9 @@ public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
         name.setText(qrName);
         back = findViewById(R.id.back);
         delete = findViewById(R.id.delete);
+        score = findViewById(R.id.qr_code_score);
+        score.setText(qrScore.toString());
+
         boolean d = false;
         AlertDialog.Builder builder = new AlertDialog.Builder(PreviouslyScannedQRCodeActivity.this);     // Creates window telling user they have already scanned it
 
