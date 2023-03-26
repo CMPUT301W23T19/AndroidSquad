@@ -36,7 +36,7 @@ public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
     private PlayerController playerController;
     private String username;
     FirebaseFirestore db;
-    int qrScore;
+    //int qrScore;
     int position;
 
     @Override
@@ -50,7 +50,7 @@ public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
         qrScore = intent.getLongExtra("qrscore",0);
         position = intent.getIntExtra("position", -1);
 //        score = intent.getIntExtra("score", 0);
-        qrScore = 107;     // TODO: replace with above code
+        //qrScore = 107;     // TODO: replace with above code
         playerController = new PlayerController(null, null, null,username, db);
         qrCodeControllerDB = new QRCodeControllerDB(null, username, db);
 
@@ -83,7 +83,7 @@ public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         qrCodeControllerDB.deleteUser(qrName);
                         playerController.deleteQRFromHistory(qrName);
-                        playerController.updateScore(-1*qrScore);       // TODO: Pass in qr_score from historyActivity
+                        playerController.updateScore((int)(-1*qrScore));       // TODO: Pass in qr_score from historyActivity
 
                         DocumentReference playerDocRef =  db.collection("Player").document(username);
                         playerDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

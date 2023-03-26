@@ -50,7 +50,6 @@ public class HistoryActivity extends AppCompatActivity {
     ArrayAdapter<String> arrayAdapter;
     ListView historyList;
     private FirebaseFirestore db;
-    ArrayList<HistoryModel> HistoryAdapterlist = new ArrayList<>();
     ArrayList<String> qrNames;
 
 
@@ -66,11 +65,9 @@ public class HistoryActivity extends AppCompatActivity {
         // Testing history list
         historyList = findViewById(R.id.history_list);
         ListView listView = findViewById(R.id.history_list);
-        qrNames = new ArrayList<>();
-        qrNames.add("Poker");
-        qrNames.add("SolarFloGalMegaSonicSupernova");
-        arrayAdapter = new ArrayAdapter(this, R.layout.history_list_contents, R.id.scanned_name, qrNames);
-        historyList.setAdapter(arrayAdapter);
+        //qrNames = new ArrayList<>();
+//        arrayAdapter = new ArrayAdapter(this, R.layout.history_list_contents, R.id.scanned_name, qrNames);
+//        historyList.setAdapter(arrayAdapter);
 
 
         // custom array adapter
@@ -81,8 +78,8 @@ public class HistoryActivity extends AppCompatActivity {
         historyList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openScannedQRCodeProfile(adapter.getItem(position).getName(),adapter.getItem(position).getScore());
-                openScannedQRCodeProfile(qrNames.get(position), position);    // for testing purposes
+                openScannedQRCodeProfile(adapter.getItem(position).getName(),adapter.getItem(position).getScore(),position);
+                //openScannedQRCodeProfile(qrNames.get(position),(long)position);    // for testing purposes
             }
         });
 
@@ -109,13 +106,13 @@ public class HistoryActivity extends AppCompatActivity {
                 }
             });
 
-    public void openScannedQRCodeProfile(String name, Long score){
+    public void openScannedQRCodeProfile(String name, Long score,Integer position){
         // push the history model
         Intent intent = new Intent(this, PreviouslyScannedQRCodeActivity.class);
         intent.putExtra("qrCodeName", name);
         intent.putExtra("username", username);
         intent.putExtra("qrscore",score);
-        startActivity(intent);
+        //startActivity(intent);
         intent.putExtra("position", position);
         startForResult.launch(intent);
     }
