@@ -2,24 +2,38 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import org.checkerframework.checker.units.qual.A;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HistoryActivity extends AppCompatActivity {
     ImageButton imageView;
     Button bb;
     ImageButton back;
     private String username;
-    ArrayAdapter<String> arrayAdapter;
+
     ListView historyList;
+    private FirebaseFirestore db;
+    ArrayList<HistoryModel> HistoryAdapterlist = new ArrayList<>();
 
 
     @Override
@@ -29,29 +43,21 @@ public class HistoryActivity extends AppCompatActivity {
         back = findViewById(R.id.back);
         Intent intent = getIntent();
         username = intent.getStringExtra("username");
-
+        db = FirebaseFirestore.getInstance();
         // Testing history list
         historyList = findViewById(R.id.history_list);
-        String[] qrNames = {"SolarGloStelMegaSonicTitan", "SolarFloGalMegaSonicSupernova"};
-        arrayAdapter = new ArrayAdapter(this, R.layout.history_list_contents, R.id.scanned_name, qrNames);
-        historyList.setAdapter(arrayAdapter);
+        ListView listView = findViewById(R.id.history_list);
 
 
+        // custom array adapter
+        HistoryAdapter adapter= new HistoryAdapter(this,getIntent());
+        listView.setAdapter(adapter);
 
-        // initialize imageView
-        // with method findViewById()
-//        imageView = (ImageButton) findViewById(R.id.imageView4);
-//        back = findViewById(R.id.back_from_history);
-        // Apply OnClickListener  to imageView to
-        // switch from one activity to another
-//        imageView.setOnClickListener((v) -> {openActivity2();});
-//        bb = (Button) findViewById(R.id.button5);
-//        bb.setOnClickListener(v -> {activity();});
 
         historyList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openScannedQRCodeProfile(qrNames[position]);    // for testing purposes
+                //openScannedQRCodeProfile(qrNames.get(position));    // for testing purposes
             }
         });
 
@@ -72,7 +78,7 @@ public class HistoryActivity extends AppCompatActivity {
     public void activity(){
         Intent intent = new Intent(this, CommentActivity.class);
         startActivity(intent);
-
     }
+
 
 }

@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 public class QRCodeControllerView {
     private FirebaseFirestore db;
+//    private HistoryActivity historyActivity;
     QRCode qrCode;
     private int playerCount;
 
@@ -24,6 +25,7 @@ public class QRCodeControllerView {
         this.db = db;
         this.qrCode = qrCode;
         playerCount = 0;
+//        this.historyActivity=historyActivity;
     }
 
     /**
@@ -71,6 +73,11 @@ public class QRCodeControllerView {
         Log.d("TAG", String.valueOf(playerCount));
         return playerCount;
     }
+
+//    public void handleQRCodeResult() {
+//
+//        historyActivity.saveQRCodeResult(getName());
+//    }
 
 
 
