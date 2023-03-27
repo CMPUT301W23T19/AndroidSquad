@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -16,6 +18,18 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
+            android:name=".MapActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBSjeMcaLJkXJWFLNEkgtrc9jL3JoHLi6E" />
+
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleTop">
@@ -25,40 +39,31 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".LeaderboardActivity"
             android:exported="true"
-            android:parentActivityName=".MainActivity">
-        </activity>
-
+            android:parentActivityName=".MainActivity"></activity>
         <activity
             android:name=".ScannedQRCodeActivity"
             android:exported="false"
-            android:parentActivityName=".MainActivity">
-        </activity>
-
-        <activity android:name=".CameraActivity"
+            android:parentActivityName=".MainActivity"></activity>
+        <activity
+            android:name=".CameraActivity"
             android:screenOrientation="portrait"
             android:stateNotNeeded="true"
-            android:theme="@style/zxing_CaptureTheme"/>
-
-        <activity android:name="com.example.myapplication.HistoryActivity"
-            android:parentActivityName=".MainActivity">
-        </activity>
-
-        <activity android:name="com.example.myapplication.PreviouslyScannedQRCodeActivity"
-            android:parentActivityName=".HistoryActivity">
-        </activity>
-
-        <activity android:name="com.example.myapplication.CommentActivity"
-            android:parentActivityName=".HistoryActivity">
-        </activity>
-
-        <activity android:name="com.example.myapplication.SignUpActivity"
-            android:parentActivityName=".MainActivity"/>
+            android:theme="@style/zxing_CaptureTheme" />
+        <activity
+            android:name=".HistoryActivity"
+            android:parentActivityName=".MainActivity"></activity>
+        <activity
+            android:name=".PreviouslyScannedQRCodeActivity"
+            android:parentActivityName=".HistoryActivity"></activity>
+        <activity
+            android:name=".CommentActivity"
+            android:parentActivityName=".HistoryActivity"></activity>
+        <activity
+            android:name=".SignUpActivity"
+            android:parentActivityName=".MainActivity" />
     </application>
-
-
 
 </manifest>
