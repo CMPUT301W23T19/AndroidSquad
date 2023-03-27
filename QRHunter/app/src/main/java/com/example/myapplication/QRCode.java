@@ -29,8 +29,10 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,6 +54,7 @@ public class QRCode implements Serializable {
                 .hashString(codeContents, StandardCharsets.UTF_8)
                 .toString();
         setName();
+        Log.e("QRCode", name);
         setScore();
         Log.e("QRCode", name);
     }
@@ -71,8 +74,9 @@ public class QRCode implements Serializable {
 
         String sixHash = sha256hex.substring(0,5);
         String binaryRep = new BigInteger(sixHash, 16).toString(2);
+        Log.e("QRCode", binaryRep);
         for (int i = 0; i < 6; i++) {
-            if (binaryRep.charAt(i) == '0') {
+            if (binaryRep.charAt(i+1) == '0') {
                 name += names.get(i)[0];
             }
             else {
@@ -131,7 +135,7 @@ public class QRCode implements Serializable {
         faces.put(4, new Integer[]{R.id.mouth1, R.id.mouth2});
 
       for (int i = 0; i < 5; i++) {
-          if (binaryRep.charAt(i) == '0') {
+          if (binaryRep.charAt(i+1) == '0') {
               avatarList.add(faces.get(i)[0]);
           } else {
               avatarList.add(faces.get(i)[1]);
