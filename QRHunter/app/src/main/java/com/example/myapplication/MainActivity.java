@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
     private CameraController cameraController;
     private QRCodeControllerDB qrCodeControllerDB;
     private Player currentPlayer;
+
+    //test
     ActivityResultLauncher<Intent> forResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
         public void onActivityResult(ActivityResult result) {

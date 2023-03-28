@@ -51,7 +51,6 @@ public class ScannedQRCodeActivity extends AppCompatActivity {
     private Button confirm;
     private FusedLocationProviderClient locationProviderClient;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +74,6 @@ public class ScannedQRCodeActivity extends AppCompatActivity {
         QRscore = findViewById(R.id.qrScore);
         playerCount = findViewById(R.id.player_count);
         confirm = findViewById(R.id.confirm_button);
-
         QRname.setText(qrControllerView.getName());
         QRscore.setText(String.valueOf(qrControllerView.getScore()));
         calculatePlayerCount();
@@ -170,6 +168,7 @@ public class ScannedQRCodeActivity extends AppCompatActivity {
                 .create();
 
     }
+
 
 
 
