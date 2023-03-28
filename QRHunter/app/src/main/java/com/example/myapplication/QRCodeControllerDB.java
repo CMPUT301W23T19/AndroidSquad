@@ -25,6 +25,8 @@ package com.example.myapplication;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Location;
+import android.os.Parcelable;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -56,6 +58,7 @@ public class QRCodeControllerDB {
     private FirebaseFirestore db;
     private ArrayList<Integer> features;
     private PlayerController pc;
+    private Location location;
 
     /**
      * Constructor function for QRCodeController
@@ -156,12 +159,14 @@ public class QRCodeControllerDB {
        start(context);
     }
 
+
     /**
      * Start ScannedQRCodeActivity
      */
     private void start(Context context) {
         Intent intent = new Intent(context, ScannedQRCodeActivity.class);
         intent.putExtra("qrCode", (Serializable) qrCode);
+        intent.putExtra("location", location);
         context.startActivity(intent);
     }
 
@@ -219,5 +224,9 @@ public class QRCodeControllerDB {
                         Log.e("QRCodeControllerDB", "Failed to delete user");
                     }
                 });
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }

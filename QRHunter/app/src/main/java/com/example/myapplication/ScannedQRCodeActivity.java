@@ -9,11 +9,14 @@ package com.example.myapplication;
  * --License: CC BY-SA
  */
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,13 +30,16 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NavUtils;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -49,8 +55,7 @@ public class ScannedQRCodeActivity extends AppCompatActivity {
     private TextView QRscore;
     private TextView playerCount;
     private Button confirm;
-    private FusedLocationProviderClient locationProviderClient;
-
+    private FusedLocationProviderClient fusedLocationProviderClient;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,10 +63,10 @@ public class ScannedQRCodeActivity extends AppCompatActivity {
         setContentView(R.layout.scanned_qr_code);
         Intent intent = getIntent();
         QRCode qrCode = (QRCode) intent.getSerializableExtra("qrCode");
+        Location location = intent.getParcelableExtra("location");
         db = FirebaseFirestore.getInstance();
 
         qrControllerView = new QRCodeControllerView(qrCode, db);
-        locationProviderClient = new FusedLocationProviderClient(this);
 
         // get QR code visual representation to appear
         ArrayList<Integer> faces = qrControllerView.getAvatarlist();
@@ -88,21 +93,10 @@ public class ScannedQRCodeActivity extends AppCompatActivity {
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                // get location of user
-                                // store in database
-                                // TODO: Get location permission from camera (pass it)
-                                if (ActivityCompat.checkSelfPermission(ScannedQRCodeActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(ScannedQRCodeActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                                    // TODO: Consider calling
-                                    //    ActivityCompat#requestPermissions
-                                    // here to request the missing permissions, and then overriding
-                                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                    //                                          int[] grantResults)
-                                    // to handle the case where the user grants the permission. See the documentation
-                                    // for ActivityCompat#requestPermissions for more details.
-                                    return;
-                                }
-                                locationProviderClient.getLastLocation();
-                                getPhotoDialog().show();
+                               Log.e("Location", String.valueOf(location));
+                               db.collection("QR Code").document(qrControllerView.getName())
+                                       .update("Location", String.valueOf(location.getLatitude()) + ", " + String.valueOf(location.getLongitude()));
+                               getPhotoDialog().show();
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -155,7 +149,9 @@ public class ScannedQRCodeActivity extends AppCompatActivity {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // open camera (disable scan)
+                        // open camera TODO: change camera to match the one Randy created
+                        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                        startActivity(intent);
                         // take picture, allow them to cancel, store if they confirm
                         finish();
 

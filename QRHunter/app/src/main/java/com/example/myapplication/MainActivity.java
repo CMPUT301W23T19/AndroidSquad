@@ -117,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-            
 
             cameraController = new CameraController(this, barLauncher);
             if (item.getItemId() == R.id.camera) {
