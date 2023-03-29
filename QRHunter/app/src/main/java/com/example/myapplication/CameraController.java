@@ -65,7 +65,7 @@ public class CameraController {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
 
-            // get user's current location to potentially store QR code location
+            // get user's current location to potentially store QR code location (works when other services/apps have tracked user's location previously)
             List<String> providers = locationManager.getProviders(true);
             location = null;
             for (String provider : providers) {
@@ -128,8 +128,7 @@ public class CameraController {
         qrCodeControllerDB.validateAndAdd(context);
     }
 
-
-    }
+ }
 
 
 

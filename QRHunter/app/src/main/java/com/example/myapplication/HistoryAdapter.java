@@ -36,6 +36,7 @@ public class HistoryAdapter extends ArrayAdapter<HistoryModel> {
                     final String qrCode = qrCodes.get(i);
                     db.collection("QR Code").document(qrCode).get().addOnSuccessListener(documentSnapshot1 -> {
                         Long qrScore = documentSnapshot1.getLong("Score");
+                        Log.e("Score", qrCode + String.valueOf(qrScore));
                         HistoryModel historyModel = new HistoryModel(qrCode,qrScore);
                         add(historyModel);
                     });
@@ -58,10 +59,17 @@ public class HistoryAdapter extends ArrayAdapter<HistoryModel> {
         TextView qrCodeTextView = convertView.findViewById(R.id.scanned_name);
         TextView qrScoreTextView= convertView.findViewById(R.id.scanned_score);
         qrCodeTextView.setText(historyModel.getName());
-        qrScoreTextView.setText(String.valueOf(historyModel.getScore()));
-
-
+        qrScoreTextView.setText("Score: " + String.valueOf(historyModel.getScore()));
         return convertView;
+    }
+
+    /**
+     * Updates the list containing previously scanned QR codes as well as the listView
+     * @param position - Integer representation of the index of the item to be removed
+     */
+    public void updateDataList(int position) {
+        remove(getItem(position));
+        notifyDataSetChanged();
     }
 
 }
