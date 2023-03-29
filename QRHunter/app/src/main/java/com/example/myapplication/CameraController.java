@@ -50,14 +50,13 @@ public class CameraController {
 
     private final Context context;
     private final ActivityResultLauncher<ScanOptions> barLauncher;
-
-    private QRCodeControllerDB qrControllerDB;
     private QRCodeControllerDB qrCodeControllerDB;
     private Location location;
 
-    public CameraController(Context context, ActivityResultLauncher<ScanOptions> barLauncher) {
+    public CameraController(Context context, ActivityResultLauncher<ScanOptions> barLauncher ) {
         this.context = context;
         this.barLauncher = barLauncher;
+
     }
 
     public void scanCode() {
@@ -128,4 +127,10 @@ public class CameraController {
         qrCodeControllerDB.setLocation(location);
         qrCodeControllerDB.validateAndAdd(context);
     }
-}
+
+
+    }
+
+
+
+
