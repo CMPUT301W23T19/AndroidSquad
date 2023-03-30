@@ -118,6 +118,14 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
+            if (item.getItemId() == R.id.profile) {
+                try {
+                    Intent intent = new Intent(this,ProfileActivity.class);
+                    startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
 
             cameraController = new CameraController(this, barLauncher);
             if (item.getItemId() == R.id.camera) {
