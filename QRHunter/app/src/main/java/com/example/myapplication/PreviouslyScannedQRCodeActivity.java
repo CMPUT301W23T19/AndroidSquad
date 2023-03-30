@@ -56,11 +56,7 @@ public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
         delete = findViewById(R.id.delete);
         score = findViewById(R.id.qr_code_score);
         score.setText(qrScore.toString());
-
-        boolean d = false;
         AlertDialog.Builder builder = new AlertDialog.Builder(PreviouslyScannedQRCodeActivity.this);     // Creates window telling user they have already scanned it
-
-
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -7,49 +7,62 @@ package com.example.myapplication;
  * --URL: https://stackoverflow.com/q/12276027
  * --Author: https://stackoverflow.com/users/3118/lorenzck
  * --License: CC BY-SA
+ *
+ * Invoking a camera Activity using registerForActivityResult and using a Uri
+ * --From: www.youtube.com
+ * --URL: https://youtu.be/T8T1HAUdz1Y
+ * --Author: https://www.youtube.com/@discospiff
+ *
+ * Getting a bitmap from a Uri
+ * --From: www.stackoverflow.com
+ * --URL: https://stackoverflow.com/q/3879992
+ * --Author: https://stackoverflow.com/a/4717740
+ * --License: CC BY-SA
+ *
+ * Using and compressing a bitmap
+ * --From: www.youtube.com
+ * --URL: https://youtu.be/uMfaRApmabA
+ * --Author: https://www.youtube.com/@ProgrammerWorld
  */
 
-import android.Manifest;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
-import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+import androidx.activity.result.contract.ActivityResultContracts.TakePicture;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.NavUtils;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
+import androidx.core.content.FileProvider;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
-import java.lang.reflect.Array;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 /** Activity class that displays information about newly scanned QR code */
 public class ScannedQRCodeActivity extends AppCompatActivity {
@@ -60,6 +73,8 @@ public class ScannedQRCodeActivity extends AppCompatActivity {
     private Button confirm;
     private String username;
     private DocumentReference qrDocRef;
+    private String filename;
+    private Uri uri;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,6 +139,28 @@ public class ScannedQRCodeActivity extends AppCompatActivity {
         });
     }
 
+    ActivityResultLauncher<Uri> startForResult = registerForActivityResult(new TakePicture(), new ActivityResultCallback<Boolean>() {
+        @Override
+        public void onActivityResult(Boolean result) {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            byte[] image = stream.toByteArray();
+            StorageReference storage = FirebaseStorage.getInstance().getReference().child(String.format("images/%s/%s", username, filename));
+            storage.putBytes(image).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Log.e("PHOTO", "Stored photo in Firebase Storage!");
+                }
+            });
+            finish();
+        }
+    });
+
     /**
      * Creates an AlertDialog prompting the user to accept or reject permission when storing an image of the QR Code
      * @return AlertDialog to be displayed
@@ -134,12 +171,12 @@ public class ScannedQRCodeActivity extends AppCompatActivity {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // open camera TODO: change camera to match the one Randy created
-//                        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-//                        startActivity(intent);
-//                        // take picture, allow them to cancel, store if they confirm
-                        finish();
-                    }
+                        try {
+                            invokeCamera();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                  }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
@@ -148,6 +185,20 @@ public class ScannedQRCodeActivity extends AppCompatActivity {
                     }
                 })
                 .create();
+    }
 
+    private void invokeCamera() throws IOException {
+        // TODO: open camera
+        File file = createImgFile();
+        uri = FileProvider.getUriForFile(this, "com.example.myapplication.fileprovider", file);
+        startForResult.launch(uri);
+    }
+
+    private File createImgFile() throws IOException {
+        String qrName = (String) QRname.getText();      // use QR code name as file name
+        File imgDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        filename = qrName + ".jpg";
+        return File.createTempFile(qrName, ".jpg", imgDir);
     }
 }
+

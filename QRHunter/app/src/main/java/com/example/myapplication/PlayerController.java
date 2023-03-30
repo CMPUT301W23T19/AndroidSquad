@@ -296,10 +296,10 @@ public class PlayerController {
                                     playerDocRef.update("highestScore", qr_score);
                                     playerDocRef.update("lowestScore", qr_score);
                                 }
-                                if ((long) ptask.getResult().get("highestScore") < qr_score) {
+                                else if ((long) ptask.getResult().get("highestScore") < qr_score) {
                                     playerDocRef.update("highestScore", qr_score);
                                 }
-                                if ((long) ptask.getResult().get("lowestScore") > qr_score) {
+                                else if ((long) ptask.getResult().get("lowestScore") > qr_score) {
                                     playerDocRef.update("lowestScore", qr_score);
                                 }
                             }
