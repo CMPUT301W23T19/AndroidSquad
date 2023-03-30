@@ -90,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.camera);
@@ -119,7 +118,6 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-            
 
             cameraController = new CameraController(this, barLauncher);
             if (item.getItemId() == R.id.camera) {
@@ -166,12 +164,11 @@ public class MainActivity extends AppCompatActivity {
 
         // Retrieve game-wide high scores
         CollectionReference playersRef = db.collection("Player");
-        Query query1 = playersRef.orderBy("Score", Query.Direction.DESCENDING);
+        Query query1 = playersRef.orderBy("Score", Query.Direction.DESCENDING).limit(10);
         query1.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 int rank = 1;
                 StringBuilder sb = new StringBuilder();
-                sb.append("Rank\tPlayers\tHigh Score\n");
 
                 for (DocumentSnapshot document : task.getResult()) {
                     String name = document.getString("Name");
@@ -180,13 +177,13 @@ public class MainActivity extends AppCompatActivity {
                     sb.append(rank).append("\t").append(name).append("\t").append(Score).append("\n");
                     rank++;
                 }
-                ((TextView)findViewById(R.id.leaderboard_text)).setText(sb);
+                ((TextView)findViewById(R.id.leaderboard_text)).setText(String.valueOf(sb) + '.');
             }
         });
 
         // Set the leaderboard to be clickable
         // Transitions between home page to leaderboard page
-        TextView leaderboardText = findViewById(R.id.leaderboard_text);
+        TextView leaderboardText = findViewById(R.id.view_more);
         leaderboardText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

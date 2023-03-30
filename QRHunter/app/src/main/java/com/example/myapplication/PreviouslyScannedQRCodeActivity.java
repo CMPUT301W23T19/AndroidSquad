@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -20,9 +19,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.model.mutation.ArrayTransformOperation;
-
-import java.util.ArrayList;
 
 /** Activity class that displays comprehensive information on selected QR code */
 public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
@@ -60,11 +56,7 @@ public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
         delete = findViewById(R.id.delete);
         score = findViewById(R.id.qr_code_score);
         score.setText(qrScore.toString());
-
-        boolean d = false;
         AlertDialog.Builder builder = new AlertDialog.Builder(PreviouslyScannedQRCodeActivity.this);     // Creates window telling user they have already scanned it
-
-
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,23 +73,21 @@ public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        qrCodeControllerDB.deleteUser(qrName);
-                        playerController.deleteQRFromHistory(qrName);
-                        playerController.updateScore((int)(-1*qrScore));       // TODO: Pass in qr_score from historyActivity
-
                         DocumentReference playerDocRef =  db.collection("Player").document(username);
+                        playerController.deleteQRFromHistory(qrName);
+                        playerController.updateScore((int)(-1*qrScore), null);       // TODO: Pass in qr_score from historyActivity
+                        qrCodeControllerDB.deleteUser(qrName);
                         playerDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                         if ((long)task.getResult().get("highestScore") == (long) qrScore) {       // deleted Qr code is the highest scoring
                                             playerDocRef.update("highestScore", 0);
-                                            playerController.deleteUpdateHighLowScore("high");
                                         } else if ((long)task.getResult().get("lowestScore") == (long) qrScore) {
                                             playerDocRef.update("lowestScore", (long)task.getResult().get("highestScore"));
-                                            playerController.deleteUpdateHighLowScore("low");
                                         } else {
                                             Log.e("Updating High/Low Score", "No need to update");
                                         }
+                                        playerController.deleteUpdateHighLowScore();
                                     }
                                 });
 
@@ -109,7 +99,6 @@ public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
                 }).show();
             }
         });
-
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override

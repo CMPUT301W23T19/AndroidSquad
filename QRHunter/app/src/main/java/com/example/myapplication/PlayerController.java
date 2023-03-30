@@ -16,7 +16,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class PlayerController {
 
@@ -41,7 +43,7 @@ public class PlayerController {
             this.highestScore = highest;
             this.lowestScore = lowest;
 
-            player = new Player(score,username,highestScore,lowestScore);
+            player = new Player(score, username, highestScore, lowestScore);
         }
 
     }
@@ -56,7 +58,7 @@ public class PlayerController {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            if(task.getResult().isEmpty()) {     // user has not scanned QR code before
+                            if (task.getResult().isEmpty()) {     // user has not scanned QR code before
                                 addToHistoryofUserscore();
                             } else {
                                 Log.d("TAG", "Has the same score with previous one");
@@ -69,6 +71,7 @@ public class PlayerController {
 //                .update("Score", FieldValue.arrayUnion(score))
 
     }
+
     public void addToHistoryofUserscore() {
         db.collection("Username").document(username)
 
@@ -86,7 +89,8 @@ public class PlayerController {
                     }
                 });
     }
-    public void checkHighestScore(){
+
+    public void checkHighestScore() {
         db.collection("Player")
                 .whereEqualTo("Username", username)
                 .whereArrayContains("highestScore", score)
@@ -96,7 +100,7 @@ public class PlayerController {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            if(task.getResult().isEmpty()) {     // user has not scanned QR code before
+                            if (task.getResult().isEmpty()) {     // user has not scanned QR code before
                                 addToHighestscoreofUsers();
                             } else {
                                 Log.d("TAG", "New highest score has been updated");
@@ -126,7 +130,7 @@ public class PlayerController {
                 });
     }
 
-    public void checkLowestScore(){
+    public void checkLowestScore() {
         db.collection("Player")
                 .whereEqualTo("Username", username)
                 .whereArrayContains("lowestScore", score)
@@ -136,7 +140,7 @@ public class PlayerController {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            if(task.getResult().isEmpty()) {     // user has not scanned QR code before
+                            if (task.getResult().isEmpty()) {     // user has not scanned QR code before
                                 addToLowestScoreOfUsers();
                             } else {
                                 Log.d("TAG", "New lowest score has been updated");
@@ -149,6 +153,7 @@ public class PlayerController {
 //                .update("Score", FieldValue.arrayUnion(score))
 
     }
+
     public void addToLowestScoreOfUsers() {
         db.collection("Username").document(username)
                 .update("lowestScore", FieldValue.arrayUnion(score))
@@ -168,11 +173,13 @@ public class PlayerController {
 
     /**
      * Deletes QR code from user's profile/ history of previously scanned QR codes
+     *
      * @param qrName - String representation of the name of the QR code to be deleted
      */
     public void deleteQRFromHistory(String qrName) {
-        db.collection("Player").document(username)
-                .update("QRcode", FieldValue.arrayRemove(qrName))
+        DocumentReference docRef = db.collection("Player").document(username);
+
+        docRef.update("QRcode", FieldValue.arrayRemove(qrName))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
@@ -189,6 +196,7 @@ public class PlayerController {
 
     /**
      * Adds QR code to user's history of scanned QR codes
+     *
      * @param qr_name String representation of the name of the QR code to be added
      */
     public void addToHistoryofQRCodes(String qr_name) {
@@ -208,65 +216,61 @@ public class PlayerController {
                 });
     }
 
+
+
     /**
      * Increases or decreases user's score based on delete or add event
      * @param qr_score - Integer representation of the recently added or deleted qr code
      */
-    public void updateScore(int qr_score) {
-        db.collection("Player")
-                .document(username)
-                .update("Score", FieldValue.increment(qr_score))
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Log.e("PlayerController", "Updated user score successfully");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e("PlayerController", "Failed to update user's score");
-                    }
-                });
+    public void updateScore(int qr_score, String qrName) {
+        DocumentReference docRef = db.collection("Player").document(username);
+        if (qr_score == 0) {       // derive from db
+            db.collection("QR Code").document(qrName)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            docRef.update("Score", FieldValue.increment((Long) task.getResult().get("Score")));
+                        }
+                    });
+        } else {
+            docRef.update("Score", FieldValue.increment(qr_score));
+        }
     }
 
     /**
      * Updates the player's highest score or lowest score when QR code is deleted, if needed
-     * @param highLow - String that represents whether the high score or low score should be updated
      */
-    public void deleteUpdateHighLowScore(String highLow){
+    public void deleteUpdateHighLowScore() {
         CollectionReference qrColRef = db.collection("QR Code");
         DocumentReference playerDocRef = db.collection("Player").document(username);
         playerDocRef.get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> playerTask) {
-                        ArrayList<String> qrCodes = (ArrayList<String>)playerTask.getResult().get("QRcode");
-                        if ((qrCodes.isEmpty())){
+                        ArrayList<String> qrCodes = (ArrayList<String>) playerTask.getResult().get("QRcode");
+                        if (qrCodes.isEmpty()) {
                             Log.e("PlayerController", "There are no QR codes");
+                            playerDocRef.update("highestScore", 0);
+                            playerDocRef.update("lowestScore", 0);
                         } else {
                             Log.e("PlayerController", "qrCodes:" + String.valueOf(qrCodes));
-
                             for (int i = 0; i < qrCodes.size(); i++) {
                                 qrColRef.document(qrCodes.get(i))
-                                    .get()
-                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DocumentSnapshot> qrTask) {
-                                            if (highLow.compareTo("high") == 0) {
-                                                if ((long)qrTask.getResult().get("Score") > (long) playerTask.getResult().get("highestScore")) {
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> qrTask) {
+                                                if ((long) qrTask.getResult().get("Score") > (long) playerTask.getResult().get("highestScore")) {
                                                     playerDocRef.update("highestScore", qrTask.getResult().get("Score"));
                                                     Log.e("PlayerController", "Successfully updated highest score");
                                                 }
-                                            } else {
-                                                if ((long)qrTask.getResult().get("Score") < (long) playerTask.getResult().get("lowestScore")) {
+                                                if ((long) qrTask.getResult().get("Score") < (long) playerTask.getResult().get("lowestScore")) {
                                                     playerDocRef.update("lowestScore", qrTask.getResult().get("Score"));
                                                     Log.e("PlayerController", "Successfully updated lowest score");
                                                 }
                                             }
-
-                                        }
-                                    });
+                                        });
                             }
                         }
                     }
@@ -275,26 +279,36 @@ public class PlayerController {
 
     /**
      * Updates player's highest or lowest score when they scan a new QR code, if needed
-     * @param qr_score - Integer representation of the score of the recently added QR code
+     * @param qrName - String representation of the name of the recently added QR Code
      */
-    public void addUpdateHighLow(int qr_score){
+    public void addUpdateHighLow(String qrName) {
         DocumentReference playerDocRef = db.collection("Player").document(username);
         playerDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if ((long) task.getResult().get("highestScore") < (long)qr_score) {
-                    playerDocRef.update("highestScore", qr_score);
-                    Log.e("PlayerController", "Updated High Score");
-                }
-                if ((long) task.getResult().get("lowestScore") > (long)qr_score) {
-                    playerDocRef.update("lowestScore", qr_score);
-                    Log.e("PlayerController", "Updated Low Score");
-
-                }
+            public void onComplete(@NonNull Task<DocumentSnapshot> ptask) {
+                db.collection("QR Code").document(qrName)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> qtask) {
+                                long qr_score = qtask.getResult().getLong("Score");
+                                if (((ArrayList<String>) ptask.getResult().get("QRcode")).size() == 1) {
+                                    playerDocRef.update("highestScore", qr_score);
+                                    playerDocRef.update("lowestScore", qr_score);
+                                }
+                                else if ((long) ptask.getResult().get("highestScore") < qr_score) {
+                                    playerDocRef.update("highestScore", qr_score);
+                                }
+                                else if ((long) ptask.getResult().get("lowestScore") > qr_score) {
+                                    playerDocRef.update("lowestScore", qr_score);
+                                }
+                            }
+                        });
             }
         });
 
     }
-
 }
+
+
 

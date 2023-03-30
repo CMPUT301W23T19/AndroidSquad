@@ -1,0 +1,18 @@
+<!--References:
+Creating a FileProvider:
+From: www.youtube.com
+URL: https://youtu.be/RPYlwuN-E0U
+Author: https://www.youtube.com/@discospiff-->
+
+<paths  xmlns:android="http://schemas.android.com/apk/res/android">
+    <external-files-path
+        name="images"
+        path="Android/data/com.example.myapplication/files/Pictures"/>
+    <external-files-path
+        name="other_imgs"
+        path="/storage/emulated/0/Android/data/com.example.myapplication/files/Pictures"/>
+    <external-files-path
+        name="root_imgs"
+        path="/"/>
+
+</paths>

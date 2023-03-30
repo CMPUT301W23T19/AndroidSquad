@@ -47,10 +47,9 @@ public class HistoryActivity extends AppCompatActivity {
     Button bb;
     ImageButton back;
     private String username;
-    ArrayAdapter<String> arrayAdapter;
+    HistoryAdapter adapter;
     ListView historyList;
     private FirebaseFirestore db;
-    ArrayList<String> qrNames;
 
 
 
@@ -65,13 +64,9 @@ public class HistoryActivity extends AppCompatActivity {
         // Testing history list
         historyList = findViewById(R.id.history_list);
         ListView listView = findViewById(R.id.history_list);
-        //qrNames = new ArrayList<>();
-//        arrayAdapter = new ArrayAdapter(this, R.layout.history_list_contents, R.id.scanned_name, qrNames);
-//        historyList.setAdapter(arrayAdapter);
-
 
         // custom array adapter
-        HistoryAdapter adapter= new HistoryAdapter(this,getIntent());
+        adapter= new HistoryAdapter(this,getIntent());
         listView.setAdapter(adapter);
 
 
@@ -79,7 +74,6 @@ public class HistoryActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 openScannedQRCodeProfile(adapter.getItem(position).getName(),adapter.getItem(position).getScore(),position);
-                //openScannedQRCodeProfile(qrNames.get(position),(long)position);    // for testing purposes
             }
         });
 
@@ -97,11 +91,11 @@ public class HistoryActivity extends AppCompatActivity {
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() > -1) {      // delete qr code
+                    int position = result.getResultCode();
+                    if (position > -1) {      // delete qr code
                         // delete from qr codes list
-                        Log.e("HistoryActivity","Position of item to be deleted: " + String.valueOf(result.getResultCode()));
-                        qrNames.remove(result.getResultCode());
-                        arrayAdapter.notifyDataSetChanged();
+                        Log.e("HistoryActivity","Position of item to be deleted: " + String.valueOf(position));
+                        adapter.updateDataList(position);
                     }
                 }
             });

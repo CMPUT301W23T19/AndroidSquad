@@ -25,6 +25,8 @@ package com.example.myapplication;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Location;
+import android.os.Parcelable;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -56,6 +58,8 @@ public class QRCodeControllerDB {
     private FirebaseFirestore db;
     private ArrayList<Integer> features;
     private PlayerController pc;
+    private Location location;
+
 
     /**
      * Constructor function for QRCodeController
@@ -72,6 +76,7 @@ public class QRCodeControllerDB {
             score = qrCode.getScore();
             sha256hex = qrCode.getHash();
             features = qrCode.getAvatarList();
+            Log.e("SCORE", String.valueOf(score));
         }
     }
 
@@ -88,12 +93,12 @@ public class QRCodeControllerDB {
                         if (task.isSuccessful()) {
                             if (task.getResult().isEmpty()) {       // add new qr code
                                 addQRCodetoDatabase(context);
-                                pc.updateScore(score);
+                                pc.updateScore(score, null);
                             } else {
                                 checkIfScanned(context);
                             }
                             pc.addToHistoryofQRCodes(name);
-                            pc.addUpdateHighLow(score);
+                            pc.addUpdateHighLow(name);
                         }
                     }
                 });
@@ -152,16 +157,20 @@ public class QRCodeControllerDB {
                         Log.e("QRCodeControllerDB", "Error adding user");
                     }
                 });
-       pc.updateScore(score);
+       pc.updateScore(0, name);
        start(context);
     }
+
 
     /**
      * Start ScannedQRCodeActivity
      */
     private void start(Context context) {
         Intent intent = new Intent(context, ScannedQRCodeActivity.class);
-        intent.putExtra("qrCode", (Serializable) qrCode);
+        intent.putExtra("qrName", name);
+        intent.putExtra("location", location);
+        intent.putExtra("username", user);
+        intent.putExtra("Avatar", features);
         context.startActivity(intent);
     }
 
@@ -171,23 +180,20 @@ public class QRCodeControllerDB {
     public void addQRCodetoDatabase(Context context) {
         Map<String, String> comments = new HashMap<>();
         ArrayList<String> usernames = new ArrayList<>();
-
-        // Testing adding a comment
-        comments.put(user, "Wow!");
+        Map<String, Object> qrCodeContents = new HashMap<>();
         usernames.add(user);
 
-        Map<String, Object> qrCode = new HashMap<>();
-        qrCode.put("Comment", comments);
-        qrCode.put("Hash", sha256hex);
-        qrCode.put("Location", null);
-        qrCode.put("Name", name);
-        qrCode.put("Photo", "code.png");
-        qrCode.put("Score", score);
-        qrCode.put("Username", usernames);
-        qrCode.put("Avatar", features);
+        qrCodeContents.put("Comment", comments);
+        qrCodeContents.put("Hash", sha256hex);
+        qrCodeContents.put("Location", null);
+        qrCodeContents.put("Name", name);
+        qrCodeContents.put("Photo", "code.png");
+        qrCodeContents.put("Score", score);
+        qrCodeContents.put("Username", usernames);
+        qrCodeContents.put("Avatar", features);
 
         db.collection("QR Code").document(name)
-            .set(qrCode)
+            .set(qrCodeContents)
             .addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void avoid) {
@@ -219,5 +225,8 @@ public class QRCodeControllerDB {
                         Log.e("QRCodeControllerDB", "Failed to delete user");
                     }
                 });
+    }
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }

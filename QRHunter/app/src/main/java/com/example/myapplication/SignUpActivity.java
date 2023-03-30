@@ -111,6 +111,7 @@ public class SignUpActivity extends AppCompatActivity {
                                     newPlayer.put("Name", firstName.getText().toString() + " "+ lastName.getText().toString());
                                     newPlayer.put("Email", email.getText().toString());
 
+
                                     db.collection("Player").document(newUsername)
                                                                         .set(newPlayer).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override

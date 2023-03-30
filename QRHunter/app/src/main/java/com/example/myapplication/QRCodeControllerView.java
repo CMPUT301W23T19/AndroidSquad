@@ -73,15 +73,4 @@ public class QRCodeControllerView {
         Log.d("TAG", String.valueOf(playerCount));
         return playerCount;
     }
-
-//    public void handleQRCodeResult() {
-//
-//        historyActivity.saveQRCodeResult(getName());
-//    }
-
-
-
-
-
-
 }
