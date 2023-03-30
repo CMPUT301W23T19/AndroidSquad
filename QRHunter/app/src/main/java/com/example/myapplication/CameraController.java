@@ -53,7 +53,7 @@ public class CameraController {
     private QRCodeControllerDB qrCodeControllerDB;
     private Location location;
 
-    public CameraController(Context context, ActivityResultLauncher<ScanOptions> barLauncher ) {
+    public CameraController(Context context, ActivityResultLauncher<ScanOptions> barLauncher) {
         this.context = context;
         this.barLauncher = barLauncher;
 
@@ -122,9 +122,10 @@ public class CameraController {
      * @param db FirestoreFirebase where data is being stored, added and modified
      * @param context Context context of previous Activity
      */
-    public void handleScanResult(String contents, FirebaseFirestore db, Context context, String username) {
+    public void handleScanResult(String contents, FirebaseFirestore db, Context context, String username, ActivityResultLauncher<Intent> launcher) {
         qrCodeControllerDB = new QRCodeControllerDB(contents, username, db);
         qrCodeControllerDB.setLocation(location);
+        qrCodeControllerDB.setLauncher(launcher);
         qrCodeControllerDB.validateAndAdd(context);
     }
 

@@ -145,7 +145,7 @@ public class ScannedQRCodeActivity extends AppCompatActivity {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 30, stream);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -157,6 +157,7 @@ public class ScannedQRCodeActivity extends AppCompatActivity {
                     Log.e("PHOTO", "Stored photo in Firebase Storage!");
                 }
             });
+            setResult(RESULT_OK);
             finish();
         }
     });
@@ -181,19 +182,28 @@ public class ScannedQRCodeActivity extends AppCompatActivity {
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        setResult(RESULT_OK);
                         finish();
                     }
                 })
                 .create();
     }
 
+    /**
+     * Opens up the app camera that will temporarily store the captured image in the uri
+     * @throws IOException
+     */
     private void invokeCamera() throws IOException {
-        // TODO: open camera
         File file = createImgFile();
         uri = FileProvider.getUriForFile(this, "com.example.myapplication.fileprovider", file);
         startForResult.launch(uri);
     }
 
+    /**
+     * Creates a file that will store a photo
+     * @return File object of the photo
+     * @throws IOException
+     */
     private File createImgFile() throws IOException {
         String qrName = (String) QRname.getText();      // use QR code name as file name
         File imgDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
