@@ -7,9 +7,10 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-feature android:name="android.hardware.camera"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
 
+    <uses-feature android:name="android.hardware.camera" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -20,6 +21,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".MapActivity"
             android:exported="false">
@@ -45,11 +53,11 @@
         <activity
             android:name=".LeaderboardActivity"
             android:exported="true"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".ScannedQRCodeActivity"
             android:exported="false"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".CameraActivity"
             android:screenOrientation="portrait"
@@ -57,29 +65,29 @@
             android:theme="@style/zxing_CaptureTheme" />
         <activity
             android:name=".HistoryActivity"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".PreviouslyScannedQRCodeActivity"
-            android:parentActivityName=".HistoryActivity"></activity>
+            android:parentActivityName=".HistoryActivity" />
         <activity
             android:name=".CommentActivity"
-            android:parentActivityName=".HistoryActivity"></activity>
+            android:parentActivityName=".HistoryActivity" />
         <activity
             android:name=".SignUpActivity"
             android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".SearchActivity"
+            android:parentActivityName=".MainActivity" />
 
         <provider
-            android:authorities="com.example.myapplication.fileprovider"
             android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.myapplication.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"
-                />
-
+                android:resource="@xml/file_paths" />
         </provider>
     </application>
-
 
 </manifest>

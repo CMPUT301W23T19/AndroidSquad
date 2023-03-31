@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private CameraController cameraController;
     private QRCodeControllerDB qrCodeControllerDB;
     private Player currentPlayer;
+    private Button search;
 
     //test
     ActivityResultLauncher<Intent> forResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
@@ -100,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.home_page);
         FirebaseApp.initializeApp(this);
         db = FirebaseFirestore.getInstance();
+        search = (Button) findViewById(R.id.search_button);
 
         bottomNavigationView  = (BottomNavigationView)findViewById(R.id.nav_bar);
 
@@ -115,6 +117,14 @@ public class MainActivity extends AppCompatActivity {
             if (item.getItemId() == R.id.map) {
                 try {
                     Intent intent = new Intent(this,MapActivity.class);
+                    startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (item.getItemId() == R.id.profile) {
+                try {
+                    Intent intent = new Intent(this,ProfileActivity.class);
                     startActivity(intent);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -173,6 +183,14 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, LeaderboardActivity.class);
                 intent.putExtra("currentUser", currentPlayer);
                 startActivity(intent);
+            }
+        });
+        search.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                startActivity(intent);
+
             }
         });
 

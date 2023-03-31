@@ -10,17 +10,27 @@
     tools:context=".MainActivity">
 
 
-    <EditText
+
+    <SearchView
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="10dp"
+        android:layout_height="wrap_content"
+        android:iconifiedByDefault="false"
+        android:queryHint="Search..."
+        app:iconifiedByDefault="false"
         android:background="@drawable/rounded_view"
         >
 
-    </EditText>
+    </SearchView>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/search_button"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="52dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="6dp"
+        android:gravity="center_horizontal|top"
+        app:icon="?android:attr/actionModeWebSearchDrawable" />
 
 
     <LinearLayout
@@ -33,23 +43,35 @@
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
         >
+
         <ListView
             android:id="@+id/result_list"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/white"
-             />
+            android:background="@color/white" />
 
-        <Button
-            android:id="@+id/result_summary"
-            android:layout_width="match_parent"
+        <ImageButton
+            android:id="@+id/back_button_button"
+            android:layout_width="50dp"
             android:layout_height="40dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:textSize="15dp"
-            android:layout_marginRight="10dp"
-            android:text="View all xxx accounts"/>
+            android:background="@drawable/rounded_view"
+            android:src="@drawable/back"
+            android:backgroundTint="#9C9A9A"
+            app:tint="#120E10">
+        </ImageButton>
+
+
+
+        <!--        <Button-->
+        <!--            android:id="@+id/result_summary"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="40dp"-->
+        <!--            android:layout_marginBottom="10dp"-->
+        <!--            android:layout_marginLeft="10dp"-->
+        <!--            android:textSize="15dp"-->
+        <!--            android:layout_marginRight="10dp"-->
+        <!--            android:text="View all xxx accounts"/>-->
 
     </LinearLayout>
 </RelativeLayout>
