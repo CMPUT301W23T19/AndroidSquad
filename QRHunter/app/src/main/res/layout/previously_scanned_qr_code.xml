@@ -87,13 +87,12 @@
             android:id="@+id/count_players_scanned_qr_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
             android:layout_below="@+id/qr_code_location"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="30dp"
             android:text="100 other player scanned this QR Code"
             android:textSize="20sp"
-            android:layout_marginTop="30dp"
-            android:textStyle="bold"
-             />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/location"
@@ -131,6 +130,36 @@
             android:layout_marginRight="30dp"
             android:background="@drawable/rounded_view"
             android:backgroundTint="#1F0B42"/>
+
+        <Button
+            android:id="@+id/open_comment"
+            android:layout_width="123dp"
+            android:layout_height="71dp"
+
+
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="138dp"
+            android:layout_marginEnd="141dp"
+            android:layout_marginBottom="97dp"
+            android:text="See Comments" />
+
+        <!--        <TextView-->
+        <!--            android:id="@+id/textView12"-->
+        <!--            android:layout_width="104dp"-->
+        <!--            android:layout_height="37dp"-->
+        <!--            android:layout_alignParentStart="true"-->
+        <!--            android:layout_alignParentTop="true"-->
+        <!--            android:layout_alignParentEnd="true"-->
+        <!--            android:layout_alignParentBottom="true"-->
+        <!--            android:layout_marginStart="133dp"-->
+        <!--            android:layout_marginTop="568dp"-->
+        <!--            android:layout_marginEnd="165dp"-->
+        <!--            android:layout_marginBottom="134dp"-->
+        <!--            android:text="Comments"-->
+        <!--            android:textSize="20sp"-->
+        <!--            android:textStyle="bold" />-->
 
 
     </RelativeLayout>

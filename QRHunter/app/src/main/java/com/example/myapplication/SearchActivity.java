@@ -1,7 +1,10 @@
 package com.example.myapplication;
 
 
+
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import android.widget.ImageButton;
@@ -27,10 +30,12 @@ import java.util.List;
 
 
 
+
 /**
  * Resource: https://www.youtube.com/watch?v=lBgX58-Sdf0
  * https://www.geeksforgeeks.org/how-to-implement-android-searchview-with-example/
  * https://www.youtube.com/watch?v=M3UDh9mwBd8
+ * https://www.youtube.com/watch?v=j9Kp0shGUT8
  */
 
 
@@ -62,14 +67,13 @@ public class SearchActivity extends AppCompatActivity {
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 List<DocumentSnapshot> documents = queryDocumentSnapshots.getDocuments();
 
-                // Display the top3 player in the rank
+                // Display the player info
                 players = new ArrayList<>();
                 for (DocumentSnapshot document : queryDocumentSnapshots) {
                     HashMap<String, String> playerData = new HashMap<>();
                     playerData.put("Username", document.getString("Username"));
                     playerData.put("Name", document.getString("Name"));
                     players.add(playerData);
-
                 }
                 // get the all user info saved in database
                 for (int i = 0; i < players.size(); i++) {
@@ -79,7 +83,6 @@ public class SearchActivity extends AppCompatActivity {
                             adapter.add(players.get(i));
                     }
                 }
-
                 adapter.notifyDataSetChanged();
                 searchList.setAdapter(adapter);
             }
