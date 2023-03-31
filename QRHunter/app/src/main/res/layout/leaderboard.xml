@@ -33,24 +33,24 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-       android:layout_centerInParent="true"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_centerInParent="true"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
         android:layout_marginRight="10dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/rounded_view">
 
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:fontFamily="sans-serif"
-            android:text="High Scores: All Players"
+            android:text="Leaderboard"
+            android:textColor="@color/white"
             android:textSize="18dp"
-            android:textColor="#515151"
             android:textStyle="bold" />
 
         <ImageView
@@ -87,32 +87,32 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/title"
             android:layout_centerHorizontal="true"
-            android:textColor="#00008B"
-            android:text="score" />
+            android:text="score"
+            android:textColor="#00008B" />
 
         <TextView
             android:id="@+id/rank2_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
             android:layout_below="@+id/title"
-            android:layout_alignParentLeft="true"
             android:layout_alignLeft="@+id/rank1_score"
+            android:layout_alignParentLeft="true"
+            android:layout_gravity="left"
             android:layout_marginLeft="45dp"
             android:layout_marginTop="20dp"
-            android:textColor="#00008B"
-            android:text="score" />
+            android:text="score"
+            android:textColor="#00008B" />
 
         <TextView
             android:id="@+id/rank3_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_below="@+id/title"
+            android:layout_alignParentRight="true"
             android:layout_marginTop="20dp"
             android:layout_marginRight="45dp"
-            android:textColor="#00008B"
-            android:text="score" />
+            android:text="score"
+            android:textColor="#00008B" />
 
         <TextView
             android:id="@+id/rank1_name"
@@ -125,12 +125,12 @@
 
         <TextView
             android:id="@+id/rank2_name"
-            android:text="username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rank2"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="25dp"
+            android:text="username"
             android:textColor="#434242" />
 
         <TextView
@@ -181,9 +181,9 @@
             android:id="@+id/all_players_rank"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible"
             android:layout_below="@id/player_rank"
-            android:layout_alignParentBottom="true" />
+            android:layout_alignParentBottom="true"
+            android:visibility="visible" />
 
         <ImageButton
             android:id="@+id/back_from_leaderboard"
@@ -194,8 +194,6 @@
             android:backgroundTint="#9C9A9A"
             app:tint="#120E10">
         </ImageButton>
-
-
 
     </RelativeLayout>
 

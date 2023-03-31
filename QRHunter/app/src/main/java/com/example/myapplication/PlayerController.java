@@ -22,19 +22,19 @@ import java.util.HashMap;
 
 public class PlayerController {
 
-    private Number score = 93;
+    private Integer score = 93;
 
     private static String username;
 
-    private Number highestScore;
+    private Integer highestScore;
 
-    private Number lowestScore;
+    private Integer lowestScore;
 
     Player player;
 
     FirebaseFirestore db;
 
-    public PlayerController(Number scores, Number highest, Number lowest, String username, FirebaseFirestore db) {
+    public PlayerController(Integer scores, Integer highest, Integer lowest, String username, FirebaseFirestore db) {
         this.username = username;
         this.db = db;
 

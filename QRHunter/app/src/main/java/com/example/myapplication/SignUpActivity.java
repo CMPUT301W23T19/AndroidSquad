@@ -6,6 +6,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -27,6 +28,7 @@ import com.google.firebase.firestore.Query;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -104,20 +106,26 @@ public class SignUpActivity extends AppCompatActivity {
                                     newPlayer.put("Username", newUsername);
                                     newPlayer.put("MachineCode", id);
                                     newPlayer.put("QRcode", new ArrayList<String>());
-                                    newPlayer.put("Score", 0);
-                                    newPlayer.put("highestScore", 0);
-                                    newPlayer.put("Avatar", ((BitmapDrawable)avatar.getDrawable()).getBitmap().toString());
-                                    newPlayer.put("lowestScore", 0);
+                                    newPlayer.put("Score", ((long)0));
+                                    newPlayer.put("highestScore", ((long)0));
+                                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                                    ((BitmapDrawable)avatar.getDrawable()).getBitmap().compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
+                                    newPlayer.put("Avatar", Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT));
+                                    newPlayer.put("lowestScore", ((long)0));
                                     newPlayer.put("Name", firstName.getText().toString() + " "+ lastName.getText().toString());
                                     newPlayer.put("Email", email.getText().toString());
 
+                                    Log.e("SignUp Activity, bitmap is :", Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT));
 
                                     db.collection("Player").document(newUsername)
                                                                         .set(newPlayer).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void unused) {
+                                                    Log.e("Signup Activity: ", "Signup Successful shutting down page!");
                                                     Toast.makeText(SignUpActivity.this, "SignUp Successful!", Toast.LENGTH_SHORT);
                                                     Intent intent = new Intent();
+                                                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                                                    ((BitmapDrawable)avatar.getDrawable()).getBitmap().compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
                                                     Player player = new Player(firstName.getText().toString() + " "+ lastName.getText().toString(),
                                                                                 0,
                                                                                 newUsername,
@@ -125,7 +133,7 @@ public class SignUpActivity extends AppCompatActivity {
                                                                                 0,
                                                                                 new ArrayList<String>(),
                                                                                 id,
-                                                            ((BitmapDrawable)avatar.getDrawable()).getBitmap().toString()); //Init a new Player class locally
+                                                                          null); //Init a new Player class locally
                                                     Bundle bundle = new Bundle();
                                                     bundle.putSerializable("CurrentUser", player);
                                                     intent.putExtras(bundle);
@@ -148,7 +156,7 @@ public class SignUpActivity extends AppCompatActivity {
             } else { // Player found! Send player back to homepage, logged in.
                 Intent intent = new Intent();
                 DocumentSnapshot document = queryDocumentSnapshots.getDocuments().get(0);
-                Player player = new Player(document.getString("Name"),document.getLong("Score"), document.getString("Username"), document.getLong("highestScore"), document.getLong("lowestScore"), (ArrayList<String>) document.get("QRcode"), document.getString("MachineCode"), document.getString("Avatar"));
+                Player player = new Player(document.getString("Name"), document.getLong("Score").intValue(), document.getString("Username"), document.getLong("highestScore").intValue(), document.getLong("lowestScore").intValue(), (ArrayList<String>) document.get("QRcode"), document.getString("MachineCode"), document.getString("Avatar"));
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("CurrentUser", player);
                 intent.putExtras(bundle);

@@ -71,16 +71,21 @@ public class MainActivity extends AppCompatActivity {
             if (result != null && result.getResultCode() == RESULT_OK) {
                 Bundle bundle = result.getData().getExtras();
 
-                name = findViewById(R.id.name);
-                currentPlayer = (Player) bundle.getSerializable("CurrentUser");
-                name.setText(currentPlayer.getUsername());
+                // Sending image with Player class would cause size too large error, so avatar field is null in local
+                // If you need avatar, you can ask firestore to find current user and fetch avatar in callback function (i.e. OnSuccessfulListener)
+                currentPlayer = (Player)bundle.getSerializable("CurrentUser");
                 Log.e("MainActivity: ", "User " + currentPlayer.getUsername());
-                long highestScore = (long) currentPlayer.getHighestscore();
-                long lowestScore = (long) currentPlayer.getLowestscore();
-                long qrCount = currentPlayer.getQrcode().size();
-                long totalScore = (long) currentPlayer.getScore();
-                String playerRanksText = "Highest score: " + highestScore + "\n" + "Lowest score: " + lowestScore + "\nQR scanned: " + qrCount
-                        + "\nTotal Score: " + totalScore;
+                name = findViewById(R.id.name);
+                name.setText(currentPlayer.getUsername());
+
+
+
+                Integer highestScore = currentPlayer.getHighestscore();
+                Integer lowestScore = currentPlayer.getLowestscore();
+                Integer qrCount = currentPlayer.getQrcode().size();
+                Integer totalScore =  currentPlayer.getScore();
+                String playerRanksText = "Highest score: " + highestScore + "\n" + "Lowest score: " + lowestScore+"\nQR scanned: "+qrCount
+                        +"\nTotal Score: " + totalScore;
                 TextView playerRankTextView = findViewById(R.id.player_ranks);
                 playerRankTextView.setText(playerRanksText);
             }
@@ -176,7 +181,6 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-
         // Set the leaderboard to be clickable
         // Transitions between home page to leaderboard page
         TextView leaderboardText = findViewById(R.id.view_more);
@@ -184,9 +188,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, LeaderboardActivity.class);
+                intent.putExtra("currentUser", currentPlayer);
                 startActivity(intent);
             }
         });
+
 
         search.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -209,12 +215,12 @@ public class MainActivity extends AppCompatActivity {
 
                 for (DocumentSnapshot document : task.getResult()) {
                     String name = document.getString("Name");
-                    long Score = document.getLong("Score");
+                    long Score = document.getLong("Score").intValue();
 
                     sb.append(rank).append("\t").append(name).append("\t").append(Score).append("\n");
                     rank++;
                 }
-                ((TextView) findViewById(R.id.leaderboard_text)).setText(String.valueOf(sb) + '.');
+                ((TextView)findViewById(R.id.leaderboard_text)).setText(String.valueOf(sb) + '.');
             }
         });
 
