@@ -185,13 +185,16 @@
             android:layout_below="@id/player_rank"
             android:layout_alignParentBottom="true" />
 
-        <Button
+        <ImageButton
             android:id="@+id/back_from_leaderboard"
-            android:layout_width="wrap_content"
-            android:textSize="15dp"
-            android:layout_toLeftOf="@+id/title"
-            android:layout_height="wrap_content"
-            android:text="Back to Home"/>
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:background="@drawable/rounded_view"
+            android:src="@drawable/back"
+            android:backgroundTint="#9C9A9A"
+            app:tint="#120E10">
+        </ImageButton>
+
 
 
     </RelativeLayout>

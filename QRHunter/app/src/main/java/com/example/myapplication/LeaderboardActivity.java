@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -27,7 +28,7 @@ import java.util.List;
 public class LeaderboardActivity extends AppCompatActivity {
     ListView playerRanks;
     RankAdapter rankAdapter;
-    Button back;
+    ImageButton back;
 
     List<HashMap<String, Object>> players = new ArrayList<>();
     FirebaseFirestore db;

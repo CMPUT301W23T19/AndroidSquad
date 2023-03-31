@@ -5,7 +5,6 @@ package com.example.myapplication;
  * -- From: www.stackoverflow.com
  * -- URL: https://stackoverflow.com/q/67641594
  * -- Author: https://stackoverflow.com/users/10429009/ali-moghadam
- *
  */
 
 import androidx.activity.result.ActivityResult;
@@ -61,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     private CameraController cameraController;
     private static Player currentPlayer;
+    private Button search;
 
     ActivityResultLauncher<Intent> forResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
@@ -95,10 +95,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.home_page);
         FirebaseApp.initializeApp(this);
         db = FirebaseFirestore.getInstance();
+        search = (Button) findViewById(R.id.search_button);
 
         Intent signup = new Intent(MainActivity.this, SignUpActivity.class);
         forResult.launch(signup);
         bottomNavigationView  = (BottomNavigationView)findViewById(R.id.nav_bar);
+        leaderboardScores();
+
         ActivityResultLauncher<Intent> updateScores = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
@@ -141,6 +144,15 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
+            if (item.getItemId() == R.id.profile) {
+                try {
+                    Intent intent = new Intent(this,ProfileActivity.class);
+                    startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
             cameraController = new CameraController(this, barLauncher);
             if (item.getItemId() == R.id.camera) {
                 try {
@@ -162,8 +174,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        leaderboardScores();
-
         // Set the leaderboard to be clickable
         // Transitions between home page to leaderboard page
         TextView leaderboardText = findViewById(R.id.view_more);
@@ -172,6 +182,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, LeaderboardActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        search.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                startActivity(intent);
+
             }
         });
     }
@@ -195,6 +214,7 @@ public class MainActivity extends AppCompatActivity {
                 ((TextView) findViewById(R.id.leaderboard_text)).setText(String.valueOf(sb) + '.');
             }
         });
+
     }
 
 }

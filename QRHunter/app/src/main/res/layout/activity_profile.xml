@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context=".ProfileActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="15dp"
+        android:background="@drawable/rounded_view"
+        >
+
+        <ImageView
+            android:id="@+id/userAvatar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/profilepic"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="180dp"
+            android:layout_marginBottom="30dp"/>
+
+        <TextView
+            android:id="@+id/user_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your Score:"
+            android:textColor="#EAE8E8"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_below="@+id/username"
+            android:layout_centerHorizontal="true"
+            />
+
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="WELCOME BACK!"
+            android:textAlignment="center"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:textColor="#FFFFFF"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            />
+
+            <TextView
+                android:id="@+id/username2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="User's Name"
+                android:textColor="#EAE8E8"
+                android:textSize="34sp"
+                android:textStyle="bold"
+                android:layout_below="@+id/userAvatar"/>
+
+            <TextView
+                android:id="@+id/username3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/username2"
+                android:layout_centerHorizontal="true"
+                android:text="&quot;@username&quot;"
+                android:textColor="#EAE8E8"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/username3"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:text="E-mail: username@xyz.com"
+                android:textColor="#EAE8E8"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:background="@drawable/rounded_view"
+            android:backgroundTint="#9C9A9A"
+            android:src="@drawable/back"
+            app:tint="#120E10"></ImageButton>
+    </RelativeLayout>
+
+
+</RelativeLayout>
