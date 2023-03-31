@@ -1,6 +1,9 @@
 package com.example.myapplication;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,10 +37,21 @@ public class RankAdapter extends ArrayAdapter<HashMap<String, Object>> {
         TextView username = view.findViewById(R.id.username);
         ImageView usericon = view.findViewById(R.id.user_icon); // TODO: implement imageview when avatar feature is available
         TextView userscore = view.findViewById(R.id.score);
-        Log.e("RankAdapter: ", "Adding username: " + user.get("Username").toString());
+        Log.e("RankAdapter: ", "Adding username: " + user.get("Username").toString()+" Avatar is :" + user.get("Avatar"));
         username.setText(user.get("Username").toString());
         userscore.setText(String.valueOf(user.get("Score")));
-
+        usericon.setImageBitmap(StringToBitMap((String) user.get("Avatar")));
         return view;
+    }
+
+    public Bitmap StringToBitMap(String encodedString){
+        try {
+            byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch(Exception e) {
+            e.getMessage();
+            return null;
+        }
     }
 }

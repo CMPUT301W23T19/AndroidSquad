@@ -1,12 +1,16 @@
 package com.example.myapplication;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -27,11 +31,12 @@ import java.util.List;
 public class LeaderboardActivity extends AppCompatActivity {
     ListView playerRanks;
     RankAdapter rankAdapter;
+    Player currentPlayer;
     Button back;
 
     List<HashMap<String, Object>> players = new ArrayList<>();
     FirebaseFirestore db;
-    String userName = "anna46";// Mock player set as default player for now
+    String userName;// Mock player set as default player for now
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,20 +48,9 @@ public class LeaderboardActivity extends AppCompatActivity {
         playerRanks.setAdapter(rankAdapter);
         back = findViewById(R.id.back_from_leaderboard);
 
-//        // Bottom Navigation bar functionality
-//        bottomNavigationView.setOnItemSelectedListener(item -> {
-//            if (item.getItemId() == R.id.camera) {
-//                try {
-//                    Intent intent = new Intent();
-//                    intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-//                    startActivity(intent);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//            return true;
-//        });
-
+        Bundle bundle = getIntent().getExtras();
+        currentPlayer = (Player)bundle.getSerializable("currentUser");
+        userName  = currentPlayer.getUsername();
         // Get the player rank for the highest score QR scanned
         db = FirebaseFirestore.getInstance();
         CollectionReference playerRef = db.collection("Player");
@@ -67,6 +61,7 @@ public class LeaderboardActivity extends AppCompatActivity {
                 HashMap<String, Object> playerData = new HashMap<>();
                 playerData.put("Username", document.getString("Username"));
                 playerData.put("highestScore", document.getLong("highestScore"));
+                playerData.put("Avatar", document.get("Avatar"));
                 players.add(playerData);
             }
 
@@ -75,7 +70,7 @@ public class LeaderboardActivity extends AppCompatActivity {
             for (int i = 0; i < players.size(); i++) {
                 String name = (String) players.get(i).get("Username");
                 if (name.equals(userName)) {
-                    playerRank = i + 1;
+                    playerRank = i ;
                     break;
                 }
             }
@@ -99,6 +94,7 @@ public class LeaderboardActivity extends AppCompatActivity {
                     HashMap<String, Object> playerData = new HashMap<>();
                     playerData.put("Username", document.getString("Username"));
                     playerData.put("Score", document.getLong("Score"));
+                    playerData.put("Avatar", document.get("Avatar"));
                     players.add(playerData);
 
                 }
@@ -108,15 +104,18 @@ public class LeaderboardActivity extends AppCompatActivity {
                         case 0:
                             ((TextView)findViewById(R.id.rank1_name)).setText(players.get(i).get("Username").toString()); // set 1st username
                             ((TextView)findViewById(R.id.rank1_score)).setText("Score:\n"+players.get(i).get("Score").toString());
+                            ((ImageView)findViewById(R.id.rank1)).setImageBitmap(StringToBitMap((String) players.get(i).get("Avatar")));
                             break;
                         case 1:
                             ((TextView)findViewById(R.id.rank2_name)).setText(players.get(i).get("Username").toString()); // set 2nd username
                             ((TextView)findViewById(R.id.rank2_score)).setText("Score:\n"+players.get(i).get("Score").toString());
+                            ((ImageView)findViewById(R.id.rank2)).setImageBitmap(StringToBitMap((String) players.get(i).get("Avatar")));
                             break;
 
                         case 2:
                             ((TextView)findViewById(R.id.rank3_name)).setText(players.get(i).get("Username").toString()); // set 1st username
                             ((TextView)findViewById(R.id.rank3_score)).setText("Score:\n"+players.get(i).get("Score").toString());
+                            ((ImageView)findViewById(R.id.rank3)).setImageBitmap(StringToBitMap((String) players.get(i).get("Avatar")));
                             break;
 
                         default:
@@ -141,6 +140,17 @@ public class LeaderboardActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    public Bitmap StringToBitMap(String encodedString){
+        try {
+            byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch(Exception e) {
+            e.getMessage();
+            return null;
+        }
     }
 }
 

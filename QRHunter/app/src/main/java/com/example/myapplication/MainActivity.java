@@ -71,14 +71,16 @@ public class MainActivity extends AppCompatActivity {
 
                 Bundle bundle = result.getData().getExtras();
 
+                // Sending image with Player class would cause size too large error, so avatar field is null in local
+                // If you need avatar, you can ask firestore to find current user and fetch avatar in callback function (i.e. OnSuccessfulListener)
                 currentPlayer = (Player)bundle.getSerializable("CurrentUser");
                 Log.e("MainActivity: ", "User " + currentPlayer.getUsername());
 
 
-                long highestScore = (long) currentPlayer.getHighestscore();
-                long lowestScore = (long) currentPlayer.getLowestscore();
-                long qrCount = currentPlayer.getQrcode().size();
-                long totalScore = (long) currentPlayer.getScore();
+                Integer highestScore = currentPlayer.getHighestscore();
+                Integer lowestScore = currentPlayer.getLowestscore();
+                Integer qrCount = currentPlayer.getQrcode().size();
+                Integer totalScore =  currentPlayer.getScore();
                 String playerRanksText = "Highest score: " + highestScore + "\n" + "Lowest score: " + lowestScore+"\nQR scanned: "+qrCount
                         +"\nTotal Score: " + totalScore;
                 TextView playerRankTextView = findViewById(R.id.player_ranks);
@@ -142,25 +144,6 @@ public class MainActivity extends AppCompatActivity {
         Intent signup = new Intent(MainActivity.this, SignUpActivity.class);
         forResult.launch(signup);
 
-        // Get highest and lowest scores, sum of scores, total number of QR player scanned
-        CollectionReference playerRef = db.collection("Player");
-        String playerName = "anna46";
-        Query query = playerRef.whereEqualTo("Username", playerName);
-        //Query query = playerRef.orderBy("Score",Query.Direction.DESCENDING);
-        query.get().addOnSuccessListener(queryDocumentSnapshots -> {
-            if (!queryDocumentSnapshots.isEmpty()) {
-                DocumentSnapshot document = queryDocumentSnapshots.getDocuments().get(0);
-                long highestScore = document.getLong("highestScore");
-                long lowestScore = document.getLong("lowestScore");
-                long qrCount = ((ArrayList<String>)document.get("QRcode")).size();
-                long totalScore = document.getLong("Score");
-                String playerRanksText = "Highest score: " + highestScore + "\n" + "Lowest score: " + lowestScore+"\nQR scanned: "+qrCount
-                        +"\nTotal Score: " + totalScore;
-                TextView playerRankTextView = findViewById(R.id.player_ranks);
-                playerRankTextView.setText(playerRanksText);
-
-            }
-        });
 
         // Retrieve game-wide high scores
         CollectionReference playersRef = db.collection("Player");
@@ -172,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
 
                 for (DocumentSnapshot document : task.getResult()) {
                     String name = document.getString("Name");
-                    long Score = document.getLong("Score");
+                    long Score = document.getLong("Score").intValue();
 
                     sb.append(rank).append("\t").append(name).append("\t").append(Score).append("\n");
                     rank++;
@@ -188,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, LeaderboardActivity.class);
+                intent.putExtra("currentUser", currentPlayer);
                 startActivity(intent);
             }
         });
