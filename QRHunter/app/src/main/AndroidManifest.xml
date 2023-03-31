@@ -8,7 +8,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
 
 
     <application
@@ -44,7 +43,7 @@
         </activity>
         <activity
             android:name=".LeaderboardActivity"
-            android:exported="true"
+            android:exported="false"
             android:parentActivityName=".MainActivity"></activity>
         <activity
             android:name=".ScannedQRCodeActivity"
@@ -53,19 +52,24 @@
         <activity
             android:name=".CameraActivity"
             android:screenOrientation="portrait"
+            android:exported="false"
             android:stateNotNeeded="true"
             android:theme="@style/zxing_CaptureTheme" />
         <activity
             android:name=".HistoryActivity"
+            android:exported="false"
             android:parentActivityName=".MainActivity"></activity>
         <activity
             android:name=".PreviouslyScannedQRCodeActivity"
+            android:exported="false"
             android:parentActivityName=".HistoryActivity"></activity>
         <activity
             android:name=".CommentActivity"
+            android:exported="false"
             android:parentActivityName=".HistoryActivity"></activity>
         <activity
             android:name=".SignUpActivity"
+            android:exported="false"
             android:parentActivityName=".MainActivity" />
 
         <provider
