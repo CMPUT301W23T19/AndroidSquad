@@ -33,7 +33,8 @@ public class LeaderboardActivity extends AppCompatActivity {
     RankAdapter rankAdapter;
     Player currentPlayer;
     Button back;
-
+    Button highestScore;
+    Button greatestSum;
     List<HashMap<String, Object>> players = new ArrayList<>();
     FirebaseFirestore db;
     String userName;// Mock player set as default player for now
@@ -54,83 +55,171 @@ public class LeaderboardActivity extends AppCompatActivity {
         // Get the player rank for the highest score QR scanned
         db = FirebaseFirestore.getInstance();
         CollectionReference playerRef = db.collection("Player");
-        Query query = playerRef.orderBy("highestScore", Query.Direction.DESCENDING);
-        query.get().addOnSuccessListener(queryDocumentSnapshots -> {
-            players = new ArrayList<>();
-            for (DocumentSnapshot document : queryDocumentSnapshots) {
-                HashMap<String, Object> playerData = new HashMap<>();
-                playerData.put("Username", document.getString("Username"));
-                playerData.put("highestScore", document.getLong("highestScore"));
-                playerData.put("Avatar", document.get("Avatar"));
-                players.add(playerData);
-            }
+//        Query query = playerRef.orderBy("highestScore", Query.Direction.DESCENDING);
+//        query.get().addOnSuccessListener(queryDocumentSnapshots -> {
+//            players = new ArrayList<>();
+//            for (DocumentSnapshot document : queryDocumentSnapshots) {
+//                HashMap<String, Object> playerData = new HashMap<>();
+//                playerData.put("Username", document.getString("Username"));
+//                playerData.put("highestScore", document.getLong("highestScore"));
+//                playerData.put("Avatar", document.get("Avatar"));
+//                players.add(playerData);
+//            }
+//
+//            // Find the rank of the player with the given name
+//            int playerRank = -1;
+//            for (int i = 0; i < players.size(); i++) {
+//                String name = (String) players.get(i).get("Username");
+//                if (name.equals(userName)) {
+//                    playerRank = i ;
+//                    break;
+//                }
+//            }
+//
+//            // Set the text of the playerRank TextView to display the player's rank
+//            String playerRankText = "Your rank(highest scoring): " + playerRank;
+//            TextView playerRankTextView = findViewById(R.id.player_rank);
+//            playerRankTextView.setText(playerRankText);
+//        });
 
-            // Find the rank of the player with the given name
-            int playerRank = -1;
-            for (int i = 0; i < players.size(); i++) {
-                String name = (String) players.get(i).get("Username");
-                if (name.equals(userName)) {
-                    playerRank = i ;
-                    break;
-                }
-            }
-
-            // Set the text of the playerRank TextView to display the player's rank
-            String playerRankText = "Your rank(highest scoring): " + playerRank;
-            TextView playerRankTextView = findViewById(R.id.player_rank);
-            playerRankTextView.setText(playerRankText);
-        });
-
-        // Get the scores collection from Firestore
         CollectionReference scoresCollection = db.collection("Player");
-        scoresCollection.orderBy("Score",Query.Direction.DESCENDING).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+
+        // Set up onclick for highestScore ranking
+        highestScore = findViewById(R.id.highest_scoring);
+        highestScore.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                List<DocumentSnapshot> documents = queryDocumentSnapshots.getDocuments();
-
-                // Display the top3 player in the rank
-                players = new ArrayList<>();
-                for (DocumentSnapshot document : queryDocumentSnapshots) {
-                    HashMap<String, Object> playerData = new HashMap<>();
-                    playerData.put("Username", document.getString("Username"));
-                    playerData.put("Score", document.getLong("Score"));
-                    playerData.put("Avatar", document.get("Avatar"));
-                    players.add(playerData);
-
-                }
-                // Top 3 player in game-wide scores competition
-                for (int i = 0; i < players.size(); i++) {
-                    switch (i) {
-                        case 0:
-                            ((TextView)findViewById(R.id.rank1_name)).setText(players.get(i).get("Username").toString()); // set 1st username
-                            ((TextView)findViewById(R.id.rank1_score)).setText("Score:\n"+players.get(i).get("Score").toString());
-                            ((ImageView)findViewById(R.id.rank1)).setImageBitmap(StringToBitMap((String) players.get(i).get("Avatar")));
-                            break;
-                        case 1:
-                            ((TextView)findViewById(R.id.rank2_name)).setText(players.get(i).get("Username").toString()); // set 2nd username
-                            ((TextView)findViewById(R.id.rank2_score)).setText("Score:\n"+players.get(i).get("Score").toString());
-                            ((ImageView)findViewById(R.id.rank2)).setImageBitmap(StringToBitMap((String) players.get(i).get("Avatar")));
-                            break;
-
-                        case 2:
-                            ((TextView)findViewById(R.id.rank3_name)).setText(players.get(i).get("Username").toString()); // set 1st username
-                            ((TextView)findViewById(R.id.rank3_score)).setText("Score:\n"+players.get(i).get("Score").toString());
-                            ((ImageView)findViewById(R.id.rank3)).setImageBitmap(StringToBitMap((String) players.get(i).get("Avatar")));
-                            break;
-
-                        default:
-                            String name = (String) players.get(i).get("Username");
-                            players.get(i).put("Rank", i); // add Rank attribute into player's hashMap
-
-                            rankAdapter.add(players.get(i));
+            public void onClick(View v) {
+                Query query = playerRef.orderBy("highestScore", Query.Direction.DESCENDING);
+                query.get().addOnSuccessListener(queryDocumentSnapshots -> {
+                    players = new ArrayList<>();
+                    rankAdapter = new RankAdapter(LeaderboardActivity.this, players);
+                    for (DocumentSnapshot document : queryDocumentSnapshots) {
+                        HashMap<String, Object> playerData = new HashMap<>();
+                        playerData.put("Username", document.getString("Username"));
+                        playerData.put("Score", document.getLong("highestScore"));
+                        playerData.put("Avatar", document.get("Avatar"));
+                        players.add(playerData);
                     }
 
-                }
+                    // Find the rank of the player with the given name
+                    int playerRank = -1;
 
-                rankAdapter.notifyDataSetChanged();
-                playerRanks.setAdapter(rankAdapter);
+                    for (int i = 0; i < players.size(); i++) {
+                        String name = (String) players.get(i).get("Username");
+                        Log.e("LeaderboardActivity: ", "having " + name + " " + String.valueOf(i));
+                        if (name.equals(userName)) {
+                            playerRank = i +1;
+                            break;
+                        }
+                        switch (i) {
+                            case 0:
+                                ((TextView)findViewById(R.id.rank1_name)).setText(players.get(i).get("Username").toString()); // set 1st username
+                                ((TextView)findViewById(R.id.rank1_score)).setText("Score:\n"+players.get(i).get("Score").toString());
+                                ((ImageView)findViewById(R.id.rank1)).setImageBitmap(StringToBitMap((String) players.get(i).get("Avatar")));
+                                break;
+                            case 1:
+                                ((TextView)findViewById(R.id.rank2_name)).setText(players.get(i).get("Username").toString()); // set 2nd username
+                                ((TextView)findViewById(R.id.rank2_score)).setText("Score:\n"+players.get(i).get("Score").toString());
+                                ((ImageView)findViewById(R.id.rank2)).setImageBitmap(StringToBitMap((String) players.get(i).get("Avatar")));
+                                break;
+
+                            case 2:
+                                ((TextView)findViewById(R.id.rank3_name)).setText(players.get(i).get("Username").toString()); // set 1st username
+                                ((TextView)findViewById(R.id.rank3_score)).setText("Score:\n"+players.get(i).get("Score").toString());
+                                ((ImageView)findViewById(R.id.rank3)).setImageBitmap(StringToBitMap((String) players.get(i).get("Avatar")));
+                                break;
+
+                            default:
+                                players.get(i).put("Rank", i); // add Rank attribute into player's hashMap
+                        }
+
+                    }
+
+                    for (int j = 0; j < 3; j++){
+                        //Log.e("LeaderboardActivity: ", "Removing " + players.get(j).get("Username") + String.valueOf(j));
+                        players.remove(0); // remove top three players
+                    }
+
+                    // Set the text of the playerRank TextView to display the player's rank
+                    String playerRankText = "Your highest score rank: " + playerRank;
+                    TextView playerRankTextView = findViewById(R.id.player_rank);
+                    playerRankTextView.setText(playerRankText);
+
+                    // Update the rankAdapter with the new list players
+                    rankAdapter.notifyDataSetChanged();
+                    playerRanks.setAdapter(rankAdapter);
+                });
             }
         });
+
+        // Set up onclick method for greatest_sum ranking
+        greatestSum = findViewById(R.id.greatest_sum);
+        greatestSum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scoresCollection.orderBy("Score",Query.Direction.DESCENDING).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        List<DocumentSnapshot> documents = queryDocumentSnapshots.getDocuments();
+
+                        // Display the top3 player in the rank
+                        players = new ArrayList<>();
+                        rankAdapter = new RankAdapter(LeaderboardActivity.this, players);
+                        for (DocumentSnapshot document : queryDocumentSnapshots) {
+                            HashMap<String, Object> playerData = new HashMap<>();
+                            playerData.put("Username", document.getString("Username"));
+                            playerData.put("Score", document.getLong("Score"));
+                            playerData.put("Avatar", document.get("Avatar"));
+                            players.add(playerData);
+
+                        }
+                        // Top 3 player in game-wide scores competition
+                        int playerRank = -1;
+
+                        for (int i = 0; i < players.size(); i++) {
+                            String name = (String) players.get(i).get("Username");
+                            if (name.equals(userName)) {
+                                playerRank = i +1 ;
+                                break;
+                            }
+                            switch (i) {
+                                case 0:
+                                    ((TextView)findViewById(R.id.rank1_name)).setText(players.get(i).get("Username").toString()); // set 1st username
+                                    ((TextView)findViewById(R.id.rank1_score)).setText("Score:\n"+players.get(i).get("Score").toString());
+                                    ((ImageView)findViewById(R.id.rank1)).setImageBitmap(StringToBitMap((String) players.get(i).get("Avatar")));
+                                    break;
+                                case 1:
+                                    ((TextView)findViewById(R.id.rank2_name)).setText(players.get(i).get("Username").toString()); // set 2nd username
+                                    ((TextView)findViewById(R.id.rank2_score)).setText("Score:\n"+players.get(i).get("Score").toString());
+                                    ((ImageView)findViewById(R.id.rank2)).setImageBitmap(StringToBitMap((String) players.get(i).get("Avatar")));
+                                    break;
+
+                                case 2:
+                                    ((TextView)findViewById(R.id.rank3_name)).setText(players.get(i).get("Username").toString()); // set 1st username
+                                    ((TextView)findViewById(R.id.rank3_score)).setText("Score:\n"+players.get(i).get("Score").toString());
+                                    ((ImageView)findViewById(R.id.rank3)).setImageBitmap(StringToBitMap((String) players.get(i).get("Avatar")));
+                                    break;
+
+                                default:
+                                    players.get(i).put("Rank", i); // add Rank attribute into player's hashMap
+                            }
+
+                        }
+
+                        for (int i = 0; i < 3; i ++){
+                            players.remove(0);
+                        }
+                        String playerRankText = "Your total score rank: " + playerRank;
+                        TextView playerRankTextView = findViewById(R.id.player_rank);
+                        playerRankTextView.setText(playerRankText);
+
+                        rankAdapter.notifyDataSetChanged();
+                        playerRanks.setAdapter(rankAdapter);
+                    }
+                });
+            }
+        });
+
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override

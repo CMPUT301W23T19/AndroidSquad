@@ -37,7 +37,7 @@ public class RankAdapter extends ArrayAdapter<HashMap<String, Object>> {
         TextView username = view.findViewById(R.id.username);
         ImageView usericon = view.findViewById(R.id.user_icon); // TODO: implement imageview when avatar feature is available
         TextView userscore = view.findViewById(R.id.score);
-        Log.e("RankAdapter: ", "Adding username: " + user.get("Username").toString()+" Avatar is :" + user.get("Avatar"));
+        //Log.e("RankAdapter: ", "Adding username: " + user.get("Username").toString()+" Avatar is :" + user.get("Avatar"));
         username.setText(user.get("Username").toString());
         userscore.setText(String.valueOf(user.get("Score")));
         usericon.setImageBitmap(StringToBitMap((String) user.get("Avatar")));
