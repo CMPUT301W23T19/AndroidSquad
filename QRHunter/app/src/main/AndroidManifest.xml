@@ -56,33 +56,34 @@
 
         <activity
             android:name=".ScannedQRCodeActivity"
-            android:exported="false"
+            android:exported="true"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".CameraActivity"
             android:screenOrientation="portrait"
-            android:exported="false"
+            android:exported="true"
             android:stateNotNeeded="true"
             android:theme="@style/zxing_CaptureTheme" />
         <activity
             android:name=".HistoryActivity"
-            android:exported="false"
+            android:exported="true"
             android:parentActivityName=".MainActivity"></activity>
         <activity
             android:name=".PreviouslyScannedQRCodeActivity"
-            android:exported="false"
+            android:exported="true"
             android:parentActivityName=".HistoryActivity"></activity>
         <activity
             android:name=".CommentActivity"
-            android:exported="false"
+            android:exported="true"
             android:parentActivityName=".HistoryActivity"></activity>
 
         <activity
             android:name=".SignUpActivity"
-            android:exported="false"
+            android:exported="true"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".SearchActivity"
+            android:exported="true"
             android:parentActivityName=".MainActivity" />
 
         <provider

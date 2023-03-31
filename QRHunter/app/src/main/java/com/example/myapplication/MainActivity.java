@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     private CameraController cameraController;
     private static Player currentPlayer;
     private Button search;
+    private TextView name;
 
     ActivityResultLauncher<Intent> forResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
@@ -70,7 +71,9 @@ public class MainActivity extends AppCompatActivity {
             if (result != null && result.getResultCode() == RESULT_OK) {
                 Bundle bundle = result.getData().getExtras();
 
+                name = findViewById(R.id.name);
                 currentPlayer = (Player) bundle.getSerializable("CurrentUser");
+                name.setText(currentPlayer.getUsername());
                 Log.e("MainActivity: ", "User " + currentPlayer.getUsername());
                 long highestScore = (long) currentPlayer.getHighestscore();
                 long lowestScore = (long) currentPlayer.getLowestscore();
