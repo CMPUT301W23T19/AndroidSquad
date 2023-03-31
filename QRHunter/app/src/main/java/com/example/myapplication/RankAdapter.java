@@ -40,7 +40,9 @@ public class RankAdapter extends ArrayAdapter<HashMap<String, Object>> {
         //Log.e("RankAdapter: ", "Adding username: " + user.get("Username").toString()+" Avatar is :" + user.get("Avatar"));
         username.setText(user.get("Username").toString());
         userscore.setText(String.valueOf(user.get("Score")));
-        usericon.setImageBitmap(StringToBitMap((String) user.get("Avatar")));
+        if (user.get("Avatar")!=null){
+            usericon.setImageBitmap(StringToBitMap((String) user.get("Avatar")));
+        }
         return view;
     }
 

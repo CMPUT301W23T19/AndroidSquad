@@ -37,7 +37,7 @@ public class LeaderboardActivity extends AppCompatActivity {
     Button greatestSum;
     List<HashMap<String, Object>> players = new ArrayList<>();
     FirebaseFirestore db;
-    String userName;// Mock player set as default player for now
+    String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,33 +55,6 @@ public class LeaderboardActivity extends AppCompatActivity {
         // Get the player rank for the highest score QR scanned
         db = FirebaseFirestore.getInstance();
         CollectionReference playerRef = db.collection("Player");
-//        Query query = playerRef.orderBy("highestScore", Query.Direction.DESCENDING);
-//        query.get().addOnSuccessListener(queryDocumentSnapshots -> {
-//            players = new ArrayList<>();
-//            for (DocumentSnapshot document : queryDocumentSnapshots) {
-//                HashMap<String, Object> playerData = new HashMap<>();
-//                playerData.put("Username", document.getString("Username"));
-//                playerData.put("highestScore", document.getLong("highestScore"));
-//                playerData.put("Avatar", document.get("Avatar"));
-//                players.add(playerData);
-//            }
-//
-//            // Find the rank of the player with the given name
-//            int playerRank = -1;
-//            for (int i = 0; i < players.size(); i++) {
-//                String name = (String) players.get(i).get("Username");
-//                if (name.equals(userName)) {
-//                    playerRank = i ;
-//                    break;
-//                }
-//            }
-//
-//            // Set the text of the playerRank TextView to display the player's rank
-//            String playerRankText = "Your rank(highest scoring): " + playerRank;
-//            TextView playerRankTextView = findViewById(R.id.player_rank);
-//            playerRankTextView.setText(playerRankText);
-//        });
-
         CollectionReference scoresCollection = db.collection("Player");
 
         // Set up onclick for highestScore ranking
@@ -227,8 +200,6 @@ public class LeaderboardActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-
     }
 
     public Bitmap StringToBitMap(String encodedString){
