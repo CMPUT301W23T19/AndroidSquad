@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -31,8 +32,9 @@ import java.util.List;
 public class LeaderboardActivity extends AppCompatActivity {
     ListView playerRanks;
     RankAdapter rankAdapter;
+    ImageButton back;
+
     Player currentPlayer;
-    Button back;
     Button highestScore;
     Button greatestSum;
     List<HashMap<String, Object>> players = new ArrayList<>();

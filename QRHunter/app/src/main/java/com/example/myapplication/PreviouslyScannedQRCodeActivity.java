@@ -75,7 +75,7 @@ public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         DocumentReference playerDocRef =  db.collection("Player").document(username);
                         playerController.deleteQRFromHistory(qrName);
-                        playerController.updateScore((int)(-1*qrScore), null);       // TODO: Pass in qr_score from historyActivity
+                        playerController.updateScore(-1, qrName);
                         qrCodeControllerDB.deleteUser(qrName);
                         playerDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                     @Override

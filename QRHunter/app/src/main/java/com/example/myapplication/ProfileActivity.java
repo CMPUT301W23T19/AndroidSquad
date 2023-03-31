@@ -4,6 +4,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,11 +15,13 @@ import java.nio.charset.StandardCharsets;
 public class ProfileActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
+    private TextView username1;
+
     private TextView username3;
     private TextView username2;
     private TextView email;
     private TextView user_score;
-    private Button backButton;
+    private ImageButton backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
         db = FirebaseFirestore.getInstance();
+        username1 = findViewById(R.id.username);
         username2 =findViewById(R.id.username2);
         username3 = findViewById(R.id.username3);
         email = findViewById(R.id.email);
@@ -51,10 +55,11 @@ public class ProfileActivity extends AppCompatActivity {
                         String getEmail = documentSnapshot.getString("Email");
                         String realName = documentSnapshot.getString("Name");
                         Integer myAttribute = Math.toIntExact(documentSnapshot.getLong("Score"));
+                        username1.setText(realName);
                         username2.setText(realName);
-                        username3.setText(username);
-                        user_score.setText(myAttribute.toString());
-                        email.setText(getEmail);
+                        username3.setText("@" + username);
+                        user_score.setText("Score: " + myAttribute.toString());
+                        email.setText("Email: " + getEmail);
                     } else {
                         Log.d("ProfileActivity: ", "The device ID doesn't exist");
                     }

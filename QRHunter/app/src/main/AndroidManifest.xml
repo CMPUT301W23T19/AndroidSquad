@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
-
     <uses-feature android:name="android.hardware.camera" />
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -53,30 +52,38 @@
         <activity
             android:name=".LeaderboardActivity"
             android:exported="true"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".MainActivity"></activity>
+
         <activity
             android:name=".ScannedQRCodeActivity"
-            android:exported="false"
+            android:exported="true"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".CameraActivity"
             android:screenOrientation="portrait"
+            android:exported="true"
             android:stateNotNeeded="true"
             android:theme="@style/zxing_CaptureTheme" />
         <activity
             android:name=".HistoryActivity"
-            android:parentActivityName=".MainActivity" />
+            android:exported="true"
+            android:parentActivityName=".MainActivity"></activity>
         <activity
             android:name=".PreviouslyScannedQRCodeActivity"
-            android:parentActivityName=".HistoryActivity" />
+            android:exported="true"
+            android:parentActivityName=".HistoryActivity"></activity>
         <activity
             android:name=".CommentActivity"
-            android:parentActivityName=".HistoryActivity" />
+            android:exported="true"
+            android:parentActivityName=".HistoryActivity"></activity>
+
         <activity
             android:name=".SignUpActivity"
+            android:exported="true"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".SearchActivity"
+            android:exported="true"
             android:parentActivityName=".MainActivity" />
 
         <provider

@@ -29,6 +29,7 @@ import android.location.Location;
 import android.os.Parcelable;
 import android.util.Log;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 
@@ -59,6 +60,7 @@ public class QRCodeControllerDB {
     private ArrayList<Integer> features;
     private PlayerController pc;
     private Location location;
+    private ActivityResultLauncher<Intent> updateScore;
 
 
     /**
@@ -81,6 +83,14 @@ public class QRCodeControllerDB {
     }
 
     /**
+     * Sets Activity Launcher that will be used to launch ScannedQRCodeActivity
+     * @param launcher - ActivityResultLauncher to be used
+     */
+    public void setLauncher(ActivityResultLauncher<Intent> launcher) {
+        updateScore = launcher;
+    }
+
+    /**
      * Checks if QR code exists in database and adds it to the firebase if it does not.
      */
     public void validateAndAdd(Context context) {
@@ -93,7 +103,7 @@ public class QRCodeControllerDB {
                         if (task.isSuccessful()) {
                             if (task.getResult().isEmpty()) {       // add new qr code
                                 addQRCodetoDatabase(context);
-                                pc.updateScore(score, null);
+                                pc.updateScore(1, name);
                             } else {
                                 checkIfScanned(context);
                             }
@@ -157,7 +167,7 @@ public class QRCodeControllerDB {
                         Log.e("QRCodeControllerDB", "Error adding user");
                     }
                 });
-       pc.updateScore(0, name);
+       pc.updateScore(1, name);
        start(context);
     }
 
@@ -171,7 +181,7 @@ public class QRCodeControllerDB {
         intent.putExtra("location", location);
         intent.putExtra("username", user);
         intent.putExtra("Avatar", features);
-        context.startActivity(intent);
+        updateScore.launch(intent);
     }
 
     /**
