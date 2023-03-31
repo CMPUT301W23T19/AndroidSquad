@@ -10,13 +10,13 @@ public class Player implements Serializable {
     private String machinecode;
     private String name;
     private ArrayList<String> qrcode;
-    private Number score;
+    private Integer score;
     private static String username;
-    private Number highestscore;
-    private Number lowestscore;
+    private Integer highestscore;
+    private Integer lowestscore;
 
     //#TODO: Remove this Constructor is a must. Please change all related usages to Constructor below
-    public Player(Number score, String username, Number highestscore, Number lowestscore) {
+    public Player(Integer score, String username, Integer highestscore, Integer lowestscore) {
 //        Avatar = avatar;
 //        Machinecode = machinecode;
 //        Name = name;
@@ -26,7 +26,7 @@ public class Player implements Serializable {
         this.highestscore = highestscore;
         this.lowestscore = lowestscore;
     }
-    public Player(String name, Number score, String username, Number highestscore, Number lowestscore,ArrayList<String> qrcode, String machineCode, String avatar) {
+    public Player(String name, Integer score, String username, Integer highestscore, Integer lowestscore,ArrayList<String> qrcode, String machineCode, String avatar) {
         this.avatar = avatar;
         this.machinecode = machineCode;
         this.name = name;
@@ -45,11 +45,11 @@ public class Player implements Serializable {
         this.machinecode = machinecode;
     }
 
-    public Number getHighestscore() {
+    public Integer getHighestscore() {
         return highestscore;
     }
 
-    public void setHighestscore(Number highestscore) {
+    public void setHighestscore(Integer highestscore) {
         this.highestscore = highestscore;
     }
 
@@ -61,19 +61,19 @@ public class Player implements Serializable {
         this.username = username;
     }
 
-    public Number getLowestscore() {
+    public Integer getLowestscore() {
         return lowestscore;
     }
 
-    public Number getScore() {
+    public Integer getScore() {
         return score;
     }
 
-    public void setScore(Number score) {
+    public void setScore(Integer score) {
         this.score = score;
     }
 
-    public void setLowestscore(Number lowestscore) {
+    public void setLowestscore(Integer lowestscore) {
         this.lowestscore = lowestscore;
     }
 
