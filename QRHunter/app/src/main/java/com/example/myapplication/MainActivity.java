@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private CameraController cameraController;
     private QRCodeControllerDB qrCodeControllerDB;
     private Player currentPlayer;
+    private Button search;
 
     //test
     ActivityResultLauncher<Intent> forResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
@@ -98,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.home_page);
         FirebaseApp.initializeApp(this);
         db = FirebaseFirestore.getInstance();
+        search = (Button) findViewById(R.id.search_button);
 
         bottomNavigationView  = (BottomNavigationView)findViewById(R.id.nav_bar);
 
@@ -197,6 +199,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, LeaderboardActivity.class);
                 startActivity(intent);
+            }
+        });
+        search.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                startActivity(intent);
+
             }
         });
 
