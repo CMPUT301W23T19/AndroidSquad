@@ -76,6 +76,11 @@
             android:name=".CommentActivity"
             android:exported="true"
             android:parentActivityName=".HistoryActivity"></activity>
+        <activity
+            android:name=".CommentListViewActivity"
+            android:exported="true"
+            android:parentActivityName=".PreviouslyScannedQRCodeActivity"></activity>
+
 
         <activity
             android:name=".SignUpActivity"

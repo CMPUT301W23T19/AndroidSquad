@@ -28,6 +28,8 @@ public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
     private ImageButton back;
     private TextView name;
     private TextView score;
+    private Button commentlistb;
+    private Button commentb;
     private QRCodeControllerDB qrCodeControllerDB;
     private PlayerController playerController;
     private String username;
@@ -50,6 +52,8 @@ public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
         playerController = new PlayerController(null, null, null,username, db);
         qrCodeControllerDB = new QRCodeControllerDB(null, username, db);
 
+        commentb = (Button) findViewById(R.id.comment);
+        commentlistb = (Button) findViewById(R.id.open_comment);
         name = findViewById(R.id.qr_code_name);
         name.setText(qrName);
         back = findViewById(R.id.back);
@@ -97,6 +101,22 @@ public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
                         finish();      // return to HistoryActivity
                     }
                 }).show();
+            }
+        });
+        commentb.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(PreviouslyScannedQRCodeActivity.this, CommentActivity.class);
+                startActivity(intent);
+
+            }
+        });
+        commentlistb.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(PreviouslyScannedQRCodeActivity.this, CommentListViewActivity.class);
+                startActivity(intent);
+
             }
         });
 

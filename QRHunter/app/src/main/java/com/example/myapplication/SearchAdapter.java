@@ -62,6 +62,7 @@ public class SearchAdapter extends ArrayAdapter<HashMap<String, String>> impleme
 
         username.setText(user.get("Name").toString());
         userid.setText(String.valueOf(user.get("Username")));
+        Log.e("SearchAdapter: ", "getView() called for position " + position);
 
         return view;
     }
