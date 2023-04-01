@@ -3,10 +3,12 @@ package com.example.myapplication;
 
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -121,6 +123,16 @@ public class SearchActivity extends AppCompatActivity {
                 adapter.addAll(filterPlayers);
                 adapter.notifyDataSetChanged();
                 return true;
+            }
+        });
+
+        searchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                String username = adapter.getItem(position).get("Username");
+                Intent intent = new Intent(SearchActivity.this, OtherUserProfileActivity.class);
+                intent.putExtra("username", username);
+                startActivity(intent);
             }
         });
     }
