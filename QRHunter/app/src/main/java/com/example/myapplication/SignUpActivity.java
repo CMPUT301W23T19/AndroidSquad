@@ -1,3 +1,9 @@
+/**
+ The SignUpActivity class is responsible for handling user registration.
+ It collects user information, such as first and last name, unique username, email and avatar, and adds them to the Firestore database.
+ This class also ensures that the entered username is unique, and provides feedback to the user if the username is already in use.
+ If the user successfully registers, the class sends the user back to the homepage.
+ */
 package com.example.myapplication;
 
 import android.content.Intent;

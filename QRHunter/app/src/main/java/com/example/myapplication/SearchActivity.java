@@ -1,7 +1,13 @@
+/**
+ * This class handles player search and display using a search feature that filters data based on user input.
+ * It shows a list of players that match the search query, and lets the user view profiles by clicking on a player.
+ * Firebase's Realtime Database and Firestore are used for retrieving and querying player data.
+ * Resource: https://www.youtube.com/watch?v=lBgX58-Sdf0
+ * https://www.geeksforgeeks.org/how-to-implement-android-searchview-with-example/
+ * https://www.youtube.com/watch?v=M3UDh9mwBd8
+ * https://www.youtube.com/watch?v=j9Kp0shGUT8
+ */
 package com.example.myapplication;
-
-
-
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,17 +35,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-
-
-
-/**
- * Resource: https://www.youtube.com/watch?v=lBgX58-Sdf0
- * https://www.geeksforgeeks.org/how-to-implement-android-searchview-with-example/
- * https://www.youtube.com/watch?v=M3UDh9mwBd8
- * https://www.youtube.com/watch?v=j9Kp0shGUT8
- */
-
 
 public class SearchActivity extends AppCompatActivity {
     private ListView searchList;
