@@ -39,7 +39,7 @@ public class ProfileActivity extends AppCompatActivity {
         username2 =findViewById(R.id.username2);
         username3 = findViewById(R.id.username3);
         email = findViewById(R.id.email);
-        user_score = findViewById(R.id.user_score);
+        //user_score = findViewById(R.id.user_score);
         backButton = findViewById(R.id.backButton);
 
         String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
@@ -55,10 +55,10 @@ public class ProfileActivity extends AppCompatActivity {
                         String getEmail = documentSnapshot.getString("Email");
                         String realName = documentSnapshot.getString("Name");
                         Integer myAttribute = Math.toIntExact(documentSnapshot.getLong("Score"));
-                        username1.setText(realName);
+                        //username1.setText(realName);
                         username2.setText(realName);
-                        username3.setText("@" + username);
-                        user_score.setText("Score: " + myAttribute.toString());
+                        username3.setText(username);
+                        //user_score.setText("Score: " + myAttribute.toString());
                         email.setText("Email: " + getEmail);
                     } else {
                         Log.d("ProfileActivity: ", "The device ID doesn't exist");
