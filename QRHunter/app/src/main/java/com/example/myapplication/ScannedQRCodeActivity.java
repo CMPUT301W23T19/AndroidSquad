@@ -54,6 +54,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -110,6 +111,7 @@ public class ScannedQRCodeActivity extends AppCompatActivity {
                 for (int i = 0; i < usernames.size(); i++) {
                     count += 1;
                 }
+                qrDocRef.update("Player Count", count);
                 playerCount.setText(String.valueOf(count-1) + " other player(s) scanned this QR code!");
             }
         });
@@ -123,7 +125,8 @@ public class ScannedQRCodeActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                Log.e("Location", String.valueOf(location));
-                               qrDocRef.update("Location", String.valueOf(location.getLatitude()) + ", " + String.valueOf(location.getLongitude()));
+                               GeoPoint qrLocation = new GeoPoint(location.getLatitude(), location.getLongitude());
+                               qrDocRef.update("Location", qrLocation);
                                getPhotoDialog().show();
                             }
                         })
