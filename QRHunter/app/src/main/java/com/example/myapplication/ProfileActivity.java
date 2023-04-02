@@ -19,6 +19,7 @@ import java.util.ArrayList;
 /***
  * This Activity displays the user profile information
  * Retrieves the data from database
+ * https://www.tabnine.com/code/java/methods/android.graphics.Canvas/drawBitmap
  * @author: Anika, Aamna Noor
  *
  */
