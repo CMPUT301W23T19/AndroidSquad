@@ -21,6 +21,7 @@
 package com.example.myapplication;
 
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.google.common.hash.Hashing;
 
@@ -121,11 +122,11 @@ public class QRCode implements Serializable {
      * @return an arraylist consisting of drawables that form the avatar image
      */
 
-    public ArrayList<Integer> setAvatar() {
+    public ArrayList<String> setAvatar() {
         String sixHash = sha256hex.substring(0,5);
         String binaryRep = new BigInteger(sixHash, 16).toString(2);
 
-        ArrayList<Integer> avatarList = new ArrayList<>();
+        ArrayList<String> avatarList = new ArrayList<>();
 
         HashMap<Integer, Integer[]> faces = new HashMap<>();
         faces.put(0, new Integer[]{R.id.face1, R.id.face2});
@@ -136,9 +137,11 @@ public class QRCode implements Serializable {
 
       for (int i = 0; i < 5; i++) {
           if (binaryRep.charAt(i+1) == '0') {
-              avatarList.add(faces.get(i)[0]);
+//              avatarList.add(faces.get(i)[0]);
+              avatarList.add("0");
           } else {
-              avatarList.add(faces.get(i)[1]);
+//              avatarList.add(faces.get(i)[1]);
+              avatarList.add("1");
           }
       }
         return avatarList;
@@ -148,8 +151,8 @@ public class QRCode implements Serializable {
      * Gets unique visual represented avatar of QR code
      * @return an arraylist consisting of drawables that form the avatar image
      */
-    public ArrayList<Integer> getAvatarList() {
-        ArrayList<Integer> avatarlist = setAvatar();
+    public ArrayList<String> getAvatarList() {
+        ArrayList<String> avatarlist = setAvatar();
         return avatarlist;
     }
 

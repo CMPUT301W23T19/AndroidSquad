@@ -14,20 +14,20 @@ import com.google.zxing.client.android.InactivityTimer;
 import com.journeyapps.barcodescanner.CaptureActivity;
 
 public class CameraActivity extends CaptureActivity {
-    Button exit;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.camera);
-        exit = findViewById(R.id.exitCam);
-
-        exit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
-    }
+//    Button exit;
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.camera);
+//        exit = findViewById(R.id.exitCam);
+//
+//        exit.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                finish();
+//            }
+//        });
+//
+//    }
 
 }

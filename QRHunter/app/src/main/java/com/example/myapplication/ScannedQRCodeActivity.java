@@ -55,6 +55,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -64,6 +66,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /** Activity class that displays information about newly scanned QR code */
 public class ScannedQRCodeActivity extends AppCompatActivity {
@@ -94,10 +97,30 @@ public class ScannedQRCodeActivity extends AppCompatActivity {
         confirm = findViewById(R.id.confirm_button);
 
         // get QR code visual representation to appear
-        for (int i = 0; i < 5; i++) {
-            ImageView feature = findViewById(face.get(i));
-            feature.setVisibility(View.VISIBLE);
-        }
+//        for (int i = 0; i < 5; i++) {
+//            ImageView feature = findViewById(face.get(i));
+//            feature.setVisibility(View.VISIBLE);
+//        }
+        qrDocRef.get().addOnCompleteListener(task -> {
+            ArrayList<String> features = (ArrayList<String>) task.getResult().get("Avatar");
+            HashMap<Integer, Integer[]> faces = new HashMap<>();
+            faces.put(0, new Integer[]{R.id.face1, R.id.face2});
+            faces.put(1, new Integer[]{R.id.eyebrow1, R.id.eyebrow2});
+            faces.put(2, new Integer[]{R.id.eye1, R.id.eye2});
+            faces.put(3, new Integer[]{R.id.nose1, R.id.nose2});
+            faces.put(4, new Integer[]{R.id.mouth1, R.id.mouth2});
+
+            for (int i = 0; i < faces.size(); i++) {
+                ImageView feature;
+                if (features.get(i).compareTo("0") == 0) {
+                    feature = findViewById(faces.get(i)[0]);
+                } else {
+                    feature = findViewById(faces.get(i)[1]);
+                }
+                feature.setVisibility(View.VISIBLE);
+            }
+        });
+
 
         qrDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override

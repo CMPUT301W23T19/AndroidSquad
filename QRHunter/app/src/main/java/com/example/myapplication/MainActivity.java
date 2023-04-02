@@ -21,6 +21,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Location;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -31,6 +32,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -43,6 +45,8 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
@@ -50,6 +54,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -109,7 +114,9 @@ public class MainActivity extends AppCompatActivity {
         forResult.launch(signup);
         bottomNavigationView  = (BottomNavigationView)findViewById(R.id.nav_bar);
         leaderboardScores();
+        getMostScanned();
 
+        // Update Home page
         ActivityResultLauncher<Intent> updateScores = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
@@ -132,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             });
                     leaderboardScores();
+                    getMostScanned();
                 }
             }
         });
@@ -182,6 +190,8 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
+
+
         // Set the leaderboard to be clickable
         // Transitions between home page to leaderboard page
         TextView leaderboardText = findViewById(R.id.view_more);
@@ -205,6 +215,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Displays top ten users based on total scores
+     */
     public void leaderboardScores() {
         // Retrieve game-wide high scores
         CollectionReference playersRef = db.collection("Player");
@@ -225,6 +238,46 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    /**
+     * Displays top ten most scanned qr codes
+     */
+    public void getMostScanned() {
+        TextView mostScanned = findViewById(R.id.most_scanned_text);
+        CollectionReference qrCodeRef = db.collection("QR Code");
+        qrCodeRef.orderBy("Player Count", Query.Direction.DESCENDING)
+                .limit(1)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        ArrayList<String> features;
+                        for (DocumentSnapshot qrCode : task.getResult().getDocuments()) {
+                            mostScanned.setText((String)qrCode.get("Name"));
+                            features = (ArrayList<String>) qrCode.get("Avatar");
+
+                            //Get avatar list
+                            HashMap<Integer, Integer[]> faces = new HashMap<>();
+                            faces.put(0, new Integer[]{R.id.face1, R.id.face2});
+                            faces.put(1, new Integer[]{R.id.eyebrow1, R.id.eyebrow2});
+                            faces.put(2, new Integer[]{R.id.eye1, R.id.eye2});
+                            faces.put(3, new Integer[]{R.id.nose1, R.id.nose2});
+                            faces.put(4, new Integer[]{R.id.mouth1, R.id.mouth2});
+
+                            for (int i = 0; i < faces.size(); i++) {
+                                ImageView feature;
+                                if (features.get(i).compareTo("0") == 0) {
+                                    feature = findViewById(faces.get(i)[0]);
+                                } else {
+                                    feature = findViewById(faces.get(i)[1]);
+                                }
+                                feature.setVisibility(View.VISIBLE);
+                            }
+                        }
+
+                    }
+                });
     }
 
 }
