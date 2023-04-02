@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.camera);
-        setContentView(R.layout.mapp);
+//        setContentView(R.layout.mapp);
 
         setContentView(R.layout.home_page);
         FirebaseApp.initializeApp(this);
@@ -147,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
             if (item.getItemId() == R.id.map) {
                 try {
                     Intent intent = new Intent(this,MapActivity.class);
+                    intent.putExtra("username", currentPlayer.getUsername());
                     startActivity(intent);
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -201,6 +201,8 @@ public class QRCodeControllerDB {
         qrCodeContents.put("Score", score);
         qrCodeContents.put("Username", usernames);
         qrCodeContents.put("Avatar", features);
+        qrCodeContents.put("Player Count", 0);
+
 
         db.collection("QR Code").document(name)
             .set(qrCodeContents)
