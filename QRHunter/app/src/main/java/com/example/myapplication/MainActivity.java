@@ -5,7 +5,6 @@ package com.example.myapplication;
  * -- From: www.stackoverflow.com
  * -- URL: https://stackoverflow.com/q/67641594
  * -- Author: https://stackoverflow.com/users/10429009/ali-moghadam
- *
  */
 
 import androidx.activity.result.ActivityResult;
@@ -18,8 +17,10 @@ import androidx.activity.result.ActivityResultLauncher;
 
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -33,6 +34,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarItemView;
 import com.google.android.material.navigation.NavigationBarMenu;
@@ -53,29 +56,28 @@ import java.util.List;
 import java.util.jar.Attributes;
 
 public class MainActivity extends AppCompatActivity {
-    TextView playerRanks;
-    ArrayAdapter<String> adapter;
     FirebaseFirestore db;
     BottomNavigationView bottomNavigationView;
     private CameraController cameraController;
-    private QRCodeControllerDB qrCodeControllerDB;
-    private Player currentPlayer;
+    private static Player currentPlayer;
     private Button search;
+    private TextView name;
 
-    //test
     ActivityResultLauncher<Intent> forResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
         public void onActivityResult(ActivityResult result) {
             Log.e("MainActivity: ", "I think Signup Activity is done?");
             Log.e("MainActivity: the result is: ", result.toString());
             if (result != null && result.getResultCode() == RESULT_OK) {
-
                 Bundle bundle = result.getData().getExtras();
 
                 // Sending image with Player class would cause size too large error, so avatar field is null in local
                 // If you need avatar, you can ask firestore to find current user and fetch avatar in callback function (i.e. OnSuccessfulListener)
                 currentPlayer = (Player)bundle.getSerializable("CurrentUser");
                 Log.e("MainActivity: ", "User " + currentPlayer.getUsername());
+                name = findViewById(R.id.name);
+                name.setText(currentPlayer.getUsername());
+
 
 
                 Integer highestScore = currentPlayer.getHighestscore();
@@ -103,14 +105,42 @@ public class MainActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         search = (Button) findViewById(R.id.search_button);
 
+        Intent signup = new Intent(MainActivity.this, SignUpActivity.class);
+        forResult.launch(signup);
         bottomNavigationView  = (BottomNavigationView)findViewById(R.id.nav_bar);
+        leaderboardScores();
 
-        ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result -> {
-            if(result.getContents()!=null) {
-                cameraController.handleScanResult(result.getContents(), db, this, currentPlayer.getUsername());
+        ActivityResultLauncher<Intent> updateScores = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if (result.getResultCode() == RESULT_OK) {
+                    Log.e("Updating scores","yes");
+                    Log.e("Username", currentPlayer.getUsername());
+                    db.collection("Player").document(currentPlayer.getUsername())
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    long highestScore = (long) task.getResult().get("highestScore");
+                                    long lowestScore = (long) task.getResult().get("lowestScore");
+                                    long qrCount = ((ArrayList<String>) task.getResult().get("QRcode")).size();
+                                    long totalScore = (long) task.getResult().get("Score");
+                                    String playerRanksText = "Highest score: " + highestScore + "\n" + "Lowest score: " + lowestScore + "\nQR scanned: " + qrCount
+                                            + "\nTotal Score: " + totalScore;
+                                    TextView playerRankTextView = findViewById(R.id.player_ranks);
+                                    playerRankTextView.setText(playerRanksText);
+                                }
+                            });
+                    leaderboardScores();
+                }
             }
         });
 
+        ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result -> {
+            if(result.getContents()!=null) {
+                cameraController.handleScanResult(result.getContents(), db, this, currentPlayer.getUsername(), updateScores);
+            }
+        });
 
         // Bottom Navigation bar functionality
         bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -143,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     Intent intent = new Intent(this,HistoryActivity.class);
                     intent.putExtra("username", currentPlayer.getUsername());
-                    startActivity(intent);
+                    updateScores.launch(intent);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -151,10 +181,30 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-        Intent signup = new Intent(MainActivity.this, SignUpActivity.class);
-        forResult.launch(signup);
+        // Set the leaderboard to be clickable
+        // Transitions between home page to leaderboard page
+        TextView leaderboardText = findViewById(R.id.view_more);
+        leaderboardText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, LeaderboardActivity.class);
+                intent.putExtra("currentUser", currentPlayer);
+                startActivity(intent);
+            }
+        });
 
 
+        search.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                startActivity(intent);
+
+            }
+        });
+    }
+
+    public void leaderboardScores() {
         // Retrieve game-wide high scores
         CollectionReference playersRef = db.collection("Player");
         Query query1 = playersRef.orderBy("Score", Query.Direction.DESCENDING).limit(10);
@@ -174,25 +224,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Set the leaderboard to be clickable
-        // Transitions between home page to leaderboard page
-        TextView leaderboardText = findViewById(R.id.view_more);
-        leaderboardText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, LeaderboardActivity.class);
-                intent.putExtra("currentUser", currentPlayer);
-                startActivity(intent);
-            }
-        });
-        search.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-                startActivity(intent);
-
-            }
-        });
-
     }
+
 }

@@ -131,6 +131,36 @@
             android:background="@drawable/rounded_view"
             android:backgroundTint="#1F0B42"/>
 
+        <Button
+            android:id="@+id/open_comment"
+            android:layout_width="123dp"
+            android:layout_height="71dp"
+
+
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="138dp"
+            android:layout_marginEnd="141dp"
+            android:layout_marginBottom="97dp"
+            android:text="See Comments" />
+
+        <!--        <TextView-->
+        <!--            android:id="@+id/textView12"-->
+        <!--            android:layout_width="104dp"-->
+        <!--            android:layout_height="37dp"-->
+        <!--            android:layout_alignParentStart="true"-->
+        <!--            android:layout_alignParentTop="true"-->
+        <!--            android:layout_alignParentEnd="true"-->
+        <!--            android:layout_alignParentBottom="true"-->
+        <!--            android:layout_marginStart="133dp"-->
+        <!--            android:layout_marginTop="568dp"-->
+        <!--            android:layout_marginEnd="165dp"-->
+        <!--            android:layout_marginBottom="134dp"-->
+        <!--            android:text="Comments"-->
+        <!--            android:textSize="20sp"-->
+        <!--            android:textStyle="bold" />-->
+
 
     </RelativeLayout>
 

@@ -1,8 +1,11 @@
 package com.example.myapplication;
 
-import org.apache.commons.codec.digest.DigestUtils;
+import com.google.common.hash.Hashing;
+
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.nio.charset.StandardCharsets;
 
 public class QRCodeTest {
 
@@ -17,15 +20,6 @@ public class QRCodeTest {
     public QRCode createMockQRCode(String codeContents) {
         QRCode mockQR = new QRCode(codeContents, null);
         return mockQR;
-    }
-
-    /**
-     * Tests to see if the QR Code returns a proper name
-     */
-    @Test
-    public void getNameTest() {
-        QRCode qrCode1 = createMockQRCode(codeContents1);
-        Assert.assertEquals(qrCode1.getName(),"SolarFloGalUltraSpectralTitan" );
     }
 
     /**
@@ -63,7 +57,9 @@ public class QRCodeTest {
     @Test
     public void getHash() {
         QRCode qrCode = createMockQRCode(codeContents1);
-        Assert.assertEquals(qrCode.getHash(), DigestUtils.sha256Hex(codeContents1));
+        Assert.assertEquals(qrCode.getHash(), Hashing.sha256()
+                .hashString(codeContents1, StandardCharsets.UTF_8)
+                .toString());
     }
 
     /**

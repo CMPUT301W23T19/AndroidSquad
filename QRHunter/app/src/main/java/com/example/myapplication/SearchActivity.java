@@ -1,9 +1,14 @@
 package com.example.myapplication;
 
 
+
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -27,10 +32,12 @@ import java.util.List;
 
 
 
+
 /**
  * Resource: https://www.youtube.com/watch?v=lBgX58-Sdf0
  * https://www.geeksforgeeks.org/how-to-implement-android-searchview-with-example/
  * https://www.youtube.com/watch?v=M3UDh9mwBd8
+ * https://www.youtube.com/watch?v=j9Kp0shGUT8
  */
 
 
@@ -42,7 +49,8 @@ public class SearchActivity extends AppCompatActivity {
     private SearchView searchView;
 
     FirebaseFirestore db;
-    List<HashMap<String, String>> players = new ArrayList<>();
+    List<HashMap<String, String>> originPlayers = new ArrayList<>();
+    List<HashMap<String, String>> filterPlayers = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,24 +70,23 @@ public class SearchActivity extends AppCompatActivity {
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 List<DocumentSnapshot> documents = queryDocumentSnapshots.getDocuments();
 
-                // Display the top3 player in the rank
-                players = new ArrayList<>();
+                // Display the player info
+                originPlayers = new ArrayList<>();
                 for (DocumentSnapshot document : queryDocumentSnapshots) {
                     HashMap<String, String> playerData = new HashMap<>();
                     playerData.put("Username", document.getString("Username"));
                     playerData.put("Name", document.getString("Name"));
-                    players.add(playerData);
-
+                    originPlayers.add(playerData);
                 }
+                filterPlayers.addAll(originPlayers);
                 // get the all user info saved in database
-                for (int i = 0; i < players.size(); i++) {
+                for (int i = 0; i < originPlayers.size(); i++) {
                     switch (i) {
                         default:
-                            String name = (String) players.get(i).get("Username");
-                            adapter.add(players.get(i));
+                            String name = (String) originPlayers.get(i).get("Username");
+                            adapter.add(originPlayers.get(i));
                     }
                 }
-
                 adapter.notifyDataSetChanged();
                 searchList.setAdapter(adapter);
             }
@@ -105,8 +112,27 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange (String newText){
                 // Called when the user changes the text in the search view
-                adapter.getFilter().filter(newText);
+                filterPlayers.clear(); // Clear the filtered data
+                for (int i = 0; i < originPlayers.size(); i++) {
+                    String name = originPlayers.get(i).get("Username");
+                    if (name.toLowerCase().contains(newText.toLowerCase())) {
+                        filterPlayers.add(originPlayers.get(i));
+                    }
+                }
+                adapter.clear();
+                adapter.addAll(filterPlayers);
+                adapter.notifyDataSetChanged();
                 return true;
+            }
+        });
+
+        searchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                String username = adapter.getItem(position).get("Username");
+                Intent intent = new Intent(SearchActivity.this, OtherUserProfileActivity.class);
+                intent.putExtra("username", username);
+                startActivity(intent);
             }
         });
     }

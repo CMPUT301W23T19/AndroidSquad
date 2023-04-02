@@ -44,6 +44,7 @@
         android:background="@drawable/rounded_view"
         android:layout_marginTop="20dp">
 
+
         <TextView
             android:id="@+id/welcome"
             android:layout_width="match_parent"
@@ -63,6 +64,11 @@
             android:textColor="@color/white"
             android:textSize="20dp">
         </TextView>
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"/>
 
     </RelativeLayout>
 

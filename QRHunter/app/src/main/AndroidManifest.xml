@@ -22,6 +22,12 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
+            android:name=".OtherUserProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OtherUserActivity"
+            android:exported="false" />
+        <activity
             android:name=".ProfileActivity"
             android:exported="false">
             <meta-data
@@ -56,27 +62,37 @@
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".ScannedQRCodeActivity"
-            android:exported="false"
+            android:exported="true"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".CameraActivity"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:stateNotNeeded="true"
             android:theme="@style/zxing_CaptureTheme" />
         <activity
             android:name=".HistoryActivity"
+            android:exported="true"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".PreviouslyScannedQRCodeActivity"
+            android:exported="true"
             android:parentActivityName=".HistoryActivity" />
         <activity
             android:name=".CommentActivity"
+            android:exported="true"
             android:parentActivityName=".HistoryActivity" />
         <activity
+            android:name=".CommentListViewActivity"
+            android:exported="true"
+            android:parentActivityName=".PreviouslyScannedQRCodeActivity" />
+        <activity
             android:name=".SignUpActivity"
+            android:exported="true"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".SearchActivity"
+            android:exported="true"
             android:parentActivityName=".MainActivity" />
 
         <provider

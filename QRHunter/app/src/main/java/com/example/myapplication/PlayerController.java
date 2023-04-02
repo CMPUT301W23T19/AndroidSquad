@@ -220,23 +220,25 @@ public class PlayerController {
 
     /**
      * Increases or decreases user's score based on delete or add event
-     * @param qr_score - Integer representation of the recently added or deleted qr code
+     * @param addOrdelete - Integer representation indicating what event occured
+     * @param qrName - String representation of the qrCode that was added or deleted
      */
-    public void updateScore(int qr_score, String qrName) {
+    public void updateScore(int addOrdelete, String qrName) {
         DocumentReference docRef = db.collection("Player").document(username);
-        if (qr_score == 0) {       // derive from db
-            db.collection("QR Code").document(qrName)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            docRef.update("Score", FieldValue.increment((Long) task.getResult().get("Score")));
+        db.collection("QR Code").document(qrName)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        long score = (long) task.getResult().get("Score");
+                        if (addOrdelete == -1) {
+                            score *= -1;
                         }
-                    });
-        } else {
-            docRef.update("Score", FieldValue.increment(qr_score));
-        }
+                        docRef.update("Score", FieldValue.increment(score));
+                    }
+                });
     }
+
 
     /**
      * Updates the player's highest score or lowest score when QR code is deleted, if needed

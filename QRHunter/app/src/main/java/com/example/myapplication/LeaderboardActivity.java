@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -31,8 +32,9 @@ import java.util.List;
 public class LeaderboardActivity extends AppCompatActivity {
     ListView playerRanks;
     RankAdapter rankAdapter;
+    ImageButton back;
+
     Player currentPlayer;
-    Button back;
     Button highestScore;
     Button greatestSum;
     List<HashMap<String, Object>> players = new ArrayList<>();
@@ -76,16 +78,16 @@ public class LeaderboardActivity extends AppCompatActivity {
 
                     // Find the rank of the player with the given name
                     int playerRank = -1;
-
+                    Log.e("LeaderboardActivity: ", "Highest score");
                     for (int i = 0; i < players.size(); i++) {
                         String name = (String) players.get(i).get("Username");
-                        Log.e("LeaderboardActivity: ", "having " + name + " " + String.valueOf(i));
                         if (name.equals(userName)) {
                             playerRank = i +1;
-                            break;
+
                         }
                         switch (i) {
                             case 0:
+                                Log.e("LeaderboardActivity: ", "having " + name + " " + String.valueOf(i));
                                 ((TextView)findViewById(R.id.rank1_name)).setText(players.get(i).get("Username").toString()); // set 1st username
                                 ((TextView)findViewById(R.id.rank1_score)).setText("Score:\n"+players.get(i).get("Score").toString());
                                 ((ImageView)findViewById(R.id.rank1)).setImageBitmap(StringToBitMap((String) players.get(i).get("Avatar")));
@@ -153,7 +155,6 @@ public class LeaderboardActivity extends AppCompatActivity {
                             String name = (String) players.get(i).get("Username");
                             if (name.equals(userName)) {
                                 playerRank = i +1 ;
-                                break;
                             }
                             switch (i) {
                                 case 0:
