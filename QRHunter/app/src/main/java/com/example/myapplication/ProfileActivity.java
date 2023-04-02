@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 /***
  * This Activity displays the user profile information
- * Retrieves the data from
+ * Retrieves the data from database
  * @author: Anika, Aamna Noor
  *
  */
