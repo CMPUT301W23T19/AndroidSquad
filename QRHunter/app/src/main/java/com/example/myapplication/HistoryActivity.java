@@ -74,7 +74,11 @@ public class HistoryActivity extends AppCompatActivity {
         historyList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openScannedQRCodeProfile(adapter.getItem(position).getName(),adapter.getItem(position).getScore(),position,adapter.getItem(position).getLocation(),adapter.getItem(position).getCount());
+                openScannedQRCodeProfile(adapter.getItem(position).getName(),
+                        adapter.getItem(position).getScore(),
+                        position,adapter.getItem(position).getLocation(),
+                        adapter.getItem(position).getCount(),
+                        adapter.getItem(position).getFeatures());
             }
         });
 
@@ -102,7 +106,7 @@ public class HistoryActivity extends AppCompatActivity {
                 }
             });
 
-    public void openScannedQRCodeProfile(String name, Long score,Integer position,String location, Long playerCount){
+    public void openScannedQRCodeProfile(String name, Long score,Integer position,String location, Long playerCount, ArrayList<String> features){
         // push the history model
         Intent intent = new Intent(this, PreviouslyScannedQRCodeActivity.class);
         intent.putExtra("qrCodeName", name);
@@ -112,6 +116,7 @@ public class HistoryActivity extends AppCompatActivity {
         //startActivity(intent);
         intent.putExtra("PlayerCount",playerCount);
         intent.putExtra("position", position);
+        intent.putExtra("features", features);
         startForResult.launch(intent);
     }
 

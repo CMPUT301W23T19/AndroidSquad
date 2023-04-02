@@ -96,11 +96,6 @@ public class ScannedQRCodeActivity extends AppCompatActivity {
         playerCount = findViewById(R.id.player_count);
         confirm = findViewById(R.id.confirm_button);
 
-        // get QR code visual representation to appear
-//        for (int i = 0; i < 5; i++) {
-//            ImageView feature = findViewById(face.get(i));
-//            feature.setVisibility(View.VISIBLE);
-//        }
         qrDocRef.get().addOnCompleteListener(task -> {
             ArrayList<String> features = (ArrayList<String>) task.getResult().get("Avatar");
             HashMap<Integer, Integer[]> faces = new HashMap<>();

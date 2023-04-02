@@ -226,7 +226,6 @@ public class MainActivity extends AppCompatActivity {
             if (task.isSuccessful()) {
                 int rank = 1;
                 StringBuilder sb = new StringBuilder();
-
                 for (DocumentSnapshot document : task.getResult()) {
                     String name = document.getString("Name");
                     long Score = document.getLong("Score").intValue();
@@ -237,7 +236,6 @@ public class MainActivity extends AppCompatActivity {
                 ((TextView)findViewById(R.id.leaderboard_text)).setText(String.valueOf(sb) + '.');
             }
         });
-
     }
 
     /**

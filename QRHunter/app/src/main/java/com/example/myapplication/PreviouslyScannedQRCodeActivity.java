@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /** Activity class that displays comprehensive information on selected QR code */
 public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
@@ -41,8 +45,10 @@ public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
     private String username;
     FirebaseFirestore db;
     //int qrScore;
-    int position;
-    String location;
+    private int position;
+    private String location;
+    private ArrayList<String> features;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,8 +61,8 @@ public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
         qrScore = intent.getLongExtra("qrscore",0);
         position = intent.getIntExtra("position", -1);
         playerCount=intent.getLongExtra("PlayerCount",0);
-//        score = intent.getIntExtra("score", 0);
-        //qrScore = 107;     // TODO: replace with above code
+        features = intent.getStringArrayListExtra("features");
+
         playerController = new PlayerController(null, null, null,username, db);
         qrCodeControllerDB = new QRCodeControllerDB(null, username, db);
 
@@ -69,10 +75,28 @@ public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
         score = findViewById(R.id.qr_code_score);
         qrlocation=findViewById(R.id.qr_code_location);
         playernumber = findViewById(R.id.count_players_scanned_qr_code);
+
         score.setText(qrScore.toString());
         qrlocation.setText(location);
         playernumber.setText(playerCount.toString()+" other player scanned this QR Code");
-        AlertDialog.Builder builder = new AlertDialog.Builder(PreviouslyScannedQRCodeActivity.this);     // Creates window telling user they have already scanned it
+
+        //Get avatar list
+        HashMap<Integer, Integer[]> faces = new HashMap<>();
+        faces.put(0, new Integer[]{R.id.face1, R.id.face2});
+        faces.put(1, new Integer[]{R.id.eyebrow1, R.id.eyebrow2});
+        faces.put(2, new Integer[]{R.id.eye1, R.id.eye2});
+        faces.put(3, new Integer[]{R.id.nose1, R.id.nose2});
+        faces.put(4, new Integer[]{R.id.mouth1, R.id.mouth2});
+
+        for (int i = 0; i < features.size(); i++) {
+            ImageView feature;
+            if (features.get(i).compareTo("0") == 0) {
+                feature = findViewById(faces.get(i)[0]);
+            } else {
+                feature = findViewById(faces.get(i)[1]);
+            }
+            feature.setVisibility(View.VISIBLE);
+        }
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
