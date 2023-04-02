@@ -13,6 +13,8 @@ package com.example.myapplication;
  * --Author: https://stackoverflow.com/users/1777471/jrowan
  * --License: CC BY-SA
  *
+ * Displaying map and getting current location
+ * https://www.youtube.com/watch?v=kRAyXxgwOhQ
  */
 
 import android.Manifest;
@@ -81,7 +83,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
         db = FirebaseFirestore.getInstance();
         username = getIntent().getStringExtra("username");
-        double latitude = getIntent().getDoubleExtra("latitude", 53.5312);
+        double latitude = getIntent().getDoubleExtra("latitude", 53.5412);
         double longitude = getIntent().getDoubleExtra("longitude", -113.4907);
         currentLocation = new LatLng(latitude, longitude);
 
