@@ -10,11 +10,13 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.auth.User;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +38,12 @@ public class HistoryAdapter extends ArrayAdapter<HistoryModel> {
                     final String qrCode = qrCodes.get(i);
                     db.collection("QR Code").document(qrCode).get().addOnSuccessListener(documentSnapshot1 -> {
                         Long qrScore = documentSnapshot1.getLong("Score");
+                        Long playerCount= documentSnapshot1.getLong("Player Count");
+                        //Geopoint location= documentSnapshot1.getString("Location");
+                        GeoPoint geolocation = documentSnapshot1.getGeoPoint("Location");
+                        String location = "Location: " + geolocation.getLatitude() + "," + geolocation.getLongitude();
                         Log.e("Score", qrCode + String.valueOf(qrScore));
-                        HistoryModel historyModel = new HistoryModel(qrCode,qrScore);
+                        HistoryModel historyModel = new HistoryModel(qrCode,qrScore,location,playerCount);
                         add(historyModel);
                     });
                 }
@@ -58,8 +64,10 @@ public class HistoryAdapter extends ArrayAdapter<HistoryModel> {
 
         TextView qrCodeTextView = convertView.findViewById(R.id.scanned_name);
         TextView qrScoreTextView= convertView.findViewById(R.id.scanned_score);
+        //TextView qrLocationTextview = convertView.findViewById(R.id.qr_code_location);
         qrCodeTextView.setText(historyModel.getName());
         qrScoreTextView.setText("Score: " + String.valueOf(historyModel.getScore()));
+        //qrLocationTextview.setText(historyModel.getLocation());
         return convertView;
     }
 

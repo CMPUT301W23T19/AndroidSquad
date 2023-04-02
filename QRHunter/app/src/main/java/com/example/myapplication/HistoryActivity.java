@@ -60,6 +60,7 @@ public class HistoryActivity extends AppCompatActivity {
         back = findViewById(R.id.back);
         Intent intent = getIntent();
         username = intent.getStringExtra("username");
+        //username="y";
         db = FirebaseFirestore.getInstance();
         // Testing history list
         historyList = findViewById(R.id.history_list);
@@ -73,7 +74,7 @@ public class HistoryActivity extends AppCompatActivity {
         historyList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openScannedQRCodeProfile(adapter.getItem(position).getName(),adapter.getItem(position).getScore(),position);
+                openScannedQRCodeProfile(adapter.getItem(position).getName(),adapter.getItem(position).getScore(),position,adapter.getItem(position).getLocation(),adapter.getItem(position).getCount());
             }
         });
 
@@ -100,13 +101,15 @@ public class HistoryActivity extends AppCompatActivity {
                 }
             });
 
-    public void openScannedQRCodeProfile(String name, Long score,Integer position){
+    public void openScannedQRCodeProfile(String name, Long score,Integer position,String location, Long playerCount){
         // push the history model
         Intent intent = new Intent(this, PreviouslyScannedQRCodeActivity.class);
         intent.putExtra("qrCodeName", name);
         intent.putExtra("username", username);
         intent.putExtra("qrscore",score);
+        intent.putExtra("location",location);
         //startActivity(intent);
+        intent.putExtra("PlayerCount",playerCount);
         intent.putExtra("position", position);
         startForResult.launch(intent);
     }

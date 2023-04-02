@@ -25,16 +25,19 @@ public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
     private Button delete;
     private String qrName;
     private Long qrScore;
+    private Long playerCount;
     private ImageButton back;
     private TextView name;
     private TextView score;
+    private TextView qrlocation;
+    private TextView playernumber;
     private QRCodeControllerDB qrCodeControllerDB;
     private PlayerController playerController;
     private String username;
     FirebaseFirestore db;
     //int qrScore;
     int position;
-
+    String location;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,8 +46,10 @@ public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
         Intent intent = getIntent();
         username = intent.getStringExtra("username");
         qrName = intent.getStringExtra("qrCodeName");
+        location = intent.getStringExtra("location");
         qrScore = intent.getLongExtra("qrscore",0);
         position = intent.getIntExtra("position", -1);
+        playerCount=intent.getLongExtra("PlayerCount",0);
 //        score = intent.getIntExtra("score", 0);
         //qrScore = 107;     // TODO: replace with above code
         playerController = new PlayerController(null, null, null,username, db);
@@ -55,7 +60,11 @@ public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
         back = findViewById(R.id.back);
         delete = findViewById(R.id.delete);
         score = findViewById(R.id.qr_code_score);
+        qrlocation=findViewById(R.id.qr_code_location);
+        playernumber = findViewById(R.id.count_players_scanned_qr_code);
         score.setText(qrScore.toString());
+        qrlocation.setText(location);
+        playernumber.setText(playerCount.toString()+" other player scanned this QR Code");
         AlertDialog.Builder builder = new AlertDialog.Builder(PreviouslyScannedQRCodeActivity.this);     // Creates window telling user they have already scanned it
 
         delete.setOnClickListener(new View.OnClickListener() {
