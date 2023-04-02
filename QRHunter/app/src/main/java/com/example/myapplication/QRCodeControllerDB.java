@@ -41,6 +41,8 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -188,7 +190,7 @@ public class QRCodeControllerDB {
      * Adds QR code to Firestore Firebase database
      */
     public void addQRCodetoDatabase(Context context) {
-        Map<String, String> comments = new HashMap<>();
+        ArrayList<HashMap<String, String>> comments = new ArrayList<>();
         ArrayList<String> usernames = new ArrayList<>();
         Map<String, Object> qrCodeContents = new HashMap<>();
         usernames.add(user);
