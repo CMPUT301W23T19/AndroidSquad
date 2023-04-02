@@ -1,3 +1,8 @@
+/**
+ * An ArrayAdapter for displaying a list of user ranks.
+ * Each item in the list consists of a user's username, avatar, and score.
+ * The adapter converts the user's avatar from a Base64-encoded string to a Bitmap image.
+ */
 package com.example.myapplication;
 
 import android.content.Context;
@@ -38,8 +43,8 @@ public class RankAdapter extends ArrayAdapter<HashMap<String, Object>> {
         ImageView usericon = view.findViewById(R.id.user_icon); // TODO: implement imageview when avatar feature is available
         TextView userscore = view.findViewById(R.id.score);
         //Log.e("RankAdapter: ", "Adding username: " + user.get("Username").toString()+" Avatar is :" + user.get("Avatar"));
-        username.setText(user.get("Username").toString());
-        userscore.setText(String.valueOf(user.get("Score")));
+        username.setText("username: "+user.get("Username").toString());
+        userscore.setText("score: "+ String.valueOf(user.get("Score")));
         if (user.get("Avatar")!=null){
             usericon.setImageBitmap(StringToBitMap((String) user.get("Avatar")));
         }
