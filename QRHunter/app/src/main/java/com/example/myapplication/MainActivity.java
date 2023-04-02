@@ -5,6 +5,13 @@ package com.example.myapplication;
  * -- From: www.stackoverflow.com
  * -- URL: https://stackoverflow.com/q/67641594
  * -- Author: https://stackoverflow.com/users/10429009/ali-moghadam
+ * -- License: CC BY-SA
+ *
+ * Setting the appropriate icon on navigation bar to be highlighted
+ * -- From: www.stackoverflow.com
+ * -- URL: https://stackoverflow.com/q/41744219
+ * -- Author: https://stackoverflow.com/users/5227265/hardanger
+ * -- License: CC BY-SA
  */
 
 import androidx.activity.result.ActivityResult;
@@ -25,6 +32,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -53,6 +61,8 @@ import com.journeyapps.barcodescanner.ScanOptions;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+
+import org.w3c.dom.Text;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -83,8 +93,6 @@ public class MainActivity extends AppCompatActivity {
                 name = findViewById(R.id.name);
                 name.setText(currentPlayer.getUsername());
 
-
-
                 Integer highestScore = currentPlayer.getHighestscore();
                 Integer lowestScore = currentPlayer.getLowestscore();
                 Integer qrCount = currentPlayer.getQrcode().size();
@@ -103,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.camera);
-//        setContentView(R.layout.mapp);
 
         setContentView(R.layout.home_page);
         FirebaseApp.initializeApp(this);
@@ -138,6 +145,9 @@ public class MainActivity extends AppCompatActivity {
                                     playerRankTextView.setText(playerRanksText);
                                 }
                             });
+                    Menu menu = bottomNavigationView.getMenu();
+                    MenuItem menuItem = menu.getItem(0);
+                    menuItem.setChecked(true);
                     leaderboardScores();
                     getMostScanned();
                 }
@@ -272,6 +282,8 @@ public class MainActivity extends AppCompatActivity {
                                 }
                                 feature.setVisibility(View.VISIBLE);
                             }
+                            TextView countPlayers = findViewById(R.id.count_players_scanned_qr_code);
+                            countPlayers.setText(String.format("%s people scanned this QR Code!", qrCode.get("Player Count")));
                         }
 
                     }

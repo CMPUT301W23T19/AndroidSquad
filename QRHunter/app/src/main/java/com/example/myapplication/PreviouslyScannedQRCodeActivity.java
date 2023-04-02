@@ -78,7 +78,7 @@ public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
 
         score.setText(qrScore.toString());
         qrlocation.setText(location);
-        playernumber.setText(playerCount.toString()+" other player scanned this QR Code");
+        playernumber.setText(playerCount.toString()+" player(s) scanned this QR Code");
 
         //Get avatar list
         HashMap<Integer, Integer[]> faces = new HashMap<>();
@@ -143,6 +143,8 @@ public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 Intent intent = new Intent(PreviouslyScannedQRCodeActivity.this, CommentActivity.class);
+                intent.putExtra("qrName", qrName);
+                intent.putExtra("username", username);
                 startActivity(intent);
 
             }
@@ -151,8 +153,9 @@ public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 Intent intent = new Intent(PreviouslyScannedQRCodeActivity.this, CommentListViewActivity.class);
+                intent.putExtra("username", username);
+                intent.putExtra("qrName", qrName);
                 startActivity(intent);
-
             }
         });
 

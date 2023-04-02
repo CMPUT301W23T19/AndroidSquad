@@ -54,7 +54,6 @@ public class HistoryAdapter extends ArrayAdapter<HistoryModel> {
                             add(historyModel);
                     });
                 }
-
             }
         }).addOnFailureListener(e -> {
             Log.e("HistoryAdapter", "Error getting document", e);
@@ -81,10 +80,15 @@ public class HistoryAdapter extends ArrayAdapter<HistoryModel> {
         for (int i = 0; i < faces.size(); i++) {
             ImageView feature;
             if (features.get(i).compareTo("0") == 0) {
+                feature = convertView.findViewById(faces.get(i)[1]);
+                feature.setVisibility(View.INVISIBLE);
                 feature = convertView.findViewById(faces.get(i)[0]);
             } else {
+                feature = convertView.findViewById(faces.get(i)[0]);
+                feature.setVisibility(View.INVISIBLE);
                 feature = convertView.findViewById(faces.get(i)[1]);
             }
+
             feature.setVisibility(View.VISIBLE);
         }
 

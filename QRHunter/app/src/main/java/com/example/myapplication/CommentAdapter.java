@@ -26,39 +26,33 @@ import java.util.List;
  */
 public class CommentAdapter extends ArrayAdapter<HashMap<String, String>> {
     private Context context;
-    private List<HashMap<String, String>> mComment;
+    private List<HashMap<String, String>> mComments;
 
-
-
-    public CommentAdapter(@NonNull Context context, List<HashMap<String, String>> comment) {
-        super(context, 0, comment);
+    public CommentAdapter(@NonNull Context context, List<HashMap<String, String>> comments) {
+        super(context, 0, comments);
         this.context = context;
-        this.mComment= comment;
-
+        this.mComments= comments;
     }
 
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view;
-        if(convertView==null){
+        if (convertView==null){
             view= LayoutInflater.from(getContext()).inflate(R.layout.comment_item,parent,false);
         } else {
             view = convertView;
         }
 
-        if (position >= mComment.size()) {
+        if (position >= mComments.size()) {
             return view;
         }
-        HashMap<String, String> user = mComment.get(position);
 
+        HashMap<String, String> comment = mComments.get(position);
 
         TextView username = view.findViewById(R.id.comment_id);
-        TextView usercomment = view.findViewById(R.id.comment_content);
-        Log.e("CommentAdapter: ", "Adding comment: " + user.get("Comment").toString());
+        Log.e("CommentAdapter: ", "Adding comment: " + comment.get("comment").toString());
 
-        username.setText(user.get("Username").toString());
-        usercomment.setText(String.valueOf(user.get("Comment")));
-
+        username.setText(String.format("@%s said: %s", comment.get("username").toString(), comment.get("comment").toString()));
         return view;
     }
 

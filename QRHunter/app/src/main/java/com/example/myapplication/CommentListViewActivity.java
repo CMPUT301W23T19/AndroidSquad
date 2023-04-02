@@ -26,11 +26,9 @@ import java.util.List;
 public class CommentListViewActivity extends AppCompatActivity {
     private ListView commentList;
     private CommentAdapter adapter;
-
     private ImageButton back;
-    private SearchView searchView;
-
-
+    private String username;
+    private String qrName;
     FirebaseFirestore db;
     List<HashMap<String, String>> players = new ArrayList<>();
 
@@ -41,19 +39,26 @@ public class CommentListViewActivity extends AppCompatActivity {
         setContentView(R.layout.see_comments);
 
         commentList = findViewById(R.id.comment_list);
+        username = getIntent().getStringExtra("username");
+        qrName = getIntent().getStringExtra("qrName");
         back = (ImageButton) findViewById(R.id.goback);
-        adapter = new CommentAdapter(this, new ArrayList<>()); // Initialize adapter
-        commentList.setAdapter(adapter);
 
         db = FirebaseFirestore.getInstance();
 
-        CollectionReference searchRef = db.collection("QR Code");
-        searchRef.orderBy("Comment", Query.Direction.DESCENDING).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                List<DocumentSnapshot> documents = queryDocumentSnapshots.getDocuments();
+        db.collection("QR Code").document(qrName)
+                .get().addOnCompleteListener(task -> {
+                    ArrayList<HashMap<String,String>> comments = (ArrayList<HashMap<String, String>>) task.getResult().get("Comment");
+                    adapter = new CommentAdapter(this, comments); // Initialize adapter
+                    commentList.setAdapter(adapter);
+                });
 
-                players = new ArrayList<>();
+//        CollectionReference searchRef = db.collection("QR Code");
+//        searchRef.orderBy("Comment", Query.Direction.DESCENDING).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+//            @Override
+//            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+//                List<DocumentSnapshot> documents = queryDocumentSnapshots.getDocuments();
+//
+//                players = new ArrayList<>();
                 //below is the error to fix, it saves the right data but has issue showing each userid and
                 //user comment from hashmap type value
 //                for (DocumentSnapshot document : queryDocumentSnapshots) {
@@ -74,10 +79,11 @@ public class CommentListViewActivity extends AppCompatActivity {
 //                    }
 //                }
 
-                adapter.notifyDataSetChanged();
-                commentList.setAdapter(adapter);
-            }
-        });
+//        adapter.notifyDataSetChanged();
+//        commentList.setAdapter(adapter);
+//            }
+//        });
+
 
 
 

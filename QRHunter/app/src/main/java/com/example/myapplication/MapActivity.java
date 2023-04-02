@@ -143,10 +143,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                         Log.e("qrLocation", String.valueOf(qrCode.get("Name")));
                         GeoPoint geopoint = (GeoPoint) qrCode.get("Location");
                         LatLng qrLocation = new LatLng(geopoint.getLatitude(), geopoint.getLongitude());
+                        float distance = getDistance(qrLocation);
                         MarkerOptions markers = new MarkerOptions()
                                 .position(qrLocation)
                                 .title(String.format("Score: %d", qrCode.get("Score")))
-                                .snippet(String.format("Distance: %.2f m", getDistance(qrLocation)))
+                                .snippet(String.format("Distance: %.2f m", distance))
                                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
                         googleMap.addMarker(markers);
                         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(qrLocation, 15));
