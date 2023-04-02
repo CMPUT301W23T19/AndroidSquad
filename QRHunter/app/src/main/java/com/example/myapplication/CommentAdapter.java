@@ -24,6 +24,10 @@ import java.util.List;
  * Resource: https://www.youtube.com/watch?v=M73Vec1oieM
  * https://stackoverflow.com/questions/19527248/filtering-search-results-by-a-string-in-android
  */
+
+/**
+ * Updates information on CommentListViewActivity
+ */
 public class CommentAdapter extends ArrayAdapter<HashMap<String, String>> {
     private Context context;
     private List<HashMap<String, String>> mComments;

@@ -23,6 +23,10 @@ import java.util.List;
 /**
  * https://www.youtube.com/watch?v=SGiY_AitrN0
  */
+
+/**
+ * Displays comments for a particular QR Code in a ListView
+ */
 public class CommentListViewActivity extends AppCompatActivity {
     private ListView commentList;
     private CommentAdapter adapter;
@@ -51,40 +55,6 @@ public class CommentListViewActivity extends AppCompatActivity {
                     adapter = new CommentAdapter(this, comments); // Initialize adapter
                     commentList.setAdapter(adapter);
                 });
-
-//        CollectionReference searchRef = db.collection("QR Code");
-//        searchRef.orderBy("Comment", Query.Direction.DESCENDING).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-//            @Override
-//            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-//                List<DocumentSnapshot> documents = queryDocumentSnapshots.getDocuments();
-//
-//                players = new ArrayList<>();
-                //below is the error to fix, it saves the right data but has issue showing each userid and
-                //user comment from hashmap type value
-//                for (DocumentSnapshot document : queryDocumentSnapshots) {
-//                    HashMap<String, String> playerData = new HashMap<>();
-//                    Object commentObj = document.get("Comment");
-//                    if(commentObj != null) {
-//                        String comment = commentObj.toString();
-//                        playerData.put("Comment", comment);
-//                        players.add(playerData);
-//                    }
-//                }
-//
-//                for (int i = 0; i < players.size(); i++) {
-//                    switch (i) {
-//                        default:
-//                            String comment = players.get(i).get("Comment");
-//                            adapter.add(players.get(i));
-//                    }
-//                }
-
-//        adapter.notifyDataSetChanged();
-//        commentList.setAdapter(adapter);
-//            }
-//        });
-
-
 
 
         //set up back button to go back if user doesnt want to continue searching

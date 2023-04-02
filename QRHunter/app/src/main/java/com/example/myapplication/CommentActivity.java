@@ -16,6 +16,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 
+/**
+ * Activity that allows user to add comments to a QR Code
+ */
 public class CommentActivity extends AppCompatActivity {
 
     private EditText editText;
@@ -25,6 +28,7 @@ public class CommentActivity extends AppCompatActivity {
     private String qrName;
     private String username;
     FirebaseFirestore db;
+
 
 
     @Override

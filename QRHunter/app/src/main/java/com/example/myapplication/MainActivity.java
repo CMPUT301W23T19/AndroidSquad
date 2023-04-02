@@ -70,6 +70,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.jar.Attributes;
 
+/**
+ * Activity that displays the Home Page of the app
+ */
 public class MainActivity extends AppCompatActivity {
     FirebaseFirestore db;
     BottomNavigationView bottomNavigationView;
