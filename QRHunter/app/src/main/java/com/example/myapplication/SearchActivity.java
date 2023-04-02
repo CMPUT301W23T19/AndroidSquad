@@ -49,7 +49,8 @@ public class SearchActivity extends AppCompatActivity {
     private SearchView searchView;
 
     FirebaseFirestore db;
-    List<HashMap<String, String>> players = new ArrayList<>();
+    List<HashMap<String, String>> originPlayers = new ArrayList<>();
+    List<HashMap<String, String>> filterPlayers = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,19 +71,20 @@ public class SearchActivity extends AppCompatActivity {
                 List<DocumentSnapshot> documents = queryDocumentSnapshots.getDocuments();
 
                 // Display the player info
-                players = new ArrayList<>();
+                originPlayers = new ArrayList<>();
                 for (DocumentSnapshot document : queryDocumentSnapshots) {
                     HashMap<String, String> playerData = new HashMap<>();
                     playerData.put("Username", document.getString("Username"));
                     playerData.put("Name", document.getString("Name"));
-                    players.add(playerData);
+                    originPlayers.add(playerData);
                 }
+                filterPlayers.addAll(originPlayers);
                 // get the all user info saved in database
-                for (int i = 0; i < players.size(); i++) {
+                for (int i = 0; i < originPlayers.size(); i++) {
                     switch (i) {
                         default:
-                            String name = (String) players.get(i).get("Username");
-                            adapter.add(players.get(i));
+                            String name = (String) originPlayers.get(i).get("Username");
+                            adapter.add(originPlayers.get(i));
                     }
                 }
                 adapter.notifyDataSetChanged();
@@ -110,7 +112,16 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange (String newText){
                 // Called when the user changes the text in the search view
-                adapter.getFilter().filter(newText);
+                filterPlayers.clear(); // Clear the filtered data
+                for (int i = 0; i < originPlayers.size(); i++) {
+                    String name = originPlayers.get(i).get("Username");
+                    if (name.toLowerCase().contains(newText.toLowerCase())) {
+                        filterPlayers.add(originPlayers.get(i));
+                    }
+                }
+                adapter.clear();
+                adapter.addAll(filterPlayers);
+                adapter.notifyDataSetChanged();
                 return true;
             }
         });

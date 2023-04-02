@@ -78,16 +78,16 @@ public class LeaderboardActivity extends AppCompatActivity {
 
                     // Find the rank of the player with the given name
                     int playerRank = -1;
-
+                    Log.e("LeaderboardActivity: ", "Highest score");
                     for (int i = 0; i < players.size(); i++) {
                         String name = (String) players.get(i).get("Username");
-                        Log.e("LeaderboardActivity: ", "having " + name + " " + String.valueOf(i));
                         if (name.equals(userName)) {
                             playerRank = i +1;
-                            break;
+
                         }
                         switch (i) {
                             case 0:
+                                Log.e("LeaderboardActivity: ", "having " + name + " " + String.valueOf(i));
                                 ((TextView)findViewById(R.id.rank1_name)).setText(players.get(i).get("Username").toString()); // set 1st username
                                 ((TextView)findViewById(R.id.rank1_score)).setText("Score:\n"+players.get(i).get("Score").toString());
                                 ((ImageView)findViewById(R.id.rank1)).setImageBitmap(StringToBitMap((String) players.get(i).get("Avatar")));
@@ -155,7 +155,6 @@ public class LeaderboardActivity extends AppCompatActivity {
                             String name = (String) players.get(i).get("Username");
                             if (name.equals(userName)) {
                                 playerRank = i +1 ;
-                                break;
                             }
                             switch (i) {
                                 case 0:
