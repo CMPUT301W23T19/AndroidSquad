@@ -13,6 +13,8 @@ package com.example.myapplication;
  * --Author: https://stackoverflow.com/users/1777471/jrowan
  * --License: CC BY-SA
  *
+ * Displaying map and getting current location
+ * https://www.youtube.com/watch?v=kRAyXxgwOhQ
  */
 
 import android.Manifest;
