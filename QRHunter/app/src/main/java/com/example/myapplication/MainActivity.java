@@ -5,6 +5,13 @@ package com.example.myapplication;
  * -- From: www.stackoverflow.com
  * -- URL: https://stackoverflow.com/q/67641594
  * -- Author: https://stackoverflow.com/users/10429009/ali-moghadam
+ * -- License: CC BY-SA
+ *
+ * Setting the appropriate icon on navigation bar to be highlighted
+ * -- From: www.stackoverflow.com
+ * -- URL: https://stackoverflow.com/q/41744219
+ * -- Author: https://stackoverflow.com/users/5227265/hardanger
+ * -- License: CC BY-SA
  */
 
 import androidx.activity.result.ActivityResult;
@@ -21,9 +28,11 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Location;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -31,6 +40,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -43,6 +53,8 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
@@ -50,11 +62,17 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import org.w3c.dom.Text;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.jar.Attributes;
 
+/**
+ * Activity that displays the Home Page of the app
+ */
 public class MainActivity extends AppCompatActivity {
     FirebaseFirestore db;
     BottomNavigationView bottomNavigationView;
@@ -78,8 +96,6 @@ public class MainActivity extends AppCompatActivity {
                 name = findViewById(R.id.name);
                 name.setText(currentPlayer.getUsername());
 
-
-
                 Integer highestScore = currentPlayer.getHighestscore();
                 Integer lowestScore = currentPlayer.getLowestscore();
                 Integer qrCount = currentPlayer.getQrcode().size();
@@ -98,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.camera);
-//        setContentView(R.layout.mapp);
 
         setContentView(R.layout.home_page);
         FirebaseApp.initializeApp(this);
@@ -109,7 +124,9 @@ public class MainActivity extends AppCompatActivity {
         forResult.launch(signup);
         bottomNavigationView  = (BottomNavigationView)findViewById(R.id.nav_bar);
         leaderboardScores();
+        getMostScanned();
 
+        // Update Home page
         ActivityResultLauncher<Intent> updateScores = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
@@ -131,7 +148,11 @@ public class MainActivity extends AppCompatActivity {
                                     playerRankTextView.setText(playerRanksText);
                                 }
                             });
+                    Menu menu = bottomNavigationView.getMenu();
+                    MenuItem menuItem = menu.getItem(0);
+                    menuItem.setChecked(true);
                     leaderboardScores();
+                    getMostScanned();
                 }
             }
         });
@@ -182,6 +203,8 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
+
+
         // Set the leaderboard to be clickable
         // Transitions between home page to leaderboard page
         TextView leaderboardText = findViewById(R.id.view_more);
@@ -205,6 +228,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Displays top ten users based on total scores
+     */
     public void leaderboardScores() {
         // Retrieve game-wide high scores
         CollectionReference playersRef = db.collection("Player");
@@ -213,7 +239,6 @@ public class MainActivity extends AppCompatActivity {
             if (task.isSuccessful()) {
                 int rank = 1;
                 StringBuilder sb = new StringBuilder();
-
                 for (DocumentSnapshot document : task.getResult()) {
                     String name = document.getString("Name");
                     long Score = document.getLong("Score").intValue();
@@ -224,7 +249,48 @@ public class MainActivity extends AppCompatActivity {
                 ((TextView)findViewById(R.id.leaderboard_text)).setText(String.valueOf(sb) + '.');
             }
         });
+    }
 
+    /**
+     * Displays top ten most scanned qr codes
+     */
+    public void getMostScanned() {
+        TextView mostScanned = findViewById(R.id.most_scanned_text);
+        CollectionReference qrCodeRef = db.collection("QR Code");
+        qrCodeRef.orderBy("Player Count", Query.Direction.DESCENDING)
+                .limit(1)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        ArrayList<String> features;
+                        for (DocumentSnapshot qrCode : task.getResult().getDocuments()) {
+                            mostScanned.setText((String)qrCode.get("Name"));
+                            features = (ArrayList<String>) qrCode.get("Avatar");
+
+                            //Get avatar list
+                            HashMap<Integer, Integer[]> faces = new HashMap<>();
+                            faces.put(0, new Integer[]{R.id.face1, R.id.face2});
+                            faces.put(1, new Integer[]{R.id.eyebrow1, R.id.eyebrow2});
+                            faces.put(2, new Integer[]{R.id.eye1, R.id.eye2});
+                            faces.put(3, new Integer[]{R.id.nose1, R.id.nose2});
+                            faces.put(4, new Integer[]{R.id.mouth1, R.id.mouth2});
+
+                            for (int i = 0; i < faces.size(); i++) {
+                                ImageView feature;
+                                if (features.get(i).compareTo("0") == 0) {
+                                    feature = findViewById(faces.get(i)[0]);
+                                } else {
+                                    feature = findViewById(faces.get(i)[1]);
+                                }
+                                feature.setVisibility(View.VISIBLE);
+                            }
+                            TextView countPlayers = findViewById(R.id.count_players_scanned_qr_code);
+                            countPlayers.setText(String.format("%s people scanned this QR Code!", qrCode.get("Player Count")));
+                        }
+
+                    }
+                });
     }
 
 }

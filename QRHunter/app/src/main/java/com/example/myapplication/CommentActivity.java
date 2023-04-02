@@ -11,17 +11,25 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 
+/**
+ * Activity that allows user to add comments to a QR Code
+ */
 public class CommentActivity extends AppCompatActivity {
 
     private EditText editText;
     private EditText userText;
     private Button submit_button;
     private ImageButton back;
+    private String qrName;
+    private String username;
     FirebaseFirestore db;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,22 +37,24 @@ public class CommentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_comment);
 
         db = FirebaseFirestore.getInstance();
-        userText = findViewById(R.id.username_edit);
         editText = findViewById(R.id.comment_edit);
         submit_button = findViewById(R.id.submit);
         back = findViewById(R.id.back_bb);
+        Intent intent = getIntent();
+        qrName = intent.getStringExtra("qrName");
+        username = intent.getStringExtra("username");
 
         submit_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username = userText.getText().toString();
                 String comment = editText.getText().toString();
 
                 HashMap<String, Object> commentMap = new HashMap<>();
                 commentMap.put("username", username);
                 commentMap.put("comment", comment);
 
-                db.collection("QR Code").document("Comment").set(commentMap)
+                db.collection("QR Code").document(qrName)
+                        .update("Comment", FieldValue.arrayUnion(commentMap))
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {

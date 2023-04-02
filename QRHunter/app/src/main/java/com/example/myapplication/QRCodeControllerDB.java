@@ -57,7 +57,7 @@ public class QRCodeControllerDB {
     private String user;
     private QRCode qrCode;
     private FirebaseFirestore db;
-    private ArrayList<Integer> features;
+    private ArrayList<String> features;
     private PlayerController pc;
     private Location location;
     private ActivityResultLauncher<Intent> updateScore;

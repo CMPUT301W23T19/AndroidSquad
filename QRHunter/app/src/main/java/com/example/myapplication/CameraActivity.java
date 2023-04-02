@@ -1,33 +1,32 @@
 
 package com.example.myapplication;
 
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
+/**
+ * Resource(s):
+ * Making a custom camera using CaptureActivity
+ * -- From: www.github.com
+ * -- URL: https://github.com/journeyapps/zxing-android-embedded/blob/master/sample/src/main/java/example/zxing/SmallCaptureActivity.java
+ * -- License: Apache License 2.0
+ */
 
-import com.google.zxing.client.android.AmbientLightManager;
-import com.google.zxing.client.android.BeepManager;
-import com.google.zxing.client.android.InactivityTimer;
+import android.view.View;
+import android.widget.Button;
 import com.journeyapps.barcodescanner.CaptureActivity;
+import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 
 public class CameraActivity extends CaptureActivity {
     Button exit;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected DecoratedBarcodeView initializeContent() {
         setContentView(R.layout.camera);
         exit = findViewById(R.id.exitCam);
-
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-
+        return (DecoratedBarcodeView) findViewById(R.id.barcode_scanner);
     }
-
 }

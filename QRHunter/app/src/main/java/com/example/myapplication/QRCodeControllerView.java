@@ -56,7 +56,7 @@ public class QRCodeControllerView {
      * Gets an Integer list containing ids of the QR code features ids
      * @return
      */
-    public ArrayList<Integer> getAvatarlist() {
+    public ArrayList<String> getAvatarlist() {
         return qrCode.getAvatarList();
     }
 

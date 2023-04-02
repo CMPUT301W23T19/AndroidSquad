@@ -6,11 +6,12 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/username_edit"
+        android:id="@+id/comment_edit"
         android:layout_width="0dp"
         android:layout_height="50dp"
+        android:layout_marginTop="30dp"
         android:gravity="left"
-        android:text="Username"
+        android:hint="Comment"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -19,25 +20,13 @@
         app:layout_constraintVertical_bias="0.126"
         tools:ignore="MissingConstraints" />
 
-    <EditText
-        android:id="@+id/comment_edit"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:gravity="left"
-        android:text="Comment"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.221"
-        tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Post"
+        android:layout_marginBottom="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.95"
@@ -53,6 +42,7 @@
         android:background="@drawable/rounded_view"
         android:backgroundTint="#9C9A9A"
         android:src="@drawable/back"
+        android:layout_marginBottom="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.046"
