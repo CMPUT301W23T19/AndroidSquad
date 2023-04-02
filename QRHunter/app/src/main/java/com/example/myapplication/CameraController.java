@@ -23,6 +23,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -33,7 +34,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -52,6 +55,12 @@ public class CameraController {
     private final ActivityResultLauncher<ScanOptions> barLauncher;
     private QRCodeControllerDB qrCodeControllerDB;
     private Location location;
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    private LocationCallback locationCallback;
+    private LocationRequest locationRequest;
+
+
+
 
     public CameraController(Context context, ActivityResultLauncher<ScanOptions> barLauncher) {
         this.context = context;
@@ -59,26 +68,44 @@ public class CameraController {
 
     }
 
+    private void startLocationUpdates() {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            fusedLocationProviderClient.requestLocationUpdates(locationRequest,
+                    locationCallback,
+                    Looper.getMainLooper());
+        }
+    }
+
     public void scanCode() {
         // Check if location permission is granted before launching the barcode scanner
         LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-
             // get user's current location to potentially store QR code location (works when other services/apps have tracked user's location previously)
-            List<String> providers = locationManager.getProviders(true);
-            location = null;
-            for (String provider : providers) {
-                Location currentLocation = locationManager.getLastKnownLocation(provider);
-                if (currentLocation == null) {
-                    continue;
+            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context);
+            locationCallback = new LocationCallback() {
+                @Override
+                public void onLocationResult(LocationResult locationResult) {
+                    if (locationResult == null) {
+                        return;
+                    }
+                    for (Location qrLocation : locationResult.getLocations()) {
+                        if (qrLocation != null) {
+                            location = qrLocation;
+                            Log.e("qrLocation", String.valueOf(location));
+                        }
+                    }
                 }
-                if (location == null || currentLocation.getAccuracy() < location.getAccuracy()) {
-                    location = currentLocation;
+            };
+            fusedLocationProviderClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location qrLocation) {
+                    location = qrLocation;
+                    launchBarcodeScanner();
                 }
-                Log.e("Location", "latitude: " + location.getLatitude() + " longitude: " + location.getLongitude());
-            }
-            launchBarcodeScanner();
+            });
+            fusedLocationProviderClient.removeLocationUpdates(locationCallback);
         }
 
         else {
@@ -87,9 +114,9 @@ public class CameraController {
             ActivityCompat.requestPermissions((Activity) context,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     REQUEST_LOCATION_PERMISSION);
+            launchBarcodeScanner();
         }
     }
-
 
     // Called after requesting for location permission
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
