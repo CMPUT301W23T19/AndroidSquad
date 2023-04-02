@@ -1,27 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-<!--    <ImageButton-->
-<!--        android:id="@+id/back"-->
-<!--        android:layout_width="50dp"-->
-<!--        android:layout_height="40dp"-->
-<!--        android:background="@drawable/rounded_view"-->
-<!--        android:src="@drawable/back"-->
-<!--        android:backgroundTint="#9C9A9A"-->
-<!--        app:tint="#120E10"/>-->
 
 
     <ImageButton
-        android:id="@+id/back_button_camera"
+        android:id="@+id/back"
         android:layout_width="50dp"
         android:layout_height="40dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/rounded_view"
         android:src="@drawable/back"
         android:backgroundTint="#9C9A9A"
-        app:tint="#120E10">
-    </ImageButton>
+        app:tint="#120E10" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_bar"
@@ -39,8 +30,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        app:menu="@menu/nav_bar"
-         />
+        app:menu="@menu/nav_bar" />
 
-</RelativeLayout>
-
+</merge>

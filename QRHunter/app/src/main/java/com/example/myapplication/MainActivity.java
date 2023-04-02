@@ -15,7 +15,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
+import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -61,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     private QRCodeControllerDB qrCodeControllerDB;
     private Player currentPlayer;
     private Button search;
+    private CameraFragment cameraFragment;
 
     //test
     ActivityResultLauncher<Intent> forResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
@@ -95,9 +99,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.camera);
+       // setContentView(R.layout.camera);
+        setContentView(R.layout.customcamera);
         setContentView(R.layout.mapp);
-
         setContentView(R.layout.home_page);
         FirebaseApp.initializeApp(this);
         db = FirebaseFirestore.getInstance();
@@ -131,10 +135,28 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-            cameraController = new CameraController(this, barLauncher);
+            //cameraController = new CameraController(this, barLauncher);
             if (item.getItemId() == R.id.camera) {
                 try {
-                    cameraController.scanCode();
+                    //cameraController.scanCode();
+                    Intent intent = new Intent(this, CameraControllerActivity.class);
+                    startActivity(intent);
+//                    cameraController.scanCode();
+//                    setContentView(R.layout.customcamera);
+//                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//                    if (cameraFragment == null) {
+//                        Fragment cameraFragment = new CameraFragment(this,barLauncher);
+//                        transaction.replace(R.id.fragmentcontainer, cameraFragment);
+//                    }
+//                    // show the customcamera layout
+//                    setContentView(R.layout.customcamera);
+//                    // get the cameraController instance and start scanning
+//                    cameraController = new CameraController(this, barLauncher);
+//                    cameraController.scanCode();
+//                    // commit the fragment transaction
+//                    transaction.commit();
+
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -143,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     Intent intent = new Intent(this,HistoryActivity.class);
                     intent.putExtra("username", currentPlayer.getUsername());
+                    //intent.putExtra("username", "y");
                     startActivity(intent);
                 } catch (Exception e) {
                     e.printStackTrace();
