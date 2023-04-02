@@ -83,7 +83,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
         db = FirebaseFirestore.getInstance();
         username = getIntent().getStringExtra("username");
-        double latitude = getIntent().getDoubleExtra("latitude", 53.5412);
+        double latitude = getIntent().getDoubleExtra("latitude", 53.5312);
         double longitude = getIntent().getDoubleExtra("longitude", -113.4907);
         currentLocation = new LatLng(latitude, longitude);
 
