@@ -111,6 +111,7 @@ public class OtherUserProfileActivity extends AppCompatActivity {
     /***
      * This function is used to draw the first letter of user name and display it as profile picture
      * Created a canvas to draw the first letter of user's name on Bitmap
+     * https://www.tabnine.com/code/java/methods/android.graphics.Canvas/drawBitmap
      * @param realName
      * @return bitmap
      * @author: Anika, Aamna Noor
