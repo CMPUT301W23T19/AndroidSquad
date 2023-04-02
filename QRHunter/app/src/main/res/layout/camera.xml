@@ -12,12 +12,19 @@
 <!--        android:backgroundTint="#9C9A9A"-->
 <!--        app:tint="#120E10"/>-->
 
-    <Button
-        android:id="@+id/exitCam"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Exit"
-        />
+
+    <com.journeyapps.barcodescanner.DecoratedBarcodeView
+        android:id="@+id/barcode_scanner"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+        <Button
+            android:id="@+id/exitCam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Exit" />
+
+    </com.journeyapps.barcodescanner.DecoratedBarcodeView>
 
 </RelativeLayout>
 
