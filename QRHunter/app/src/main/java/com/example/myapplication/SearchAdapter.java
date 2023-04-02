@@ -12,8 +12,11 @@
  */
 package com.example.myapplication;
 
-import android.app.appsearch.SearchResult;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,13 +79,40 @@ public class SearchAdapter extends ArrayAdapter<HashMap<String, String>> impleme
         ImageView usericon = view.findViewById(R.id.rank1);
         TextView userid = view.findViewById(R.id.search_id);
         Log.e("SearchAdapter: ", "Adding username: " + user.get("Username").toString());
-
         username.setText(user.get("Name").toString());
         userid.setText(String.valueOf(user.get("Username")));
-        Log.e("SearchAdapter: ", "getView() called for position " + position);
 
+        // getting the name of user to display profile picture
+        String name = user.get("Name").toString();
+        Bitmap bmp = getPicture(name);
+        usericon.setImageBitmap(bmp);
+        Log.e("SearchAdapter: ", "getView() called for position " + position);
         return view;
     }
+
+
+    /***
+     * This function is used to draw the first letter of user name and display it as profile picture
+     * Created a canvas to draw the first letter of user's name on Bitmap
+     * @param realName the user's name
+     * @return bitmap
+     */
+    private Bitmap getPicture(String realName) {
+        int size = 250;
+        // creating a new bitmap
+        Bitmap bitmap = Bitmap.createBitmap(250, 250, Bitmap.Config.ARGB_8888);
+        // canvas to draw on Bitmap
+        Canvas canvas = new Canvas(bitmap);
+        Paint paint = new Paint();
+        paint.setColor(Color.parseColor("#FFFFFF"));
+        paint.setStyle(Paint.Style.FILL);
+        // drawing the first letter of user's name on the Bitmap
+        paint.setTextSize(size / 2);
+        paint.setTextAlign(Paint.Align.CENTER);
+        canvas.drawText(realName.substring(0, 1).toUpperCase(), size / 2, size / 2 + size / 8, paint);
+        return bitmap;
+    }
+
 
     /**
      * Overrides the getItemId method of ArrayAdapter to return the position of the item in the list.
