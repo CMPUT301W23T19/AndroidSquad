@@ -147,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
             if (item.getItemId() == R.id.map) {
                 try {
                     Intent intent = new Intent(this,MapActivity.class);
+                    intent
                     startActivity(intent);
                 } catch (Exception e) {
                     e.printStackTrace();

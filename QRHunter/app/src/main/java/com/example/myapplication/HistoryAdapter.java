@@ -40,11 +40,13 @@ public class HistoryAdapter extends ArrayAdapter<HistoryModel> {
                         Long qrScore = documentSnapshot1.getLong("Score");
                         Long playerCount= documentSnapshot1.getLong("Player Count");
                         //Geopoint location= documentSnapshot1.getString("Location");
-                        GeoPoint geolocation = documentSnapshot1.getGeoPoint("Location");
-                        String location = "Location: " + geolocation.getLatitude() + "," + geolocation.getLongitude();
-                        Log.e("Score", qrCode + String.valueOf(qrScore));
-                        HistoryModel historyModel = new HistoryModel(qrCode,qrScore,location,playerCount);
-                        add(historyModel);
+                        if (documentSnapshot1.get("Location") != null) {
+                            GeoPoint geolocation = documentSnapshot1.getGeoPoint("Location");
+                            String location = "Location: " + geolocation.getLatitude() + "," + geolocation.getLongitude();
+                            Log.e("Score", qrCode + String.valueOf(qrScore));
+                            HistoryModel historyModel = new HistoryModel(qrCode, qrScore, location, playerCount);
+                            add(historyModel);
+                        }
                     });
                 }
 
