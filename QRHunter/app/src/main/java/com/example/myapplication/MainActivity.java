@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
         getMostScanned();
 
         // Update Home page
-        ActivityResultLauncher<Intent> updateScores = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        ActivityResultLauncher<Intent> updateHomePage = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
                 if (result.getResultCode() == RESULT_OK) {
@@ -148,19 +148,18 @@ public class MainActivity extends AppCompatActivity {
                                     playerRankTextView.setText(playerRanksText);
                                 }
                             });
-                    Menu menu = bottomNavigationView.getMenu();
-                    MenuItem menuItem = menu.getItem(0);
-                    menuItem.setChecked(true);
                     leaderboardScores();
                     getMostScanned();
                 }
+                highlightNavBarItem();
             }
         });
 
         ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result -> {
             if(result.getContents()!=null) {
-                cameraController.handleScanResult(result.getContents(), db, this, currentPlayer.getUsername(), updateScores);
+                cameraController.handleScanResult(result.getContents(), db, this, currentPlayer.getUsername(), updateHomePage);
             }
+            highlightNavBarItem();
         });
 
         // Bottom Navigation bar functionality
@@ -169,7 +168,8 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     Intent intent = new Intent(this,MapActivity.class);
                     intent.putExtra("username", currentPlayer.getUsername());
-                    startActivity(intent);
+                    updateHomePage.launch(intent);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
             if (item.getItemId() == R.id.profile) {
                 try {
                     Intent intent = new Intent(this,ProfileActivity.class);
-                    startActivity(intent);
+                    updateHomePage.launch(intent);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     Intent intent = new Intent(this,HistoryActivity.class);
                     intent.putExtra("username", currentPlayer.getUsername());
-                    updateScores.launch(intent);
+                    updateHomePage.launch(intent);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, LeaderboardActivity.class);
                 intent.putExtra("currentUser", currentPlayer);
-                startActivity(intent);
+                updateHomePage.launch(intent);
             }
         });
 
@@ -222,8 +222,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-                startActivity(intent);
-
+                updateHomePage.launch(intent);
             }
         });
     }
@@ -291,6 +290,15 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
+    }
+
+    /**
+     * Highlights the appropriate icon on the bottom navigation bar
+     */
+    public void highlightNavBarItem() {
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem menuItem = menu.getItem(0);
+        menuItem.setChecked(true);
     }
 
 }

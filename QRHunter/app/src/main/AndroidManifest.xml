@@ -25,9 +25,6 @@
             android:name=".OtherUserProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".OtherUserActivity"
-            android:exported="false" />
-        <activity
             android:name=".ProfileActivity"
             android:exported="false">
             <meta-data
