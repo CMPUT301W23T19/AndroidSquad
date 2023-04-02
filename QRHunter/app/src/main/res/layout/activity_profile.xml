@@ -7,81 +7,135 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     tools:context=".ProfileActivity">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="15dp"
-        android:background="@drawable/rounded_view"
-        >
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        android:background="#CCCCCC">
 
         <ImageView
             android:id="@+id/userAvatar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/profilepic"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="180dp"
-            android:layout_marginBottom="30dp"/>
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/round_background"
+            android:src="@drawable/profilepic" />
 
         <TextView
             android:id="@+id/user_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Your Score:"
-            android:textColor="#EAE8E8"
-            android:textSize="24sp"
-            android:textStyle="bold"
             android:layout_below="@+id/username"
             android:layout_centerHorizontal="true"
-            />
+            android:background= "@drawable/rounded_corner_shape"
+            android:fontFamily="sans-serif"
+            android:text="Your Score:"
+            android:textColor="#333333"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/user_score"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:background= "@drawable/rounded_corner_shape"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/highest_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:text="Highest Score:"
+                android:textColor="#333333"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/lowest_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:fontFamily="sans-serif"
+                android:text="Lowest Score:"
+                android:textColor="#333333"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="User Profile"
-            android:textAlignment="center"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
-            android:textColor="#FFFFFF"
+            android:textAlignment="center"
+            android:textColor="#333333"
             android:textSize="34sp"
-            android:textStyle="bold"
-            />
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/username2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:text="User's Name"
-                android:textColor="#EAE8E8"
-                android:textSize="34sp"
-                android:textStyle="bold"
-                android:layout_below="@+id/userAvatar"/>
+        <TextView
+            android:id="@+id/username2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/userAvatar"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="sans-serif"
+            android:text="User's Name"
+            android:textColor="#333333"
+            android:textSize="34sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/username3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/username2"
-                android:layout_centerHorizontal="true"
-                android:text="&quot;@username&quot;"
-                android:textColor="#EAE8E8"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/username3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/username2"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="sans-serif"
+            android:text="&quot;@username&quot;"
+            android:textColor="#333333"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/email"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/username3"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                android:text="E-mail: username@xyz.com"
-                android:textColor="#EAE8E8"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/scanned_code_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/email"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:fontFamily="sans-serif"
+            android:background= "@drawable/rounded_corner_shape"
+            android:text="Number of scanned code:"
+            android:textColor="#333333"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
+
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/username3"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:fontFamily="sans-serif"
+            android:text="E-mail: username@xyz.com"
+            android:textColor="#333333"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <ImageButton
             android:id="@+id/backButton"
@@ -90,7 +144,7 @@
             android:background="@drawable/rounded_view"
             android:backgroundTint="#9C9A9A"
             android:src="@drawable/back"
-            app:tint="#120E10"></ImageButton>
+            app:tint="#120E10" />
     </RelativeLayout>
 
 
