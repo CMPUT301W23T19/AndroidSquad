@@ -23,8 +23,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="180dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/scores"
             android:background="@drawable/round_background"
             android:src="@drawable/profilepic" />
 
@@ -42,6 +42,7 @@
             android:textStyle="bold" />
 
         <LinearLayout
+            android:id="@+id/scores"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/user_score"

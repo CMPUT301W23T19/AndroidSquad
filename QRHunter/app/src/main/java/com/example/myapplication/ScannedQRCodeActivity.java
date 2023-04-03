@@ -40,6 +40,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.activity.result.contract.ActivityResultContracts.TakePicture;
 
 import androidx.activity.result.ActivityResultCallback;
@@ -167,8 +169,12 @@ public class ScannedQRCodeActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                Log.e("Location", String.valueOf(location));
-                               GeoPoint qrLocation = new GeoPoint(location.getLatitude(), location.getLongitude());
-                               qrDocRef.update("Location", qrLocation);
+                               try {
+                                   GeoPoint qrLocation = new GeoPoint(location.getLatitude(), location.getLongitude());
+                                   qrDocRef.update("Location", qrLocation);
+                               } catch (NullPointerException n) {
+                                   Toast.makeText(ScannedQRCodeActivity.this, "Sorry, we cannot access your location!", Toast.LENGTH_SHORT);
+                               }
                                getPhotoDialog().show();
                             }
                         })
