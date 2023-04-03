@@ -40,6 +40,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -80,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
     private static Player currentPlayer;
     private Button search;
     private TextView name;
+    private ImageButton geosearch;
 
     ActivityResultLauncher<Intent> forResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
@@ -119,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
         db = FirebaseFirestore.getInstance();
         search = (Button) findViewById(R.id.search_button);
+        geosearch = (ImageButton) findViewById(R.id.geosearch_button);
 
         Intent signup = new Intent(MainActivity.this, SignUpActivity.class);
         forResult.launch(signup);
@@ -222,6 +225,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                startActivity(intent);
+
+            }
+        });
+        geosearch.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(MainActivity.this, GeoSearchActivity.class);
                 startActivity(intent);
 
             }
