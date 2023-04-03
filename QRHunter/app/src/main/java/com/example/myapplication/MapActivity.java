@@ -42,16 +42,23 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -60,6 +67,7 @@ import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -117,7 +125,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     /**
      * Displays the map containing markers for the current user's location as well as QR codes with
      * a known location.
-     * Displays location searched by user, and QR codes within a 500m radius relative to the searched location
+     * Displays location searched by user, and QR codes within a 1km radius relative to the searched location
      * Uses Google Map API.
      * Returns to Home page (Main Activity)
      * @param googleMap - GoogleMap map to be displayed
@@ -161,7 +169,45 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                         googleMap.addMarker(markerOptions);
                         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
 
-                        //TODO: add qrCodes within 500m away
+                        //TODO: add qrCodes within 1km away
+                        CollectionReference qrLocRef = db.collection("QR Code");
+                        qrLocRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                List<DocumentSnapshot> qrCodes = task.getResult().getDocuments();
+                                LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
+                                for (DocumentSnapshot qrCode : qrCodes) {
+                                    if (qrCode.get("Location") != null) {
+                                        Log.e("qrLocation", String.valueOf(qrCode.get("Name")));
+                                        GeoPoint geopoint = (GeoPoint) qrCode.get("Location");
+                                        LatLng qrLocation = new LatLng(geopoint.getLatitude(), geopoint.getLongitude());
+                                        float[] results = new float[1];
+                                        Location.distanceBetween(latLng.latitude, latLng.longitude, qrLocation.latitude, qrLocation.longitude, results);
+                                        float distance = results[0];
+                                        Log.e("qrLocation", "This qrcode has distance of " + (distance));
+                                        if (distance <= 10000) { // Filter out only QR codes within 1km of searched location
+                                            Log.e("Found : ", "Distance is within 500m!");
+                                            MarkerOptions markers = new MarkerOptions()
+                                                    .position(qrLocation)
+                                                    .title(String.format("Name: %s", qrCode.get("Name")))
+                                                    .snippet(String.format("Distance: %.2f m", distance))
+                                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
+                                            googleMap.addMarker(markers);
+                                            boundsBuilder.include(qrLocation);
+                                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(qrLocation, 13)); //zoom up to that locations
+                                        }
+                                        else {
+                                            Log.e("qrLocation", "Distance is not within 500m.");
+                                        }
+                                    }
+                                    else {
+                                        Log.e("qrLocationNotFound", "QR Location is null.");
+                                    }
+                                }
+                            }
+
+                        });
+
                     }
                 }
                 return false;
