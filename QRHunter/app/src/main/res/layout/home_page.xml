@@ -25,6 +25,23 @@
             android:textColor="@color/white"
             android:textSize="23dp" />
 
+        <ImageButton
+            android:id="@+id/geosearch_button"
+            android:layout_width="50dp"
+            android:layout_height="80dp"
+            android:background="@android:color/transparent"
+            app:srcCompat="@android:drawable/ic_dialog_map" />
+
+        <!--        <com.google.android.material.button.MaterialButton-->
+        <!--            android:id="@+id/geosearch_button"-->
+        <!--            style="@style/Widget.AppCompat.Button.Borderless"-->
+        <!--            android:layout_width="10dp"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:layout_marginEnd="20dp"-->
+        <!--            android:layout_alignParentEnd="true"-->
+        <!--            android:gravity="center_horizontal|top"-->
+        <!--            app:srcCompat="@android:drawable/ic_dialog_map" />-->
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/search_button"
             style="@style/Widget.AppCompat.Button.Borderless"
@@ -282,6 +299,8 @@
                 android:layout_marginBottom="30dp"
                 android:textSize="18dp"/>
 
+
+
         </RelativeLayout>
 
     </LinearLayout>
@@ -297,6 +316,7 @@
         app:itemIconTint="#ffff"
         app:itemTextColor="#ffff"
         app:menu="@menu/nav_bar" />
+
 </LinearLayout>
 
 
