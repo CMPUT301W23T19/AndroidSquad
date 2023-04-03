@@ -65,6 +65,11 @@ public class GeoSearchActivity extends AppCompatActivity {
 
         CollectionReference searchRef = db.collection("QR Code");
         searchRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            /**
+             * gets the value from the database and create the listview of geolocation and name of qrname
+             * and also shows the filtered result of listview of geolocation
+             * @param queryDocumentSnapshots
+             */
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 List<DocumentSnapshot> documents = queryDocumentSnapshots.getDocuments();
@@ -98,11 +103,23 @@ public class GeoSearchActivity extends AppCompatActivity {
         // Get the reference to the search view
         searchView = findViewById(R.id.search_bb);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
+            /**
+             * Handles event when user submits the search query
+             * @param query
+             * @return boolean
+             */
+
             @Override
             public boolean onQueryTextSubmit (String query){
                 // Called when the user submits the search query
                 return false;
             }
+
+            /**
+             * when user searches the player name and makes a change, it filters the result with new input
+             * @param newText
+             * @return boolean
+             */
 
             @Override
             public boolean onQueryTextChange (String newText){
@@ -123,11 +140,14 @@ public class GeoSearchActivity extends AppCompatActivity {
             }
         });
         // Get the reference to the search view
+        /**
+         * Handles the event when user clicks the item to see where the qr code is located in
+         * It takes the user to the mapactivity and shows the details of that qr code
+         */
         searchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 String qrpass = String.valueOf(adapter.getItem(position).get("Name"));
-                Log.e("HistoryActivity","Position of item to be deleted: " + qrpass);
                 Intent intent = new Intent(GeoSearchActivity.this, MapActivity.class);
 
                 intent.putExtra("qrpassname", qrpass); // Replace with the actual latitude of the QR code

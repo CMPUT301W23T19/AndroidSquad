@@ -53,6 +53,12 @@ public class SearchActivity extends AppCompatActivity {
     List<HashMap<String, String>> originPlayers = new ArrayList<>();
     List<HashMap<String, String>> filterPlayers = new ArrayList<>();
 
+    /**
+     * Handels the event when user searches for otherplayers by username
+     * It creates the listview of the usernames and names of otherplayers
+     * @param savedInstanceState
+     */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,6 +120,13 @@ public class SearchActivity extends AppCompatActivity {
                 // Called when the user submits the search query
                 return false;
             }
+
+            /**
+             * Handles the event when user changes the text in search view
+             * It clears out the filterlist and add the new filtered list
+             * @param newText
+             * @return boolean
+             */
 
             @Override
             public boolean onQueryTextChange (String newText){
