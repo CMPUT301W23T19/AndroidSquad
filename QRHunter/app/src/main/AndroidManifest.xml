@@ -72,6 +72,10 @@
             android:exported="true"
             android:parentActivityName=".MainActivity" />
         <activity
+            android:name=".GeoSearchActivity"
+            android:exported="true"
+            android:parentActivityName=".MainActivity"></activity>
+        <activity
             android:name=".PreviouslyScannedQRCodeActivity"
             android:exported="true"
             android:parentActivityName=".HistoryActivity" />

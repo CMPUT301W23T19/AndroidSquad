@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#150839"
+    android:backgroundTint="#150839"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <SearchView
+        android:id="@+id/search_bb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:iconifiedByDefault="false"
+        android:queryHint="Search..."
+        app:iconifiedByDefault="false"
+        android:background="@drawable/rounded_view"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/search_butttoon"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="52dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="6dp"
+        android:gravity="center_horizontal|top"
+        app:icon="?android:attr/actionModeWebSearchDrawable"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/search_bb"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/geo_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:visibility="visible"
+            android:background="@color/white"
+
+            android:layout_alignParentBottom="true"
+            android:scrollbars="vertical"
+            android:scrollbarStyle="outsideOverlay" />
+
+    </RelativeLayout>
+    <ImageButton
+        android:id="@+id/back_bb"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:background="@drawable/rounded_view"
+        android:src="@drawable/back"
+        android:backgroundTint="#9C9A9A"
+        app:tint="#120E10">
+
+    </ImageButton>
+</RelativeLayout>

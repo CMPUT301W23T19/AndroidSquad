@@ -118,13 +118,13 @@ public class OtherUserProfileActivity extends AppCompatActivity {
      */
 
     public Bitmap getPicture(String realName) {
-        int size = 250; // Change this to adjust the size of the bitmap
+        int size = 250;
         // creating a new bitmap
         Bitmap bitmap = Bitmap.createBitmap(250, 250, Bitmap.Config.ARGB_8888);
         // canvas to draw on Bitmap
         Canvas canvas = new Canvas(bitmap);
         Paint paint = new Paint();
-        paint.setColor(Color.parseColor("#800080"));
+        paint.setColor(Color.parseColor("#FFFFFF"));
         paint.setStyle(Paint.Style.FILL);
         // drawing the first letter of user's name on the Bitmap
         paint.setTextSize(size / 2);

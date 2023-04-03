@@ -47,6 +47,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
@@ -97,8 +98,15 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            currentLocation();
-            displayQRCodes();
+            // get the QR code name value passed from the intent
+            String qrCodeName = getIntent().getStringExtra("qrpassname");
+            Log.e("MapActivity","Check the qrname passed correctly: " + qrCodeName);
+            if (qrCodeName != null) {
+                displaySpecificQRCodes(qrCodeName);
+            } else {
+                currentLocation();
+                displayQRCodes();
+            }
         } else {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
         }
@@ -125,6 +133,40 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
             } else {
                 Toast.makeText(this, "The service is not available!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    /**
+     * using the value passed of the specific qrcode location, it takes user to that marker on the map
+     * @param qrCodeValue
+     */
+    public void displaySpecificQRCodes(String qrCodeValue) {
+        Log.e("MapActivity","This is the value passed for display: " + qrCodeValue);
+        DocumentReference qrDocRef = db.collection("QR Code").document(qrCodeValue);
+        qrDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot qrCode = task.getResult();
+                    if (qrCode.exists()) {
+                        if (qrCode.get("Location") != null) {
+                            Log.e("qrLocation", String.valueOf(qrCode.get("Name")));
+                            GeoPoint geopoint = (GeoPoint) qrCode.get("Location");
+                            LatLng qrLocation = new LatLng(geopoint.getLatitude(), geopoint.getLongitude());
+                            MarkerOptions marker = new MarkerOptions()
+                                    .position(qrLocation)
+                                    .title(String.format("Name: %s", qrCodeValue))
+                                    .snippet(String.format("Score: %d", qrCode.get("Score")))
+                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
+                            googleMap.addMarker(marker);
+                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(qrLocation, 15));
+                        }
+                    } else {
+                        Log.e("qrCodeNotFound", "QR code not found in database.");
+                    }
+                } else {
+                    Log.e("qrCodeFetchError", "Error fetching QR code from database.", task.getException());
+                }
             }
         });
     }

@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 /***
  * This Activity displays the user profile information
- * Retrieves the data from database
+ * Retrieves the data from database and displays whe  user views other user profile
  * https://www.tabnine.com/code/java/methods/android.graphics.Canvas/drawBitmap
  * @author: Anika, Aamna Noor
  *
@@ -104,13 +104,13 @@ public class ProfileActivity extends AppCompatActivity {
      */
 
     public Bitmap getPicture(String realName) {
-        int size = 250; // Change this to adjust the size of the bitmap
+        int size = 250;
         // creating a new bitmap
         Bitmap bitmap = Bitmap.createBitmap(250, 250, Bitmap.Config.ARGB_8888);
         // canvas to draw on Bitmap
         Canvas canvas = new Canvas(bitmap);
         Paint paint = new Paint();
-        paint.setColor(Color.parseColor("#800080"));
+        paint.setColor(Color.parseColor("#FFFFFF"));
         paint.setStyle(Paint.Style.FILL);
         // drawing the first letter of user's name on the Bitmap
         paint.setTextSize(size / 2);
