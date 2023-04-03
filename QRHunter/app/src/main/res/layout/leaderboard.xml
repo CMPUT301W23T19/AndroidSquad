@@ -183,6 +183,8 @@
             android:layout_height="match_parent"
             android:layout_below="@id/player_rank"
             android:layout_alignParentBottom="true"
+            android:layout_marginTop="-4dp"
+            android:layout_marginBottom="6dp"
             android:visibility="visible" />
 
         <ImageButton

@@ -50,25 +50,33 @@ public class MainActivityTest {
         Activity activity = rule.getActivity();
     }
 
+    /**
+     * Tests if CameraActivty starts from MainActivity
+     */
     @Test
     public void checkCameraActivity() {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         solo.clickOnView(solo.getView(R.id.camera));
 
         solo.assertCurrentActivity("Wrong Activity", CameraActivity.class);
-
-
+        solo.clickOnView(solo.getView(R.id.exitCam));
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
 
     }
+
+    /**
+     * Tests if HistoryActivty starts from MainActivity
+     */
     @Test
     public void checkHistoryActivity() {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         solo.clickOnView(solo.getView(R.id.history));
-
-        //TODO: check if history list contains proper items
         solo.assertCurrentActivity("Wrong Activity", HistoryActivity.class);
     }
 
+    /**
+     * Tests if PreviouslyScannedQRCodeActivity starts from HistoryActivity
+     */
     @Test
     public void checkPreviouslyScannedQRCodeActivity() {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
@@ -76,22 +84,34 @@ public class MainActivityTest {
         solo.assertCurrentActivity("Wrong Activity", HistoryActivity.class);
 
         ListView qrCodeList =  (ListView) solo.getView(R.id.history_list);
-
         solo.clickOnView(qrCodeList);
 
         solo.assertCurrentActivity("Wrong Activity", PreviouslyScannedQRCodeActivity.class);
-        //TODO: check if QR code name is the same
 
     }
 
+
+    /**
+     * Tests if LeaderboardActivity starts from MainActivity
+     */
     @Test
-    public void checkLeaderboardActivity() {
+    public void checkLeaderboardActivity() throws InterruptedException {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         solo.clickOnView(solo.getView(R.id.view_more));
+        solo.assertCurrentActivity("Wrong Activity", LeaderboardActivity.class);
 
+        solo.clickOnView(solo.getView(R.id.highest_scoring));
+        solo.assertCurrentActivity("Wrong Activity", LeaderboardActivity.class);
+        solo.waitForActivity(LeaderboardActivity.class, 10);
+
+        solo.clickOnView(solo.getView(R.id.greatest_sum));
+        solo.waitForActivity(LeaderboardActivity.class, 10);
         solo.assertCurrentActivity("Wrong Activity", LeaderboardActivity.class);
     }
 
+    /**
+     * Tests if SearchActivity starts from MainActivity
+     */
     @Test
     public void checkSearchActivity() {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
@@ -100,17 +120,38 @@ public class MainActivityTest {
         solo.assertCurrentActivity("Wrong Activity", SearchActivity.class);
         solo.clickOnView(solo.getView(R.id.search_bar));
         solo.enterText(0, "micheal");
-        //TODO: check if the search results match
+
     }
 
+    /**
+     * Tests if OtherUserProfileActivity starts from SearchActivity
+     */
+    @Test
+    public void checkOtherUserProfileActivity() {
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        solo.clickOnView(solo.getView(R.id.search_button));
+
+        solo.assertCurrentActivity("Wrong Activity", SearchActivity.class);
+
+        ListView results =  (ListView) solo.getView(R.id.result_list);
+        solo.clickOnView(results);
+        solo.assertCurrentActivity("Wrong Activity", OtherUserProfileActivity.class);
+    }
+
+    /**
+     * Tests if MapActivity starts from MainActivity
+     */
     @Test
     public void checkMapActivity() throws InterruptedException {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         solo.clickOnView(solo.getView(R.id.map));
-
+        solo.waitForActivity(MapActivity.class);
         solo.assertCurrentActivity("Wrong Activity", MapActivity.class);
     }
 
+    /**
+     * Tests if ProfileActivity starts from MainActivity
+     */
     @Test
     public void checkProfileActivity() {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
