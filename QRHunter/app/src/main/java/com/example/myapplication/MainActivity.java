@@ -73,6 +73,7 @@ import java.util.jar.Attributes;
 
 /**
  * Activity that displays the Home Page of the app
+ * @authors: Shirley, Angela, Randy, Jessie, Anika
  */
 public class MainActivity extends AppCompatActivity {
     FirebaseFirestore db;
@@ -84,8 +85,13 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton geosearch;
 
     ActivityResultLauncher<Intent> forResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        /**
+         * Displays score statistics of current player
+         * @param result - ActivityResult containing current Player data
+         */
         @Override
         public void onActivityResult(ActivityResult result) {
+
             Log.e("MainActivity: ", "I think Signup Activity is done?");
             Log.e("MainActivity: the result is: ", result.toString());
             if (result != null && result.getResultCode() == RESULT_OK) {
@@ -130,7 +136,12 @@ public class MainActivity extends AppCompatActivity {
         getMostScanned();
 
         // Update Home page
-        ActivityResultLauncher<Intent> updateScores = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        ActivityResultLauncher<Intent> updateHomePage = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            /**
+             * Updates the Home Page (score statistics, leaderboard and most scanned QR Code)
+             * after other children Activities finish
+             * @param result - ActivityResult result that signalsthat  the child Activity has completed
+             */
             @Override
             public void onActivityResult(ActivityResult result) {
                 if (result.getResultCode() == RESULT_OK) {
@@ -151,19 +162,18 @@ public class MainActivity extends AppCompatActivity {
                                     playerRankTextView.setText(playerRanksText);
                                 }
                             });
-                    Menu menu = bottomNavigationView.getMenu();
-                    MenuItem menuItem = menu.getItem(0);
-                    menuItem.setChecked(true);
                     leaderboardScores();
                     getMostScanned();
                 }
+                highlightNavBarItem();
             }
         });
 
         ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result -> {
             if(result.getContents()!=null) {
-                cameraController.handleScanResult(result.getContents(), db, this, currentPlayer.getUsername(), updateScores);
+                cameraController.handleScanResult(result.getContents(), db, this, currentPlayer.getUsername(), updateHomePage);
             }
+            highlightNavBarItem();
         });
 
         // Bottom Navigation bar functionality
@@ -172,7 +182,8 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     Intent intent = new Intent(this,MapActivity.class);
                     intent.putExtra("username", currentPlayer.getUsername());
-                    startActivity(intent);
+                    updateHomePage.launch(intent);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -180,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
             if (item.getItemId() == R.id.profile) {
                 try {
                     Intent intent = new Intent(this,ProfileActivity.class);
-                    startActivity(intent);
+                    updateHomePage.launch(intent);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -198,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     Intent intent = new Intent(this,HistoryActivity.class);
                     intent.putExtra("username", currentPlayer.getUsername());
-                    updateScores.launch(intent);
+                    updateHomePage.launch(intent);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -213,24 +224,38 @@ public class MainActivity extends AppCompatActivity {
         TextView leaderboardText = findViewById(R.id.view_more);
         leaderboardText.setOnClickListener(new View.OnClickListener() {
             @Override
+            /**
+             * Handles the event when VIEW MORE text is clicked.
+             * Starts LeaderboardActivity
+             * @param v The view that was clicked.
+             */
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, LeaderboardActivity.class);
                 intent.putExtra("currentUser", currentPlayer);
-                startActivity(intent);
+                updateHomePage.launch(intent);
             }
         });
 
 
         search.setOnClickListener(new View.OnClickListener(){
             @Override
+            /**
+             * Handles the event when search icon is clicked.
+             * Starts SearchActivity
+             * @param v The view that was clicked.
+             */
             public void onClick(View v){
                 Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-                startActivity(intent);
-
+                updateHomePage.launch(intent);
             }
         });
         geosearch.setOnClickListener(new View.OnClickListener(){
             @Override
+            /**
+             * Handles the event when top left map icon is clicked.
+             * Starts GeoSearchActivity
+             * @param v The view that was clicked.
+             */
             public void onClick(View v){
                 Intent intent = new Intent(MainActivity.this, GeoSearchActivity.class);
                 startActivity(intent);
@@ -263,7 +288,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Displays top ten most scanned qr codes
+     * Displays the most scanned QR Code
+     * -- Subject to change
      */
     public void getMostScanned() {
         TextView mostScanned = findViewById(R.id.most_scanned_text);
@@ -302,6 +328,15 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
+    }
+
+    /**
+     * Highlights the appropriate icon on the bottom navigation bar
+     */
+    public void highlightNavBarItem() {
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem menuItem = menu.getItem(0);
+        menuItem.setChecked(true);
     }
 
 }

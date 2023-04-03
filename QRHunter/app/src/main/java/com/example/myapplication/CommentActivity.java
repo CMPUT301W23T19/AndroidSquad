@@ -17,7 +17,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 
 /**
- * Activity that allows user to add comments to a QR Code
+ * Activity class that allows a user to add comments to a QR Code
+ * @authors Jessie, Angela
  */
 public class CommentActivity extends AppCompatActivity {
 
@@ -29,8 +30,14 @@ public class CommentActivity extends AppCompatActivity {
     private String username;
     FirebaseFirestore db;
 
-
-
+    /**
+     * Gets views associated with activity_comment layout and allows user to comment
+     * Comment is stored in firebase.
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +52,11 @@ public class CommentActivity extends AppCompatActivity {
         username = intent.getStringExtra("username");
 
         submit_button.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Handles event when SUBMIT button is clicked
+             * Stores comment in firebase
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v) {
                 String comment = editText.getText().toString();
@@ -71,6 +83,11 @@ public class CommentActivity extends AppCompatActivity {
         });
 
         back.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Handles the event when BACK button is clicked.
+             * Returns to Home page (Main Activity)
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();

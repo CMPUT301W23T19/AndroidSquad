@@ -29,6 +29,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Activity class that displays ranking of users based on highest scoring QR Code
+ * and highest total scores
+ * @author: Shirley
+ */
 public class LeaderboardActivity extends AppCompatActivity {
     ListView playerRanks;
     RankAdapter rankAdapter;
@@ -41,6 +46,13 @@ public class LeaderboardActivity extends AppCompatActivity {
     FirebaseFirestore db;
     String userName;
 
+    /**
+     * Gets views associated with leaderboard layout and populates them with player information
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +74,11 @@ public class LeaderboardActivity extends AppCompatActivity {
         // Set up onclick for highestScore ranking
         highestScore = findViewById(R.id.highest_scoring);
         highestScore.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Handles the event when HIGHEST SCORES button is clicked.
+             * Displays user ranking based on high scoring QR codes.
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v) {
                 Query query = playerRef.orderBy("highestScore", Query.Direction.DESCENDING);
@@ -130,6 +147,11 @@ public class LeaderboardActivity extends AppCompatActivity {
         // Set up onclick method for greatest_sum ranking
         greatestSum = findViewById(R.id.greatest_sum);
         greatestSum.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Handles the event when HIGHEST TOTAL button is clicked.
+             * Displays user ranking based on highest total scores.
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v) {
                 scoresCollection.orderBy("Score",Query.Direction.DESCENDING).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -196,6 +218,11 @@ public class LeaderboardActivity extends AppCompatActivity {
 
 
         back.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Handles the event when BACK button is clicked.
+             * Returns to Home page (Main Activity)
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v) {
                 finish();
@@ -203,6 +230,11 @@ public class LeaderboardActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Converts string representation of image to a BitMap for the user profile picture to be displayed
+     * @param encodedString - String to be converted
+     * @return BitMap to be displayed as an image
+     */
     public Bitmap StringToBitMap(String encodedString){
         try {
             byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);

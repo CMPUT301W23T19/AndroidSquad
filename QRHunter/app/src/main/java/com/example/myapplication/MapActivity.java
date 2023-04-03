@@ -56,7 +56,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.List;
 
 /**
- * Displays the map containing current user's location and location of QR Codes
+ * Activity class that displays the map containing current user's location and location of QR Codes
+ * Location is retrieved from the firebase
+ * @authors: Anika, Angela, Jessie
  */
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -77,6 +79,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
+            /**
+             * Handles the event when BACK button is clicked.
+             * Returns to Home page (Main Activity)
+             * @param v The view that was clicked.
+             */
             public void onClick(View v) {
                 finish();
             }
@@ -94,6 +101,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
     }
 
+    /**
+     * Displays the map containing markers for the current user's location as well as QR codes with
+     * a known location.
+     * Uses Google Map API.
+     * Returns to Home page (Main Activity)
+     * @param googleMap - GoogleMap map to be displayed
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
@@ -173,6 +187,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
     /**
      * Displays the QR Codes on the map
+     * A small window containing the selected QR code's score and distance from the user is displayed
      */
     public void displayQRCodes() {
         CollectionReference qrColRef = db.collection("QR Code");
@@ -199,6 +214,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         });
     }
 
+    /**
+     * Requests for user's permission to track location
+     * @param permissions The requested permissions. Never null.
+     * @param grantResults The grant results for the corresponding permissions
+     *     which is either {@link android.content.pm.PackageManager#PERMISSION_GRANTED}
+     *     or {@link android.content.pm.PackageManager#PERMISSION_DENIED}. Never null.
+     *
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);

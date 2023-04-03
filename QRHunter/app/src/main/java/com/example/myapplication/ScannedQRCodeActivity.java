@@ -68,7 +68,11 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/** Activity class that displays information about newly scanned QR code */
+/** Activity class that displays information about newly scanned QR code
+ * Retrieves information from firebase.
+ * User will be prompted to store location and photo of physical QR Code, in which they can decline.
+ * @author: Angela
+ */
 public class ScannedQRCodeActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private TextView QRname;
@@ -79,6 +83,15 @@ public class ScannedQRCodeActivity extends AppCompatActivity {
     private DocumentReference qrDocRef;
     private String filename;
     private Uri uri;
+
+    /**
+     * Gets views associated with scanned_qr_code layout and populates them with information such as
+     * Qr code name and visual representation.
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,6 +131,11 @@ public class ScannedQRCodeActivity extends AppCompatActivity {
 
 
         qrDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            /**
+             * Gets information about the newly scanned QR Code and displays it
+             * Counts number of players who have scanned the QR Code
+             * @param task - Task task to be used when retrieving information
+             */
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 int count = 0;
@@ -135,6 +153,12 @@ public class ScannedQRCodeActivity extends AppCompatActivity {
         });
 
         confirm.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Handles the event when CONFIRM button is clicked.
+             * Prompts user to store location and photo of physical QR Code
+             * Returns to Home page (Main Activity)
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(ScannedQRCodeActivity.this);
@@ -163,6 +187,10 @@ public class ScannedQRCodeActivity extends AppCompatActivity {
     ActivityResultLauncher<Uri> startForResult = registerForActivityResult(new TakePicture(), new ActivityResultCallback<Boolean>() {
         @Override
         public void onActivityResult(Boolean result) {
+            /**
+             * Stores photo of the physical QR Code or QR Code location in FireStore Storage
+             * Returns to Home page (MainActivity)
+             */
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
@@ -185,6 +213,7 @@ public class ScannedQRCodeActivity extends AppCompatActivity {
 
     /**
      * Creates an AlertDialog prompting the user to accept or reject permission when storing an image of the QR Code
+     * Opens a camera if user selects "Yes"
      * @return AlertDialog to be displayed
      */
     public AlertDialog getPhotoDialog() {

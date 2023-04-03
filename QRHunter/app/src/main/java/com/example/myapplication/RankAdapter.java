@@ -23,6 +23,10 @@ import androidx.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Custom Adapter class that sets information to be displayed in LeaderboardActivity
+ * @author Shirley
+ */
 public class RankAdapter extends ArrayAdapter<HashMap<String, Object>> {
     public RankAdapter(@NonNull Context context, List<HashMap<String, Object>> ranks) {
         super(context, 0, ranks);
@@ -51,6 +55,11 @@ public class RankAdapter extends ArrayAdapter<HashMap<String, Object>> {
         return view;
     }
 
+    /**
+     * Converts String to bitMap that will be displayed as the player's avatar
+     * @param encodedString - String to be converted
+     * @return Bitmap to be displayed as an image
+     */
     public Bitmap StringToBitMap(String encodedString){
         try {
             byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);

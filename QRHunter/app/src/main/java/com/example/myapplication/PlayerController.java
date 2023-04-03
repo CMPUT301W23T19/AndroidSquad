@@ -20,20 +20,29 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
+/**
+ * Controller class that handles events related to Player data
+ * Updates Player collection in firebase
+ * @authors: Jessie, Shirley, Angela
+ */
 public class PlayerController {
-
     private Integer score = 93;
-
     private static String username;
-
     private Integer highestScore;
 
     private Integer lowestScore;
-
     Player player;
-
     FirebaseFirestore db;
 
+    /**
+     * Constructor function for PlayerController
+     * @param scores - Integer representation of player's score
+     * @param highest - Integer representation of player's highest score
+     * @param lowest - Integer representation of player's lowest score
+     * @param username - String representation of player's username
+     * @param db - FirebaseFirestore instance; connection to database
+     */
     public PlayerController(Integer scores, Integer highest, Integer lowest, String username, FirebaseFirestore db) {
         this.username = username;
         this.db = db;
@@ -42,138 +51,13 @@ public class PlayerController {
             this.score = scores;
             this.highestScore = highest;
             this.lowestScore = lowest;
-
-            player = new Player(score, username, highestScore, lowestScore);
+            player = new Player(null, score, username, highestScore, lowestScore, null, null, null);
         }
 
     }
 
-
-    public void checkSumScore() {
-        db.collection("Player")
-                .whereEqualTo("Username", username)
-                .whereArrayContains("Score", score)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            if (task.getResult().isEmpty()) {     // user has not scanned QR code before
-                                addToHistoryofUserscore();
-                            } else {
-                                Log.d("TAG", "Has the same score with previous one");
-                            }
-                        } else {
-                            Log.e("TAG", "Error getting data");
-                        }
-                    }
-                });
-//                .update("Score", FieldValue.arrayUnion(score))
-
-    }
-
-    public void addToHistoryofUserscore() {
-        db.collection("Username").document(username)
-
-                .update("Score", FieldValue.arrayUnion(score))
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Log.d("TAG", "Successfully added score!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("TAG", "Error adding score");
-                    }
-                });
-    }
-
-    public void checkHighestScore() {
-        db.collection("Player")
-                .whereEqualTo("Username", username)
-                .whereArrayContains("highestScore", score)
-                .whereGreaterThan("highestScore", score)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            if (task.getResult().isEmpty()) {     // user has not scanned QR code before
-                                addToHighestscoreofUsers();
-                            } else {
-                                Log.d("TAG", "New highest score has been updated");
-                            }
-                        } else {
-                            Log.e("TAG", "Error getting data");
-                        }
-                    }
-                });
-//                .update("Score", FieldValue.arrayUnion(score))
-    }
-
-    public void addToHighestscoreofUsers() {
-        db.collection("Username").document(username)
-                .update("highestScore", FieldValue.arrayUnion(score))
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Log.d("TAG", "Successfully updated!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("TAG", "Error updating");
-                    }
-                });
-    }
-
-    public void checkLowestScore() {
-        db.collection("Player")
-                .whereEqualTo("Username", username)
-                .whereArrayContains("lowestScore", score)
-                .whereGreaterThan("lowestScore", score)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            if (task.getResult().isEmpty()) {     // user has not scanned QR code before
-                                addToLowestScoreOfUsers();
-                            } else {
-                                Log.d("TAG", "New lowest score has been updated");
-                            }
-                        } else {
-                            Log.e("TAG", "Error getting data");
-                        }
-                    }
-                });
-//                .update("Score", FieldValue.arrayUnion(score))
-
-    }
-
-    public void addToLowestScoreOfUsers() {
-        db.collection("Username").document(username)
-                .update("lowestScore", FieldValue.arrayUnion(score))
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Log.d("PlayerController", "Successfully updated!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("PlayerController", "Error updating");
-                    }
-                });
-    }
-
     /**
      * Deletes QR code from user's profile/ history of previously scanned QR codes
-     *
      * @param qrName - String representation of the name of the QR code to be deleted
      */
     public void deleteQRFromHistory(String qrName) {
@@ -196,7 +80,6 @@ public class PlayerController {
 
     /**
      * Adds QR code to user's history of scanned QR codes
-     *
      * @param qr_name String representation of the name of the QR code to be added
      */
     public void addToHistoryofQRCodes(String qr_name) {

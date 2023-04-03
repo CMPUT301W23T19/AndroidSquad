@@ -40,6 +40,7 @@ import java.util.Map;
 
 /**
  * Class that represents a QR code
+ * @authors: Angela, Aamna
  */
 public class QRCode implements Serializable {
     private String name;
@@ -48,7 +49,11 @@ public class QRCode implements Serializable {
     private String location;
 
 
-
+    /**
+     * Constructor function for QRCode
+     * @param codeContents - String representation of the QR code contents
+     * @param location - String representation of QR Code location
+     */
     public QRCode(String codeContents, String location) {
         this.location = location;
         sha256hex = Hashing.sha256()
@@ -119,7 +124,8 @@ public class QRCode implements Serializable {
 
     /**
      * Creates a unique avatar image for a newly scanned QR code based on the binary representation of its hash
-     * @return an arraylist consisting of drawables that form the avatar image
+     * @return an arraylist consisting of "0" and "1" that indicate what features are
+     * included in the visual representation
      */
 
     public ArrayList<String> setAvatar() {
@@ -149,7 +155,8 @@ public class QRCode implements Serializable {
 
     /**
      * Gets unique visual represented avatar of QR code
-     * @return an arraylist consisting of drawables that form the avatar image
+     * @return an arraylist consisting of "0" and "1" that indicate what features are
+     * to be drawn
      */
     public ArrayList<String> getAvatarList() {
         ArrayList<String> avatarlist = setAvatar();

@@ -26,12 +26,18 @@ import java.util.List;
  */
 
 /**
- * Updates information on CommentListViewActivity
+ * Custom Adapter class that updates information on CommentListViewActivity
+ * @authors: Jessie, Angela
  */
 public class CommentAdapter extends ArrayAdapter<HashMap<String, String>> {
     private Context context;
     private List<HashMap<String, String>> mComments;
 
+    /**
+     * Constructor function for CommentAdapter
+     * @param context - Context context of Activity that instantiates this class
+     * @param comments - List<HashMap<String, String>> instance that contains comments of the selected QR code
+     */
     public CommentAdapter(@NonNull Context context, List<HashMap<String, String>> comments) {
         super(context, 0, comments);
         this.context = context;
@@ -60,6 +66,11 @@ public class CommentAdapter extends ArrayAdapter<HashMap<String, String>> {
         return view;
     }
 
+    /**
+     * Gets the id of desired QR Code
+     * @param position The position of the item within the adapter's data set whose row id we want.
+     * @return long - long representation of the position
+     */
     @Override
     public long getItemId(int position) {
         return position;

@@ -36,6 +36,7 @@ public class OtherUserProfileActivity extends AppCompatActivity {
     private ArrayAdapter<String> scannedCodeAdapter;
     private ProgressDialog progressDialog;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

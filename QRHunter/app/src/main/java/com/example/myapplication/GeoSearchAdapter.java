@@ -1,5 +1,10 @@
 package com.example.myapplication;
 
+/**
+ * Resource: https://www.youtube.com/watch?v=M73Vec1oieM
+ * https://stackoverflow.com/questions/19527248/filtering-search-results-by-a-string-in-android
+ */
+
 import android.app.appsearch.SearchResult;
 import android.content.Context;
 import android.util.Log;
@@ -21,8 +26,9 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Resource: https://www.youtube.com/watch?v=M73Vec1oieM
- * https://stackoverflow.com/questions/19527248/filtering-search-results-by-a-string-in-android
+ * Custom Adapter class that displays QR codes matching user's search
+ * Retrieves QR code information from firebase
+ * @author Jessie
  */
 public class GeoSearchAdapter extends ArrayAdapter<HashMap<String, String>> implements Filterable {
     private Context context;
@@ -30,6 +36,11 @@ public class GeoSearchAdapter extends ArrayAdapter<HashMap<String, String>> impl
     private List<HashMap<String, String>> mFilteredQRs;
 
 
+    /**
+     * Constructor function for GeoSearchAdapter
+     * @param context - Context context of activity that instantiates this class
+     * @param search
+     */
     public GeoSearchAdapter(@NonNull Context context, List<HashMap<String, String>> search) {
         super(context, 0, search);
         this.context = context;
@@ -38,9 +49,9 @@ public class GeoSearchAdapter extends ArrayAdapter<HashMap<String, String>> impl
 
     }
 
+
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
 
         View view;
         if (convertView == null) {
@@ -72,17 +83,7 @@ public class GeoSearchAdapter extends ArrayAdapter<HashMap<String, String>> impl
         //check if its null
 
 
-
-
-
-//        userloc.setText(user.get("Location").toString());
-//        if (user.get("Location") != null) {
-//
-//            userloc.setText(user.get("Location")).toString());
-//
-//        }
         Log.e("GeoSearchAdapter: ", "getView() called for position " + position);
-
         return view;
     }
 

@@ -24,6 +24,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Activity class that allows user to search for QR Codes with a known location.
+ * Starts MapActivity when user selects a QR Code
+ * @author Jessie
+ */
 public class GeoSearchActivity extends AppCompatActivity {
     private ListView searchList;
     private GeoSearchAdapter adapter;
@@ -38,6 +43,13 @@ public class GeoSearchActivity extends AppCompatActivity {
     List<HashMap<String, String>> filtergeo = new ArrayList<>();
 
 
+    /**
+     * Gets views associated with geosearch_main layout and populates them with QR Code information
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +60,6 @@ public class GeoSearchActivity extends AppCompatActivity {
         back = findViewById(R.id.back_bb);
         adapter = new GeoSearchAdapter(this, new ArrayList<>()); // Initialize adapter
         searchList.setAdapter(adapter);
-//        adapter = new SearchAdapter(this, new ArrayList<>()); // Initialize adapter
-//        searchList.setAdapter(adapter);
 
         db = FirebaseFirestore.getInstance();
 
@@ -116,10 +126,6 @@ public class GeoSearchActivity extends AppCompatActivity {
         searchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-
-//                String[] latLongStrings = locationString.split(",");
-//                double latitude = Double.parseDouble(latLongStrings[0].trim());
-//                double longitude = Double.parseDouble(latLongStrings[1].trim());
                 String qrpass = String.valueOf(adapter.getItem(position).get("Name"));
                 Log.e("HistoryActivity","Position of item to be deleted: " + qrpass);
                 Intent intent = new Intent(GeoSearchActivity.this, MapActivity.class);
@@ -130,6 +136,11 @@ public class GeoSearchActivity extends AppCompatActivity {
         });
 
         back.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Handles the event when BACK button is clicked.
+             * Returns to Home page (Main Activity)
+             * @param view The view that was clicked.
+             */
             @Override
             public void onClick(View view) {
                 finish();

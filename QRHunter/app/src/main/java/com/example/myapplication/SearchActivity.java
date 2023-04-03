@@ -36,6 +36,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Activity class that allows user to search for other players.
+ * This class directs current user to another user's profile when they select a player from the search results.
+ * Retrieves information from firebase.
+ * @authors: Jessie, Shirley, Aamna
+ */
 public class SearchActivity extends AppCompatActivity {
     private ListView searchList;
     private SearchAdapter adapter;
@@ -89,6 +95,11 @@ public class SearchActivity extends AppCompatActivity {
 
         //set up back button to go back if user doesnt want to continue searching
         back.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Handles the event when BACK button is clicked.
+             * Returns to Home page (Main Activity)
+             * @param view The view that was clicked.
+             */
             @Override
             public void onClick(View view) {
                 finish();
@@ -123,6 +134,11 @@ public class SearchActivity extends AppCompatActivity {
 
         searchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
+            /**
+             * Handles the event when a user from the search results is clicked.
+             * Starts OtherUserProfileActivity
+             * @param v The view that was clicked.
+             */
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 String username = adapter.getItem(position).get("Username");
                 Intent intent = new Intent(SearchActivity.this, OtherUserProfileActivity.class);
