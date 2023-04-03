@@ -55,8 +55,8 @@
 
         <ImageView
             android:id="@+id/rank1"
-            android:layout_width="113dp"
-            android:layout_height="132dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_below="@+id/rank1_score"
             android:layout_centerInParent="true"
             android:src="@drawable/player" />
@@ -64,8 +64,8 @@
 
         <ImageView
             android:id="@+id/rank2"
-            android:layout_width="105dp"
-            android:layout_height="125dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_below="@+id/rank2_score"
             android:layout_alignLeft="@+id/rank1"
             android:layout_alignParentLeft="true"
@@ -74,8 +74,8 @@
 
         <ImageView
             android:id="@+id/rank3"
-            android:layout_width="105dp"
-            android:layout_height="125dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_below="@+id/rank3_score"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
@@ -130,7 +130,6 @@
             android:layout_below="@+id/rank2"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="25dp"
-            android:text="username"
             android:textColor="#434242" />
 
         <TextView
