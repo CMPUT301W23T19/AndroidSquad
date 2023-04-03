@@ -25,8 +25,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
-
 /**
  * Custom Adapter class that displays QR codes matching user's search
  * Retrieves QR code information from firebase
