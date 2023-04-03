@@ -1,7 +1,7 @@
 package com.example.myapplication;
-
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,12 +14,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import android.app.FragmentManager;
+
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,6 +54,7 @@ public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
     private int position;
     private String location;
     private ArrayList<String> features;
+    private Button seePhoto;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,6 +73,7 @@ public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
         playerController = new PlayerController(null, null, null,username, db);
         qrCodeControllerDB = new QRCodeControllerDB(null, username, db);
 
+        seePhoto = findViewById(R.id.see_photo);
         commentb = (Button) findViewById(R.id.comment);
         commentlistb = (Button) findViewById(R.id.open_comment);
         name = findViewById(R.id.qr_code_name);
@@ -156,6 +164,28 @@ public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
                 intent.putExtra("username", username);
                 intent.putExtra("qrName", qrName);
                 startActivity(intent);
+            }
+        });
+
+        seePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // check if there is a photo
+                StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+                storageRef.child(String.format("images/%s/%s.jpg", username, qrName)).getDownloadUrl()
+                        .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                new QRCodePhotoFragment(qrName, username, uri).show(getSupportFragmentManager(),"Show Photo");
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                new QRCodePhotoFragment(qrName, username, null).show(getSupportFragmentManager(),"Show Photo");
+
+                            }
+                        });
             }
         });
 
