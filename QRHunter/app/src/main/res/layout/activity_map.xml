@@ -11,8 +11,9 @@
     <Button
         android:id="@+id/backButton"
         android:layout_width="74dp"
-        android:layout_height="36dp"
+        android:layout_height="40dp"
         android:text="BACK"
+        android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -29,4 +30,17 @@
     android:layout_height="match_parent"
     android:name="com.google.android.gms.maps.SupportMapFragment"
     tools:context=".MapActivity"/>
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/idSearchView"
+        app:layout_constraintLeft_toRightOf="@id/backButton"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="#BFBFBF"
+        android:elevation="5dp"
+        app:iconifiedByDefault="false"
+        app:queryHint="Search Here"
+        tools:ignore="MissingConstraints" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

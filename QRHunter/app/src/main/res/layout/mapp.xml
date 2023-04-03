@@ -9,6 +9,7 @@
         android:id="@+id/google_map"
         android:layout_width="364dp"
         android:layout_height="607dp" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_bar"
         android:layout_width="match_parent"
