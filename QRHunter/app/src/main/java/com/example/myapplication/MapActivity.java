@@ -15,21 +15,27 @@ package com.example.myapplication;
  *
  * Displaying map and getting current location
  * https://www.youtube.com/watch?v=kRAyXxgwOhQ
+ *
+ * Implementing search bar on map
+ * --From: www.geeksforgeeks.com
+ * --URL: https://www.geeksforgeeks.org/how-to-add-searchview-in-google-maps-in-android/
+ * --From: https://auth.geeksforgeeks.org/user/chaitanyamunje/articles
+ * --License: CC BY-SA
  */
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -53,6 +59,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -70,11 +77,15 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     private Button backButton;
     private FirebaseFirestore db;
     private String username;
+    SearchView searchView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+        searchView = findViewById(R.id.idSearchView);
+
 
         backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -96,14 +107,17 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         currentLocation = new LatLng(latitude, longitude);
 
         SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.gMap);
-        supportMapFragment.getMapAsync(this);
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+        supportMapFragment.getMapAsync(this);
+
     }
 
     /**
      * Displays the map containing markers for the current user's location as well as QR codes with
      * a known location.
+     * Displays location searched by user, and QR codes within a 500m radius relative to the searched location
      * Uses Google Map API.
      * Returns to Home page (Main Activity)
      * @param googleMap - GoogleMap map to be displayed
@@ -124,6 +138,40 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         } else {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
         }
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                String location = searchView.getQuery().toString();
+                List<Address> addressList = null;
+                if (location != null || location.equals("")) {
+                    Geocoder geocoder = new Geocoder(MapActivity.this);
+                    try {
+                        addressList = geocoder.getFromLocationName(location, 1);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    if (addressList.isEmpty()) {    // no valid location found
+                        Toast.makeText(MapActivity.this, "Invalid Location", Toast.LENGTH_SHORT);
+                    } else {
+                        Address address = addressList.get(0);
+                        LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                        // Display location searched by user
+                        MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(location)
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+                        googleMap.addMarker(markerOptions);
+                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+
+                        //TODO: add qrCodes within 500m away
+                    }
+                }
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                googleMap.clear();
+                return false;
+            }
+        });
     }
 
     /**
@@ -207,7 +255,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                                 .snippet(String.format("Distance: %.2f m", distance))
                                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
                         googleMap.addMarker(markers);
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(qrLocation, 15));
                     }
                 }
             }
@@ -243,5 +290,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 qrCodeLocation.latitude, qrCodeLocation.longitude, distances);
         return distances[0];
     }
+
 }
 
