@@ -30,7 +30,10 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/** Activity class that displays comprehensive information on selected QR code */
+/** Activity class that displays comprehensive information about selected QR code
+ * Information is retrieved from firebase
+ * @authors: Randy, Angela, Jessie
+ */
 public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
     private Button delete;
     private String qrName;
@@ -56,6 +59,12 @@ public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
     private ArrayList<String> features;
     private Button seePhoto;
 
+    /**
+     * Gets views associated with previously_scanned_qr_code layout and populates them with QR code information
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,6 +118,12 @@ public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /**
+                 * Handles the event when DELETE button is clicked.
+                 * Updates database if user decides to delete QR code
+                 * Returns to list of previously scanned QR Codes (HistoryActivity)
+                 * @param v The view that was clicked.
+                 */
                 AlertDialog.Builder builder = new AlertDialog.Builder(PreviouslyScannedQRCodeActivity.this);     // Creates window telling user they have already scanned it
                 builder.setTitle("Delete");
                 builder.setMessage("Are you sure you want to delete this QR Code?");
@@ -150,6 +165,11 @@ public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
         commentb.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                /**
+                 * Handles the event when COMMENT button is clicked.
+                 * Starts CommentActivity where user can comment on the selected QR code
+                 * @param v The view that was clicked.
+                 */
                 Intent intent = new Intent(PreviouslyScannedQRCodeActivity.this, CommentActivity.class);
                 intent.putExtra("qrName", qrName);
                 intent.putExtra("username", username);
@@ -160,6 +180,11 @@ public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
         commentlistb.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                /**
+                 * Handles the event when SEE COMMENTS button is clicked.
+                 * Starts CommentListViewActivity where users can see comments under selected QR code
+                 * @param v The view that was clicked.
+                 */
                 Intent intent = new Intent(PreviouslyScannedQRCodeActivity.this, CommentListViewActivity.class);
                 intent.putExtra("username", username);
                 intent.putExtra("qrName", qrName);
@@ -170,6 +195,12 @@ public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
         seePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /**
+                 * Handles the event when SEE PHOTO button is clicked.
+                 * Shows fragment containing photo of the QR Code's physical location, or plain
+                 * text if user did not take a picture after scanning the QR code.
+                 * @param v The view that was clicked.
+                 */
                 // check if there is a photo
                 StorageReference storageRef = FirebaseStorage.getInstance().getReference();
                 storageRef.child(String.format("images/%s/%s.jpg", username, qrName)).getDownloadUrl()
@@ -190,6 +221,11 @@ public class PreviouslyScannedQRCodeActivity extends AppCompatActivity {
         });
 
         back.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Handles the event when BACK button is clicked.
+             * Returns to list of QR Codes (HistoryActivity).
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();

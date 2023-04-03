@@ -23,10 +23,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Custom Adapter class that displays information about each QR code in HistoryActivity
+ * @authors: Randy, Angela
+ */
 public class HistoryAdapter extends ArrayAdapter<HistoryModel> {
     private FirebaseFirestore db;
     private String username;
     private Intent intent;
+
+    /**
+     * Constructor function for HistoryAdapter
+     * @param context - Context context of activity class that instantiates this class
+     * @param intent - Intent intent containing information required to query firebase
+     */
     public HistoryAdapter(Context context,Intent intent) {
         super(context, 0);
         this.intent = intent;
@@ -59,6 +69,20 @@ public class HistoryAdapter extends ArrayAdapter<HistoryModel> {
             Log.e("HistoryAdapter", "Error getting document", e);
         });
     }
+
+    /**
+     * Sets appropriate information to be displayed
+     * @param position The position of the item within the adapter's data set of the item whose view
+     *        we want.
+     * @param convertView The old view to reuse, if possible. Note: You should check that this view
+     *        is non-null and of an appropriate type before using. If it is not possible to convert
+     *        this view to display the correct data, this method can create a new view.
+     *        Heterogeneous lists can specify their number of view types, so that this View is
+     *        always of the right type (see {@link #getViewTypeCount()} and
+     *        {@link #getItemViewType(int)}).
+     * @param parent The parent that this view will eventually be attached to
+     * @return
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {

@@ -73,6 +73,7 @@ import java.util.jar.Attributes;
 
 /**
  * Activity that displays the Home Page of the app
+ * @authors: Shirley, Angela, Randy, Jessie, Anika
  */
 public class MainActivity extends AppCompatActivity {
     FirebaseFirestore db;
@@ -84,8 +85,13 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton geosearch;
 
     ActivityResultLauncher<Intent> forResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        /**
+         * Displays score statistics of current player
+         * @param result - ActivityResult containing current Player data
+         */
         @Override
         public void onActivityResult(ActivityResult result) {
+
             Log.e("MainActivity: ", "I think Signup Activity is done?");
             Log.e("MainActivity: the result is: ", result.toString());
             if (result != null && result.getResultCode() == RESULT_OK) {
@@ -131,6 +137,11 @@ public class MainActivity extends AppCompatActivity {
 
         // Update Home page
         ActivityResultLauncher<Intent> updateHomePage = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            /**
+             * Updates the Home Page (score statistics, leaderboard and most scanned QR Code)
+             * after other children Activities finish
+             * @param result - ActivityResult result that signalsthat  the child Activity has completed
+             */
             @Override
             public void onActivityResult(ActivityResult result) {
                 if (result.getResultCode() == RESULT_OK) {
@@ -213,6 +224,11 @@ public class MainActivity extends AppCompatActivity {
         TextView leaderboardText = findViewById(R.id.view_more);
         leaderboardText.setOnClickListener(new View.OnClickListener() {
             @Override
+            /**
+             * Handles the event when VIEW MORE text is clicked.
+             * Starts LeaderboardActivity
+             * @param v The view that was clicked.
+             */
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, LeaderboardActivity.class);
                 intent.putExtra("currentUser", currentPlayer);
@@ -223,6 +239,11 @@ public class MainActivity extends AppCompatActivity {
 
         search.setOnClickListener(new View.OnClickListener(){
             @Override
+            /**
+             * Handles the event when search icon is clicked.
+             * Starts SearchActivity
+             * @param v The view that was clicked.
+             */
             public void onClick(View v){
                 Intent intent = new Intent(MainActivity.this, SearchActivity.class);
                 updateHomePage.launch(intent);
@@ -230,6 +251,11 @@ public class MainActivity extends AppCompatActivity {
         });
         geosearch.setOnClickListener(new View.OnClickListener(){
             @Override
+            /**
+             * Handles the event when top left map icon is clicked.
+             * Starts GeoSearchActivity
+             * @param v The view that was clicked.
+             */
             public void onClick(View v){
                 Intent intent = new Intent(MainActivity.this, GeoSearchActivity.class);
                 startActivity(intent);
@@ -262,7 +288,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Displays top ten most scanned qr codes
+     * Displays the most scanned QR Code
+     * -- Subject to change
      */
     public void getMostScanned() {
         TextView mostScanned = findViewById(R.id.most_scanned_text);

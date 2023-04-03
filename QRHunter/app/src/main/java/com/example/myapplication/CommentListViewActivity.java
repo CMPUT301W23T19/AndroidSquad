@@ -25,7 +25,10 @@ import java.util.List;
  */
 
 /**
- * Displays comments for a particular QR Code in a ListView
+ * Activity class that displays comments for a QR Code
+ * QR code was selected by user in the HistoryActivity
+ * Comments are retrieved from Firestore Firebase
+ * @authors Jessie, Angela
  */
 public class CommentListViewActivity extends AppCompatActivity {
     private ListView commentList;
@@ -36,6 +39,13 @@ public class CommentListViewActivity extends AppCompatActivity {
     FirebaseFirestore db;
     List<HashMap<String, String>> players = new ArrayList<>();
 
+    /**
+     * Gets views associated with history_list layout and populates them with comments
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +59,7 @@ public class CommentListViewActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
+        // get comments that will be displayed by CommentAdapter
         db.collection("QR Code").document(qrName)
                 .get().addOnCompleteListener(task -> {
                     ArrayList<HashMap<String,String>> comments = (ArrayList<HashMap<String, String>>) task.getResult().get("Comment");
@@ -57,8 +68,13 @@ public class CommentListViewActivity extends AppCompatActivity {
                 });
 
 
-        //set up back button to go back if user doesnt want to continue searching
+        // set up back button to go back if user doesnt want to continue searching
         back.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Handles the event when BACK button is clicked.
+             * Returns to Home page (Main Activity)
+             * @param view The view that was clicked.
+             */
             @Override
             public void onClick(View view) {
                 finish();

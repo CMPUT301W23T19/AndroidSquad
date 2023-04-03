@@ -34,6 +34,12 @@ import com.google.firebase.database.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+/**
+ * Custom Adapter that sets information to be displayed in the current user's search results (SearchActivity)
+ * Filters results based on user's search.
+ * @authors: Jessie, Shirley, Anika
+ */
 public class SearchAdapter extends ArrayAdapter<HashMap<String, String>> implements Filterable {
     private Context context;
     private List<HashMap<String, String>> mPlayers;

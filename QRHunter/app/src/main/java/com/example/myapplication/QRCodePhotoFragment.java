@@ -26,7 +26,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 /**
- * Displays the photo of the QR code's location take by the user, if it exists
+ * Fragment class that displays the photo of the QR code's location taken by the user, if it exists
+ * @author Angela
  */
 
 public class QRCodePhotoFragment extends DialogFragment {
@@ -34,6 +35,12 @@ public class QRCodePhotoFragment extends DialogFragment {
     private Uri uri;
     private String username;
 
+    /**
+     * Constructor function for QRCodeFragment
+     * @param qrName - String representation of the selected QR Code's name
+     * @param username - String representation of the current user's username
+     * @param uri - Uri uri containing URL of QR code image
+     */
     public QRCodePhotoFragment(String qrName, String username, Uri uri) {
         this.qrName = qrName;
         this.username = username;
@@ -41,6 +48,12 @@ public class QRCodePhotoFragment extends DialogFragment {
 
     }
 
+    /**
+     * Sets the information to be displayed in the AlertDialog
+     * @param savedInstanceState The last saved instance state of the Fragment,
+     * or null if this is a freshly created Fragment.
+     * @return Dialog to be displayed
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {

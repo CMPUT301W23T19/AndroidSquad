@@ -40,6 +40,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Activity that allows user to create an account, if they are not an existing Player.
+ * Retrieves and stores information in firebase.
+ * @author: Shirley
+ */
 public class SignUpActivity extends AppCompatActivity {
     public FirebaseFirestore db;
     ImageView avatar;
@@ -66,6 +71,8 @@ public class SignUpActivity extends AppCompatActivity {
             }
         }
     });
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -49,7 +49,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Responsible for adding, modifying, deleting QR codes from database and starting ScannedQRCodeActivity
+ * Controller class responsible for adding, modifying, deleting QR codes from database and starting ScannedQRCodeActivity
+ * Retrieves and modifies information in firebase
+ * @author Angela
  */
 public class QRCodeControllerDB {
     private String name;
@@ -175,7 +177,8 @@ public class QRCodeControllerDB {
 
 
     /**
-     * Start ScannedQRCodeActivity
+     * Starts ScannedQRCodeActivity where user will view QR Code information
+     * including name and visual representation
      */
     private void start(Context context) {
         Intent intent = new Intent(context, ScannedQRCodeActivity.class);
@@ -223,6 +226,11 @@ public class QRCodeControllerDB {
         start(context);
     }
 
+    /**
+     * Deletes user from history of users that scanned the QR code
+     * Called when user deletes a QR code from their history of previously scanned QR Code
+     * @param qrName - String representation of the deleted QR code's name
+     */
     public void deleteUser(String qrName) {
 
         db.collection("QR Code").document(qrName)
@@ -240,6 +248,11 @@ public class QRCodeControllerDB {
                     }
                 });
     }
+
+    /**
+     * Sets location of QR Code
+     * @param location - Location location to be stored
+     */
     public void setLocation(Location location) {
         this.location = location;
     }

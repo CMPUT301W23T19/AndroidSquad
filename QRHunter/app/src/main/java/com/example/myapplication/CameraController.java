@@ -48,6 +48,11 @@ import com.journeyapps.barcodescanner.ScanOptions;
 
 import java.util.List;
 
+/**
+ * Controller class responsible for starting the barcode scanner (CameraActivity) and getting scan results
+ * This class gets the current user's location to be potentially stored in firebase
+ * @authors: Randy, Angela
+ */
 public class CameraController {
     private static final int REQUEST_LOCATION_PERMISSION = 1;
 
@@ -59,24 +64,21 @@ public class CameraController {
     private LocationCallback locationCallback;
     private LocationRequest locationRequest;
 
-
-
-
+    /**
+     * Constructor for CameraController
+     * @param context - Context context of MainActivity
+     * @param barLauncher - ActivityResultLauncher<ScanOptions> object used to start CameraActivity
+     */
     public CameraController(Context context, ActivityResultLauncher<ScanOptions> barLauncher) {
         this.context = context;
         this.barLauncher = barLauncher;
 
     }
 
-    private void startLocationUpdates() {
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            fusedLocationProviderClient.requestLocationUpdates(locationRequest,
-                    locationCallback,
-                    Looper.getMainLooper());
-        }
-    }
-
+    /**
+     * Prompts user for permission to track location, if granted then location is stored.
+     * Calls function that starts CameraActivity regardless of whether or not permission is granted
+     */
     public void scanCode() {
         // Check if location permission is granted before launching the barcode scanner
         LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
@@ -118,18 +120,9 @@ public class CameraController {
         }
     }
 
-    // Called after requesting for location permission
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == REQUEST_LOCATION_PERMISSION) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Location permission granted, launch barcode scanner
-                launchBarcodeScanner();
-            }
-        }
-    }
-
-
-    // Helper method to launch the barcode scanner with options
+    /**
+     * Helper method to launch the barcode scanner with options
+     */
     private void launchBarcodeScanner() {
         ScanOptions options = new ScanOptions();
         options.setPrompt("volume up to flash on!!");
@@ -145,9 +138,9 @@ public class CameraController {
 
     /**
      * Handles scanning QR code event
-     * @param contents QR code contents in string format
-     * @param db FirestoreFirebase where data is being stored, added and modified
-     * @param context Context context of previous Activity
+     * @param contents - QR code contents in string format
+     * @param db - FirestoreFirebase where data is being stored, added and modified
+     * @param context - Context context of previous Activity
      */
     public void handleScanResult(String contents, FirebaseFirestore db, Context context, String username, ActivityResultLauncher<Intent> launcher) {
         qrCodeControllerDB = new QRCodeControllerDB(contents, username, db);
