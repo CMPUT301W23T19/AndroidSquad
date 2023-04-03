@@ -9,6 +9,7 @@ package com.example.myapplication;
  * --License: CC BY-SA
  */
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -68,8 +69,11 @@ public class QRCodePhotoFragment extends DialogFragment {
         }
 
         builder.setOnShowListener(new DialogInterface.OnShowListener() {
+            @SuppressLint("ResourceAsColor")
             @Override
             public void onShow(DialogInterface dialog) {
+                builder.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(R.color.testerPurple);
+                builder.getButton(DialogInterface.BUTTON_NEGATIVE).setTextSize(16);
                 builder.getWindow().setBackgroundDrawableResource(R.drawable.rounded_view);
             }
         });
