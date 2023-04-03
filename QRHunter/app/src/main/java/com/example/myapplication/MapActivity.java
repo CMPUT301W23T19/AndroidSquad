@@ -167,9 +167,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                         MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(location)
                                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
                         googleMap.addMarker(markerOptions);
-                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
 
-                        //TODO: add qrCodes within 1km away
                         CollectionReference qrLocRef = db.collection("QR Code");
                         qrLocRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
@@ -185,7 +184,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                                         Location.distanceBetween(latLng.latitude, latLng.longitude, qrLocation.latitude, qrLocation.longitude, results);
                                         float distance = results[0];
                                         Log.e("qrLocation", "This qrcode has distance of " + (distance));
-                                        if (distance <= 10000) { // Filter out only QR codes within 1km of searched location
+                                        if (distance <= 1000) { // Filter out only QR codes within 1km of searched location
                                             Log.e("Found : ", "Distance is within 500m!");
                                             MarkerOptions markers = new MarkerOptions()
                                                     .position(qrLocation)

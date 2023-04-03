@@ -270,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
     public void leaderboardScores() {
         // Retrieve game-wide high scores
         CollectionReference playersRef = db.collection("Player");
-        Query query1 = playersRef.orderBy("Score", Query.Direction.DESCENDING).limit(10);
+        Query query1 = playersRef.orderBy("Score", Query.Direction.DESCENDING).limit(5);
         query1.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 int rank = 1;
